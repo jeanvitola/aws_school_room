@@ -1,0 +1,71 @@
+# Research: Torre AWS MVP
+
+## Decision 1: Navigation model
+
+**Decision**: Use click-to-travel navigation between service hotspots and a visible return-to-lobby action.
+
+**Rationale**: This keeps the scene easy to understand, reduces input ambiguity, and supports a clear keyboard-accessible fallback while preserving the game-like “exploration” feeling without requiring a full avatar movement system.
+
+**Alternatives considered**:
+- Avatar-based movement in the room: rejected because it increases motion complexity and makes keyboard accessibility harder to implement cleanly.
+- Full hybrid navigation: rejected because it adds interaction overhead without materially increasing learning value in the MVP.
+
+## Decision 2: Platform and responsiveness
+
+**Decision**: Desktop-first layout with responsive support for smaller screens and touch interaction.
+
+**Rationale**: The room layout benefits from a wider view, while smaller screens still need a usable adaptation. This matches the user expectation of a richer educational map without skipping mobile usability.
+
+**Alternatives considered**:
+- Mobile-first: rejected because the scene composition and service map are easier to read and manipulate on desktop.
+- Desktop-only: rejected because the UX would be unnecessarily restrictive and harder to access on smaller devices.
+
+## Decision 3: Accessibility strategy
+
+**Decision**: The visual room remains the primary experience, with a text-based fallback and keyboard navigation using Tab, Enter, and Escape.
+
+**Rationale**: A dual-mode approach preserves the visual identity of the product while making the core educational flow available to keyboard users and screen-reader users.
+
+**Alternatives considered**:
+- Keyboard-only room interaction: rejected because it creates a less natural experience for mouse users and is harder to maintain when the room is spatially rich.
+- No fallback: rejected because accessibility is a hard product requirement for the educational goal.
+
+## Decision 4: Progress persistence
+
+**Decision**: Deferred. The MVP does not track which services the learner has viewed.
+
+**Rationale**: Keeps the first release focused on the core learning loop (lobby → room → service card). Progress tracking (session-only vs. persistent) will be specified as a separate feature.
+
+**Alternatives considered**:
+- Session-only progress in `sessionStorage`: postponed, not rejected.
+- Persistent progress in `localStorage`: postponed, not rejected.
+
+## Decision 5: Content governance and AWS accuracy
+
+**Decision**: Centralized editorial review against the official SAA-C03 guidance before content release; manual updates are tracked with versioned content files.
+
+**Rationale**: AWS service definitions and exam distinctions evolve over time. A controlled review process is the safest way to maintain learner trust without adding a backend or external sync pipeline in the MVP.
+
+**Alternatives considered**:
+- Static content with no post-release review: rejected because it risks obsolete information and exam misinformation.
+- Full live-fetch automation from external sources: rejected because it is too heavy for the MVP and creates unreliable dependency risk.
+
+## Decision 6: Architecture boundaries
+
+**Decision**: Keep a dedicated domain layer for rooms, services, and navigation logic; keep Phaser only in scene orchestration; keep UI behavior in DOM/CSS overlays.
+
+**Rationale**: This makes the content and rules testable independent of rendering and preserves the constitutional rule that business logic must be separate from automation and interface concerns.
+
+**Alternatives considered**:
+- Embedding logic in Phaser scene code: rejected because it makes the rules hard to test and couples learning logic to rendering.
+- A general-purpose state-management layer for the whole app: rejected as unnecessary complexity for a static, single-page educational product.
+
+## Decision 7: Validation approach
+
+**Decision**: Use Vitest for domain and content validation, and Playwright for end-to-end flow validation.
+
+**Rationale**: This balances precise logic testing with realistic user-flow testing while staying consistent with a static frontend architecture and a small, reviewable release scope.
+
+**Alternatives considered**:
+- Only browser-based manual QA: rejected because it is not repeatable enough for release confidence.
+- Full E2E-first strategy only: rejected because it misses domain-level correctness of room/service rules and content consistency.
