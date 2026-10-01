@@ -3,6 +3,9 @@ import { ContentValidationError, loadCatalog } from '../../src/content/schema';
 import roomsFile from '../../src/content/rooms.json';
 import servicesFile from '../../src/content/services.json';
 import {
+  makeDeep,
+  makeNormal,
+  makePattern,
   makeRoom,
   makeRoomsFile,
   makeService,
@@ -15,6 +18,10 @@ function expectInvalid(rooms: unknown, services: unknown, messageFragment: strin
   expect(() => loadCatalog(rooms, services)).toThrow(messageFragment);
 }
 
+function expectServiceInvalid(service: unknown, messageFragment: string) {
+  expectInvalid(makeRoomsFile(), { services: [service] }, messageFragment);
+}
+
 describe('loadCatalog', () => {
   it('returns a typed catalog for valid content', () => {
     const catalog = loadCatalog(makeRoomsFile(), makeServicesFile());
@@ -22,7 +29,8 @@ describe('loadCatalog', () => {
     expect(catalog.version).toBe('1.0.0');
     expect(catalog.lastReviewed).toBe('2026-09-30');
     expect(catalog.rooms).toHaveLength(1);
-    expect(catalog.services[0]?.id).toBe('ec2');
+    expect(catalog.services[0]?.normal.analogy).toContain('alquilar');
+    expect(catalog.services[0]?.deep.patterns).toHaveLength(1);
   });
 
   it('accepts the project content files', () => {
@@ -67,8 +75,7 @@ describe('loadCatalog', () => {
     });
 
     it('rejects a service whose room does not exist', () => {
-      const services = [makeService({ roomId: 'storage' })];
-      expectInvalid(makeRoomsFile(), makeServicesFile(services), 'roomId inexistente');
+      expectServiceInvalid(makeService({ roomId: 'storage' }), 'roomId inexistente');
     });
 
     it('rejects a service that belongs to an upcoming room', () => {
@@ -76,39 +83,105 @@ describe('loadCatalog', () => {
       expectInvalid(makeRoomsFile(rooms), makeServicesFile(), 'sala "upcoming"');
     });
 
-    it.each(['useCases', 'examConcepts', 'compareWith', 'examTraps'] as const)(
+    it.each(['normal', 'deep'] as const)('rejects a service without the %s level', (level) => {
+      const service: Record<string, unknown> = { ...makeService() };
+      delete service[level];
+      expectServiceInvalid(service, level);
+    });
+  });
+
+  describe('normal level', () => {
+    it('rejects a glossary with 0 or more than 4 terms', () => {
+      const term = { term: 'T', definition: 'D' };
+      expectServiceInvalid(makeService({ normal: makeNormal({ glossary: [] }) }), 'glossary');
+      expectServiceInvalid(
+        makeService({ normal: makeNormal({ glossary: Array(5).fill(term) }) }),
+        'glossary',
+      );
+    });
+
+    it('rejects 0 or more than 3 exam key points', () => {
+      expectServiceInvalid(makeService({ normal: makeNormal({ examKeyPoints: [] }) }), 'examKeyPoints');
+      expectServiceInvalid(
+        makeService({ normal: makeNormal({ examKeyPoints: ['a', 'b', 'c', 'd'] }) }),
+        'examKeyPoints',
+      );
+    });
+
+    it('rejects a quick comparison without target or rule', () => {
+      expectServiceInvalid(
+        makeService({ normal: makeNormal({ quickComparison: { target: '', rule: 'x' } }) }),
+        'target',
+      );
+      expectServiceInvalid(
+        makeService({ normal: makeNormal({ quickComparison: { target: 'lambda', rule: ' ' } }) }),
+        'rule',
+      );
+    });
+
+    it('rejects an empty analogy or cost line', () => {
+      expectServiceInvalid(makeService({ normal: makeNormal({ analogy: '' }) }), 'analogy');
+      expectServiceInvalid(makeService({ normal: makeNormal({ costInOneLine: '' }) }), 'costInOneLine');
+    });
+
+    it('rejects a normal level longer than 250 words', () => {
+      expectServiceInvalid(
+        makeService({ normal: makeNormal({ whatIs: words(260) }) }),
+        'nivel Normal',
+      );
+    });
+  });
+
+  describe('deep level', () => {
+    it.each(['keyConcepts', 'compareWith', 'useCases', 'patterns', 'examTraps'] as const)(
       'rejects an empty %s list',
       (field) => {
-        const services = [makeService({ [field]: [] })];
-        expectInvalid(makeRoomsFile(), makeServicesFile(services), field);
+        expectServiceInvalid(makeService({ deep: makeDeep('ec2', { [field]: [] }) }), field);
       },
     );
 
-    it('rejects an empty costNote', () => {
-      const services = [makeService({ costNote: '  ' })];
-      expectInvalid(makeRoomsFile(), makeServicesFile(services), 'costNote');
+    it('rejects a use case without example', () => {
+      const useCases = [{ scenario: 'Migrar', example: '' }];
+      expectServiceInvalid(makeService({ deep: makeDeep('ec2', { useCases }) }), 'example');
     });
 
     it('rejects a comparison without target or difference', () => {
-      const withoutTarget = [makeService({ compareWith: [{ target: '', difference: 'x' }] })];
-      const withoutDifference = [makeService({ compareWith: [{ target: 'lambda', difference: '' }] })];
-      expectInvalid(makeRoomsFile(), makeServicesFile(withoutTarget), 'target');
-      expectInvalid(makeRoomsFile(), makeServicesFile(withoutDifference), 'difference');
+      expectServiceInvalid(
+        makeService({ deep: makeDeep('ec2', { compareWith: [{ target: '', difference: 'x' }] }) }),
+        'target',
+      );
+      expectServiceInvalid(
+        makeService({ deep: makeDeep('ec2', { compareWith: [{ target: 'x', difference: '' }] }) }),
+        'difference',
+      );
     });
 
-    it('rejects a summary longer than 50 words', () => {
-      const services = [makeService({ summary: words(51) })];
-      expectInvalid(makeRoomsFile(), makeServicesFile(services), 'summary');
+    it('rejects a pattern with fewer than 2 or more than 6 steps', () => {
+      const step = { target: 'ec2', role: 'Ejecuta' };
+      const tooShort = makePattern('ec2', { steps: [step] });
+      const tooLong = makePattern('ec2', { steps: Array(7).fill(step) });
+      expectServiceInvalid(makeService({ deep: makeDeep('ec2', { patterns: [tooShort] }) }), 'steps');
+      expectServiceInvalid(makeService({ deep: makeDeep('ec2', { patterns: [tooLong] }) }), 'steps');
     });
 
-    it('accepts a summary of exactly 50 words', () => {
-      const services = [makeService({ summary: words(50) })];
-      expect(() => loadCatalog(makeRoomsFile(), makeServicesFile(services))).not.toThrow();
+    it('rejects a pattern that does not include the service itself', () => {
+      const pattern = makePattern('ec2', {
+        steps: [
+          { target: 'Amazon S3', role: 'Guarda' },
+          { target: 'lambda', role: 'Procesa' },
+        ],
+      });
+      expectServiceInvalid(
+        makeService({ deep: makeDeep('ec2', { patterns: [pattern] }) }),
+        'no incluye al propio servicio',
+      );
     });
 
-    it('rejects a card longer than 350 words in total', () => {
-      const services = [makeService({ useCases: [words(200)], examTraps: [words(200)] })];
-      expectInvalid(makeRoomsFile(), makeServicesFile(services), '350 palabras');
+    it('rejects a deep level longer than 900 words', () => {
+      expectServiceInvalid(
+        makeService({ deep: makeDeep('ec2', { definition: words(910) }) }),
+        'nivel Profundo',
+      );
     });
   });
 });

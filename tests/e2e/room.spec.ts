@@ -93,11 +93,29 @@ test.describe('US2 - Sala de Máquinas', () => {
     );
     for (const service of computeServices) {
       await expect(textView.getByRole('heading', { name: service.name, exact: true })).toBeVisible();
-      await expect(textView.getByText(service.summary)).toBeVisible();
+      await expect(textView.getByText(service.deep.definition)).toBeVisible();
     }
 
     await toggle.click();
     await expect(textView).toBeHidden();
     await expect(page.locator('#game canvas')).toBeVisible();
   });
+
+  // Regresión: Phaser escuchaba clics en toda la ventana y un clic sobre la ficha activaba
+  // la estación que quedaba detrás en el canvas.
+  test('clicking inside the card never selects the station behind it', async ({ page }) => {
+    await serviceList(page).getByRole('button', { name: 'Amazon EC2', exact: true }).click();
+    const card = serviceCard(page);
+    await expect(card).toBeVisible();
+    await page.waitForTimeout(600); // la cámara termina de viajar
+    const box = await card.boundingBox();
+    if (!box) throw new Error('La ficha no tiene tamaño');
+
+    for (let y = box.y + 8; y < box.y + box.height - 8; y += 30) {
+      await page.mouse.click(box.x + 4, y); // borde interior de la ficha, sin botones
+    }
+
+    await expect(card.getByRole('heading', { level: 2 })).toHaveText('Amazon EC2');
+  });
 });
+

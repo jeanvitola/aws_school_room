@@ -4,255 +4,765 @@
       "id": "ec2",
       "name": "Amazon EC2",
       "roomId": "compute",
-      "summary": "Servidores virtuales (instancias) en la nube con control total del sistema operativo, la red y el almacenamiento. Tú eliges el tipo de instancia y te encargas de parches y escalado.",
-      "useCases": [
-        "Aplicaciones que necesitan control del sistema operativo o software instalado a medida",
-        "Migraciones lift-and-shift de servidores on-premises",
-        "Cargas de larga duración o con uso constante de CPU y memoria",
-        "Software con licencias ligadas a núcleos o sockets físicos (Dedicated Hosts)"
-      ],
-      "examConcepts": [
-        "Familias de instancia: propósito general (M, T), cómputo (C), memoria (R, X), almacenamiento (I, D) y aceleradas (P, G)",
-        "AMI: plantilla para lanzar instancias; es regional y se copia para usarla en otra región",
-        "Security Groups: firewall con estado a nivel de instancia, solo con reglas de permitir",
-        "Los volúmenes EBS persisten al detener la instancia; el Instance Store es efímero",
-        "Placement groups: cluster (baja latencia), spread (máximo 7 instancias por AZ) y partition (Hadoop, Cassandra)",
-        "Permisos con un rol de IAM (instance profile), nunca con access keys guardadas en la instancia"
-      ],
-      "compareWith": [
-        {
+      "normal": {
+        "whatIs": "Amazon EC2 te presta computadores virtuales (llamados instancias) en la nube. Eliges cuánta potencia necesitas y qué sistema operativo usar, y lo enciendes en minutos. A diferencia de los servicios serverless, aquí tú administras el servidor: instalas programas, aplicas actualizaciones y decides cuándo apagarlo.",
+        "analogy": "Es como alquilar un departamento amoblado: lo usas como quieras, pero eres responsable de mantenerlo en orden.",
+        "glossary": [
+          {
+            "term": "Instancia",
+            "definition": "Un servidor virtual que corre en los centros de datos de AWS."
+          },
+          {
+            "term": "AMI",
+            "definition": "La plantilla (sistema operativo y programas) con la que se crea una instancia."
+          },
+          {
+            "term": "Aprovisionar",
+            "definition": "Reservar y preparar capacidad antes de usarla; en EC2 lo haces tú al elegir el tipo de instancia."
+          }
+        ],
+        "examKeyPoints": [
+          "Si el enunciado pide control del sistema operativo o software especial, piensa en EC2.",
+          "Spot es lo más barato, pero AWS puede quitarte la instancia con 2 minutos de aviso.",
+          "El disco Instance Store se borra al detener la instancia; un volumen EBS se conserva."
+        ],
+        "quickComparison": {
           "target": "lambda",
-          "difference": "Lambda si la tarea se dispara por eventos y dura 15 minutos o menos sin gestionar servidores; EC2 para procesos largos, estado local o control del sistema operativo."
+          "rule": "Programas que corren todo el día o necesitan controlar el servidor → EC2. Tareas cortas que reaccionan a un evento → Lambda."
         },
-        {
-          "target": "fargate",
-          "difference": "Fargate si la aplicación ya está en contenedores y no quieres gestionar instancias; EC2 si necesitas GPU, acceso al host o el menor costo a gran escala."
-        }
-      ],
-      "examTraps": [
-        "Spot es lo más barato (hasta 90% de descuento) pero AWS puede interrumpirla con 2 minutos de aviso: no sirve para cargas que no toleran interrupciones",
-        "El Instance Store pierde sus datos al detener o terminar la instancia",
-        "Un Security Group no tiene reglas de denegar: para bloquear una IP usa una Network ACL o AWS WAF",
-        "Reserved Instances y Savings Plans exigen un compromiso de 1 o 3 años: no convienen para cargas cortas e impredecibles"
-      ],
-      "costNote": "On-Demand (por segundo en Linux), Reserved Instances y Savings Plans (hasta ~72% de ahorro con compromiso de 1 o 3 años), Spot (hasta 90% con posibles interrupciones) y Dedicated Hosts para licencias por servidor físico."
+        "costInOneLine": "Pagas por el tiempo que la instancia está encendida; con compromisos de 1 o 3 años o con Spot pagas mucho menos."
+      },
+      "deep": {
+        "definition": "Amazon Elastic Compute Cloud (EC2) ofrece capacidad de cómputo redimensionable en forma de máquinas virtuales. Cada instancia se lanza a partir de una AMI, en una subred de una VPC dentro de una zona de disponibilidad (AZ), con un tipo de instancia que define CPU, memoria, red y almacenamiento. El almacenamiento persistente suele ser un volumen EBS conectado por red, y el acceso de red se controla con Security Groups. Es el modelo IaaS: AWS gestiona el hardware y la virtualización; tú, el sistema operativo, los parches, la aplicación y el escalado (con ayuda de Auto Scaling).",
+        "keyConcepts": [
+          "Familias de instancia: propósito general (M, T), cómputo (C), memoria (R, X), almacenamiento (I, D) y aceleradas con GPU (P, G).",
+          "Las instancias T son burstable: acumulan créditos de CPU y pueden perder rendimiento si la carga es constante.",
+          "La AMI es regional: para usar la misma imagen en otra región hay que copiarla.",
+          "Security Groups: firewall con estado a nivel de instancia, solo con reglas de permitir.",
+          "EBS persiste al detener la instancia; Instance Store es efímero pero de muy baja latencia.",
+          "Placement groups: cluster (baja latencia en una AZ), spread (máximo 7 instancias por AZ, hardware separado) y partition (Hadoop, Cassandra).",
+          "User data ejecuta scripts al arrancar; el servicio de metadatos (IMDSv2) entrega datos de la instancia y credenciales temporales.",
+          "Permisos con un rol de IAM (instance profile), nunca con access keys guardadas en la instancia."
+        ],
+        "compareWith": [
+          {
+            "target": "lambda",
+            "difference": "Lambda si la tarea se dispara por eventos y dura 15 minutos o menos sin gestionar servidores; EC2 para procesos largos, estado local o control del sistema operativo."
+          },
+          {
+            "target": "fargate",
+            "difference": "Fargate si la aplicación ya está en contenedores y no quieres gestionar instancias; EC2 si necesitas GPU, acceso al host o el menor costo a gran escala."
+          }
+        ],
+        "useCases": [
+          {
+            "scenario": "Migración lift-and-shift",
+            "example": "Mover un servidor Windows con un ERP desde el centro de datos propio a AWS sin cambiar la aplicación."
+          },
+          {
+            "scenario": "Aplicaciones con carga constante",
+            "example": "Un backend web que atiende tráfico todo el día detrás de un load balancer."
+          },
+          {
+            "scenario": "Cómputo especializado",
+            "example": "Entrenar modelos de machine learning con instancias con GPU (familia P)."
+          },
+          {
+            "scenario": "Licencias por servidor físico",
+            "example": "Usar Dedicated Hosts para un software licenciado por núcleo o por socket."
+          }
+        ],
+        "patterns": [
+          {
+            "name": "Aplicación web altamente disponible",
+            "problem": "Servir una aplicación web que siga funcionando si falla un servidor o una zona de disponibilidad completa.",
+            "whenToUse": "Aplicaciones con tráfico continuo que necesitan control del servidor.",
+            "whenNotToUse": "Cargas esporádicas o por eventos, donde Lambda o Fargate reducen costo y operación.",
+            "steps": [
+              {
+                "target": "Amazon Route 53",
+                "role": "Resuelve el dominio hacia el balanceador"
+              },
+              {
+                "target": "elb",
+                "role": "Reparte el tráfico entre zonas de disponibilidad"
+              },
+              {
+                "target": "autoscaling",
+                "role": "Mantiene y ajusta la cantidad de instancias"
+              },
+              {
+                "target": "ec2",
+                "role": "Ejecuta la aplicación en varias AZ"
+              },
+              {
+                "target": "Amazon RDS (Multi-AZ)",
+                "role": "Guarda los datos con una réplica en otra AZ"
+              }
+            ]
+          },
+          {
+            "name": "Procesamiento por lotes con Spot",
+            "problem": "Procesar grandes volúmenes de trabajo al menor costo posible.",
+            "whenToUse": "Trabajos que toleran interrupciones y se pueden reintentar.",
+            "whenNotToUse": "Bases de datos o servicios que deben estar siempre disponibles.",
+            "steps": [
+              {
+                "target": "Amazon SQS",
+                "role": "Guarda la cola de trabajos pendientes"
+              },
+              {
+                "target": "ec2",
+                "role": "Instancias Spot toman y procesan los trabajos"
+              },
+              {
+                "target": "Amazon S3",
+                "role": "Guarda los resultados"
+              }
+            ]
+          }
+        ],
+        "examTraps": [
+          "Spot es lo más barato (hasta 90% de descuento) pero AWS puede interrumpirla con 2 minutos de aviso: no sirve para cargas que no toleran interrupciones",
+          "El Instance Store pierde sus datos al detener o terminar la instancia",
+          "Un Security Group no tiene reglas de denegar: para bloquear una IP usa una Network ACL o AWS WAF",
+          "Reserved Instances y Savings Plans exigen un compromiso de 1 o 3 años: no convienen para cargas cortas e impredecibles"
+        ],
+        "costs": "On-Demand: pago por segundo (en Linux), sin compromiso. Reserved Instances y Savings Plans: hasta ~72% de ahorro con compromiso de 1 o 3 años; los Compute Savings Plans también cubren Fargate y Lambda. Spot: hasta 90% de descuento con posibles interrupciones. Dedicated Hosts: servidor físico exclusivo para licencias. Además pagas los volúmenes EBS y la transferencia de datos de salida."
+      }
     },
     {
       "id": "lambda",
       "name": "AWS Lambda",
       "roomId": "compute",
-      "summary": "Ejecuta tu código en respuesta a eventos sin gestionar servidores. Escala automáticamente y pagas solo por las invocaciones y el tiempo de ejecución.",
-      "useCases": [
-        "Procesar eventos: archivos subidos a S3, mensajes de SQS o cambios en DynamoDB Streams",
-        "APIs serverless junto con Amazon API Gateway",
-        "Tareas programadas tipo cron con Amazon EventBridge",
-        "Transformaciones ligeras de datos en streaming con Kinesis"
-      ],
-      "examConcepts": [
-        "Tiempo máximo de ejecución: 15 minutos",
-        "Memoria de 128 MB a 10 GB; la CPU asignada crece con la memoria",
-        "Concurrencia reservada y Provisioned Concurrency (evita los cold starts)",
-        "Invocación síncrona (API Gateway), asíncrona (S3, SNS) y por event source mapping (SQS, Kinesis)",
-        "Permisos mediante el rol de ejecución de IAM",
-        "Puede conectarse a una VPC para acceder a recursos privados como RDS"
-      ],
-      "compareWith": [
-        {
+      "normal": {
+        "whatIs": "AWS Lambda ejecuta tu código sin que tengas que preparar servidores. Es serverless: no creas, no enciendes y no mantienes máquinas; AWS lo hace por ti. Tu código \"duerme\" hasta que pasa algo (alguien sube una foto, llega un mensaje, se llama a una API), y entonces se despierta, hace su trabajo y vuelve a dormir.",
+        "analogy": "Es como la luz con sensor de movimiento: solo se enciende cuando hace falta y solo pagas ese rato.",
+        "glossary": [
+          {
+            "term": "Serverless",
+            "definition": "Tú no administras servidores; AWS se encarga de ellos."
+          },
+          {
+            "term": "Aprovisionar",
+            "definition": "Reservar y preparar capacidad (servidores, memoria) antes de usarla. Con Lambda no hace falta."
+          },
+          {
+            "term": "Evento",
+            "definition": "Algo que ocurre y dispara tu código, como subir un archivo."
+          }
+        ],
+        "examKeyPoints": [
+          "Cada ejecución dura como máximo 15 minutos: si la tarea tarda más, Lambda no sirve.",
+          "Escala solo: si llegan muchos eventos a la vez, ejecuta muchas copias de tu código en paralelo."
+        ],
+        "quickComparison": {
           "target": "ec2",
-          "difference": "EC2 para procesos de larga duración o que requieren control del sistema operativo; Lambda para tareas cortas por eventos con cero administración de servidores."
+          "rule": "Tareas cortas que reaccionan a algo → Lambda. Programas que corren todo el día o necesitan controlar el servidor → EC2."
         },
-        {
-          "target": "fargate",
-          "difference": "Fargate para contenedores que corren más de 15 minutos o de forma continua; Lambda para funciones cortas disparadas por eventos."
-        }
-      ],
-      "examTraps": [
-        "Una tarea de más de 15 minutos descarta Lambda: usa Fargate, ECS, AWS Batch o divide el trabajo con Step Functions",
-        "Muchas funciones conectándose a RDS pueden agotar las conexiones: usa RDS Proxy",
-        "Si la latencia de arranque es crítica, la respuesta es Provisioned Concurrency",
-        "Una Lambda dentro de una VPC necesita NAT Gateway o VPC endpoints para llegar a internet o a otros servicios de AWS"
-      ],
-      "costNote": "Pagas por número de solicitudes y por duración en GB-segundo (memoria × tiempo), con capa gratuita mensual. Provisioned Concurrency cobra aunque no haya invocaciones."
+        "costInOneLine": "Pagas por cada ejecución y por cuánto dura, al milisegundo; si no se usa, no pagas."
+      },
+      "deep": {
+        "definition": "AWS Lambda es un servicio de cómputo serverless que ejecuta funciones en respuesta a eventos. Subes el código (o una imagen de contenedor), configuras la memoria y el disparador, y AWS se encarga de aprovisionar, escalar, parchear y dar alta disponibilidad en varias AZ. Cada invocación corre en un entorno aislado; si no hay uno listo se crea uno nuevo (cold start), que luego puede reutilizarse en invocaciones siguientes.",
+        "keyConcepts": [
+          "Tiempo máximo de ejecución: 15 minutos.",
+          "Memoria de 128 MB a 10 GB; la CPU asignada crece con la memoria.",
+          "Invocación síncrona (API Gateway, ALB), asíncrona (S3, SNS, EventBridge) y por event source mapping, que lee de colas o streams (SQS, Kinesis, DynamoDB Streams).",
+          "Concurrencia reservada (garantiza y limita capacidad) y Provisioned Concurrency (entornos ya iniciados, sin cold starts).",
+          "Permisos mediante el rol de ejecución de IAM.",
+          "Puede conectarse a una VPC para llegar a recursos privados como RDS.",
+          "En invocaciones asíncronas, los fallos pueden enviarse a una DLQ o a un destino (Lambda Destinations)."
+        ],
+        "compareWith": [
+          {
+            "target": "ec2",
+            "difference": "EC2 para procesos de larga duración o que requieren control del sistema operativo; Lambda para tareas cortas por eventos con cero administración de servidores."
+          },
+          {
+            "target": "fargate",
+            "difference": "Fargate para contenedores que corren más de 15 minutos o de forma continua; Lambda para funciones cortas disparadas por eventos."
+          }
+        ],
+        "useCases": [
+          {
+            "scenario": "Procesar archivos al subirlos",
+            "example": "Crear miniaturas cada vez que alguien sube una foto a un bucket de S3."
+          },
+          {
+            "scenario": "APIs serverless",
+            "example": "El backend de una app móvil con API Gateway y DynamoDB, sin servidores encendidos."
+          },
+          {
+            "scenario": "Tareas programadas",
+            "example": "Un reporte diario a las 6:00 disparado por una regla de EventBridge."
+          },
+          {
+            "scenario": "Procesamiento de streams",
+            "example": "Filtrar y enriquecer eventos de Kinesis en tiempo real."
+          }
+        ],
+        "patterns": [
+          {
+            "name": "Procesamiento de archivos por eventos",
+            "problem": "Reaccionar automáticamente cada vez que llega un archivo, sin servidores esperando.",
+            "whenToUse": "Procesamiento corto por archivo (menos de 15 minutos) con llegada irregular.",
+            "whenNotToUse": "Procesos largos sobre archivos grandes; mejor Fargate o AWS Batch.",
+            "steps": [
+              {
+                "target": "Amazon S3",
+                "role": "Recibe el archivo y emite el evento"
+              },
+              {
+                "target": "lambda",
+                "role": "Procesa el archivo"
+              },
+              {
+                "target": "Amazon DynamoDB",
+                "role": "Guarda el resultado"
+              }
+            ]
+          },
+          {
+            "name": "API serverless",
+            "problem": "Exponer una API que escale de cero a miles de solicitudes sin administrar servidores.",
+            "whenToUse": "Tráfico variable o impredecible y equipos que quieren mínima operación.",
+            "whenNotToUse": "Tráfico muy alto y constante, donde contenedores o EC2 pueden salir más baratos.",
+            "steps": [
+              {
+                "target": "Amazon API Gateway",
+                "role": "Recibe las solicitudes HTTP"
+              },
+              {
+                "target": "lambda",
+                "role": "Ejecuta la lógica de negocio"
+              },
+              {
+                "target": "Amazon DynamoDB",
+                "role": "Guarda y lee los datos"
+              }
+            ]
+          },
+          {
+            "name": "Desacoplar con una cola",
+            "problem": "Absorber picos de trabajo sin perder mensajes.",
+            "whenToUse": "Cuando el productor genera trabajo más rápido de lo que se procesa.",
+            "whenNotToUse": "Cuando el usuario necesita una respuesta inmediata.",
+            "steps": [
+              {
+                "target": "Amazon SQS",
+                "role": "Guarda los mensajes pendientes"
+              },
+              {
+                "target": "lambda",
+                "role": "Lee y procesa los mensajes en lotes"
+              }
+            ]
+          }
+        ],
+        "examTraps": [
+          "Una tarea de más de 15 minutos descarta Lambda: usa Fargate, ECS, AWS Batch o divide el trabajo con Step Functions",
+          "Muchas funciones conectándose a RDS pueden agotar las conexiones: usa RDS Proxy",
+          "Si la latencia de arranque es crítica, la respuesta es Provisioned Concurrency",
+          "Una Lambda dentro de una VPC necesita NAT Gateway o VPC endpoints para llegar a internet o a otros servicios de AWS"
+        ],
+        "costs": "Pagas por número de solicitudes y por duración en GB-segundo (memoria × tiempo), facturada por milisegundo. La capa gratuita incluye 1 millón de solicitudes al mes. Provisioned Concurrency cobra aunque no haya invocaciones. Más memoria cuesta más por milisegundo, pero la función puede terminar antes."
+      }
     },
     {
       "id": "ecs",
       "name": "Amazon ECS",
       "roomId": "compute",
-      "summary": "Orquestador de contenedores propio de AWS. Ejecuta y escala contenedores Docker como tasks y services, sobre instancias EC2 que tú gestionas o sobre Fargate.",
-      "useCases": [
-        "Microservicios en contenedores detrás de un Application Load Balancer",
-        "Llevar aplicaciones Docker a AWS sin adoptar Kubernetes",
-        "Procesos batch en contenedores"
-      ],
-      "examConcepts": [
-        "Task definition: plantilla con imagen, CPU, memoria, puertos y roles",
-        "Service: mantiene N tasks corriendo y las registra en el load balancer",
-        "Launch types: EC2 (tú gestionas el clúster) o Fargate (serverless)",
-        "Task role (permisos de la aplicación) vs. task execution role (descargar la imagen de ECR y enviar logs)",
-        "Las imágenes se guardan en Amazon ECR",
-        "Service Auto Scaling según métricas de CloudWatch"
-      ],
-      "compareWith": [
-        {
+      "normal": {
+        "whatIs": "Amazon ECS es el organizador de contenedores de AWS. Un contenedor es tu aplicación empaquetada con todo lo que necesita para funcionar igual en cualquier lugar. ECS decide dónde corre cada contenedor, cuántas copias mantener y reemplaza las que fallan. Puede usar servidores EC2 que tú manejas o Fargate, sin servidores que administrar.",
+        "analogy": "Es como el jefe de un puerto que decide en qué barco va cada contenedor y vigila que ninguno se pierda.",
+        "glossary": [
+          {
+            "term": "Contenedor",
+            "definition": "Tu aplicación empaquetada con sus librerías para que funcione igual en cualquier lugar."
+          },
+          {
+            "term": "Orquestador",
+            "definition": "Sistema que decide dónde corren los contenedores, cuántos hay y los reemplaza si fallan."
+          },
+          {
+            "term": "Task",
+            "definition": "Una copia de tu aplicación corriendo en ECS."
+          }
+        ],
+        "examKeyPoints": [
+          "Contenedores con el menor esfuerzo operativo → ECS con Fargate.",
+          "Si el enunciado menciona Kubernetes, la respuesta es EKS, no ECS.",
+          "Los permisos de la aplicación van en el task role."
+        ],
+        "quickComparison": {
           "target": "eks",
-          "difference": "EKS si ya usas Kubernetes o necesitas portabilidad entre nubes; ECS es más simple y nativo de AWS cuando no hay requisito de Kubernetes."
+          "rule": "¿Ya usan Kubernetes o necesitan portabilidad entre nubes? → EKS. ¿Solo quieren correr contenedores en AWS de forma simple? → ECS."
         },
-        {
-          "target": "fargate",
-          "difference": "Fargate es una forma de ejecutar ECS sin gestionar instancias; el launch type EC2 da control del host, GPU y mejor precio a gran escala."
-        }
-      ],
-      "examTraps": [
-        "Los permisos de la aplicación van en el task role, no en el rol de la instancia EC2",
-        "\"Contenedores con el menor esfuerzo operativo\" apunta a ECS con Fargate",
-        "Si el enunciado menciona Kubernetes o Helm, la respuesta es EKS, no ECS"
-      ],
-      "costNote": "ECS no tiene cargo propio: pagas los recursos que usan las tasks (instancias EC2 o vCPU y memoria de Fargate)."
+        "costInOneLine": "ECS no cobra por sí mismo: pagas los servidores EC2 o el uso de Fargate."
+      },
+      "deep": {
+        "definition": "Amazon Elastic Container Service (ECS) es un orquestador de contenedores administrado y propio de AWS. Describes la aplicación en una task definition (imagen, CPU, memoria, puertos, variables y roles) y ECS ejecuta tasks dentro de un clúster. Un service mantiene la cantidad deseada de tasks, las reemplaza si fallan y las registra en un load balancer. La capacidad la aportan instancias EC2 (launch type EC2) o Fargate (serverless).",
+        "keyConcepts": [
+          "Task definition: plantilla versionada de la aplicación.",
+          "Service: mantiene N tasks corriendo y se integra con ALB o NLB.",
+          "Launch types: EC2 (gestionas las instancias y su escalado) o Fargate (sin servidores).",
+          "Task role: permisos de la aplicación. Task execution role: permisos de ECS para descargar la imagen de ECR y enviar logs.",
+          "Las imágenes se guardan en Amazon ECR.",
+          "Service Auto Scaling ajusta la cantidad de tasks con métricas de CloudWatch.",
+          "Capacity providers combinan Fargate, Fargate Spot o grupos de instancias EC2."
+        ],
+        "compareWith": [
+          {
+            "target": "eks",
+            "difference": "EKS si ya usas Kubernetes o necesitas portabilidad entre nubes; ECS es más simple y nativo de AWS cuando no hay requisito de Kubernetes."
+          },
+          {
+            "target": "fargate",
+            "difference": "Fargate es una forma de ejecutar ECS sin gestionar instancias; el launch type EC2 da control del host, GPU y mejor precio a gran escala."
+          }
+        ],
+        "useCases": [
+          {
+            "scenario": "Microservicios",
+            "example": "Una tienda online dividida en servicios de catálogo, carrito y pagos detrás de un ALB."
+          },
+          {
+            "scenario": "Modernizar aplicaciones",
+            "example": "Llevar una aplicación ya empaquetada en Docker a AWS sin adoptar Kubernetes."
+          },
+          {
+            "scenario": "Trabajos batch en contenedores",
+            "example": "Tasks programadas que procesan archivos cada noche."
+          }
+        ],
+        "patterns": [
+          {
+            "name": "Microservicios en contenedores",
+            "problem": "Desplegar y escalar varios servicios de forma independiente.",
+            "whenToUse": "Aplicaciones divididas en servicios que cambian a ritmos distintos.",
+            "whenNotToUse": "Una aplicación pequeña y simple, donde un solo servicio basta.",
+            "steps": [
+              {
+                "target": "elb",
+                "role": "El ALB enruta por ruta o host a cada microservicio"
+              },
+              {
+                "target": "ecs",
+                "role": "Mantiene las tasks de cada microservicio"
+              },
+              {
+                "target": "fargate",
+                "role": "Ejecuta las tasks sin servidores que administrar"
+              }
+            ]
+          }
+        ],
+        "examTraps": [
+          "Los permisos de la aplicación van en el task role, no en el rol de la instancia EC2",
+          "\"Contenedores con el menor esfuerzo operativo\" apunta a ECS con Fargate",
+          "Si el enunciado menciona Kubernetes o Helm, la respuesta es EKS, no ECS"
+        ],
+        "costs": "ECS no tiene cargo propio. Con el launch type EC2 pagas las instancias (puedes usar Reserved, Savings Plans o Spot); con Fargate pagas vCPU y memoria por segundo. Fargate Spot reduce el costo de tareas tolerantes a interrupciones."
+      }
     },
     {
       "id": "eks",
       "name": "Amazon EKS",
       "roomId": "compute",
-      "summary": "Kubernetes gestionado por AWS. AWS opera el plano de control y tú ejecutas los pods en nodos EC2 o en Fargate.",
-      "useCases": [
-        "Equipos que ya usan Kubernetes y quieren migrar a AWS",
-        "Portabilidad entre nubes u on-premises con la misma plataforma",
-        "Aprovechar el ecosistema de Kubernetes: Helm, operadores y herramientas open source"
-      ],
-      "examConcepts": [
-        "Plano de control gestionado y altamente disponible en varias AZ",
-        "Nodos: managed node groups, nodos autogestionados o Fargate",
-        "Permisos por pod con IAM Roles for Service Accounts (IRSA) o EKS Pod Identity",
-        "Escalado de nodos con Cluster Autoscaler o Karpenter",
-        "Almacenamiento persistente mediante drivers CSI de EBS y EFS"
-      ],
-      "compareWith": [
-        {
+      "normal": {
+        "whatIs": "Amazon EKS es Kubernetes administrado por AWS. Kubernetes es el sistema más usado en el mundo para organizar contenedores, pero montarlo tú mismo es complejo. Con EKS, AWS se encarga del \"cerebro\" de Kubernetes (el plano de control) y tú solo despliegas tus aplicaciones.",
+        "analogy": "Es como arrendar un restaurante con la cocina ya instalada y mantenida: tú solo cocinas tus recetas.",
+        "glossary": [
+          {
+            "term": "Kubernetes",
+            "definition": "Sistema open source para organizar contenedores, disponible en muchas nubes."
+          },
+          {
+            "term": "Plano de control",
+            "definition": "La parte de Kubernetes que toma las decisiones; en EKS la administra AWS."
+          },
+          {
+            "term": "Pod",
+            "definition": "La unidad mínima de Kubernetes: uno o más contenedores que corren juntos."
+          }
+        ],
+        "examKeyPoints": [
+          "Palabras como Kubernetes, open source o multi-cloud apuntan a EKS.",
+          "EKS cobra por cada clúster por hora, aunque no tenga aplicaciones."
+        ],
+        "quickComparison": {
           "target": "ecs",
-          "difference": "ECS es más simple si no hay requisito de Kubernetes; EKS cuando el enunciado pide Kubernetes, portabilidad o herramientas de su ecosistema."
+          "rule": "¿Necesitan Kubernetes? → EKS. ¿Quieren la opción más simple dentro de AWS? → ECS."
         },
-        {
-          "target": "fargate",
-          "difference": "Fargate como perfil de cómputo de EKS evita gestionar nodos; usa nodos EC2 cuando necesitas GPU, DaemonSets o control del host."
-        }
-      ],
-      "examTraps": [
-        "Palabras clave como Kubernetes, open source, multi-cloud o migrar un clúster existente apuntan a EKS",
-        "EKS cobra por clúster por hora: no es la opción más barata para una carga pequeña",
-        "Para no gestionar nodos en EKS, usa Fargate como perfil de cómputo"
-      ],
-      "costNote": "Cargo fijo por clúster y por hora (USD 0,10 con soporte estándar) más los nodos EC2 o el consumo de Fargate."
+        "costInOneLine": "Pagas una tarifa fija por clúster por hora, más los servidores o Fargate donde corren los pods."
+      },
+      "deep": {
+        "definition": "Amazon Elastic Kubernetes Service (EKS) ejecuta un plano de control de Kubernetes administrado y altamente disponible en varias AZ. Las aplicaciones se despliegan con las herramientas estándar de Kubernetes (kubectl, Helm) y corren en nodos EC2 (managed node groups o autogestionados) o en Fargate. Al ser Kubernetes estándar, las aplicaciones son portables entre EKS, otras nubes y centros de datos propios.",
+        "keyConcepts": [
+          "Plano de control administrado por AWS en varias AZ.",
+          "Cómputo: managed node groups, nodos autogestionados o perfiles de Fargate.",
+          "Permisos por pod con IAM Roles for Service Accounts (IRSA) o EKS Pod Identity.",
+          "Escalado de nodos con Cluster Autoscaler o Karpenter; de pods con Horizontal Pod Autoscaler.",
+          "Almacenamiento persistente con drivers CSI de EBS y EFS.",
+          "EKS Anywhere permite correr el mismo Kubernetes en centros de datos propios."
+        ],
+        "compareWith": [
+          {
+            "target": "ecs",
+            "difference": "ECS es más simple si no hay requisito de Kubernetes; EKS cuando el enunciado pide Kubernetes, portabilidad o herramientas de su ecosistema."
+          },
+          {
+            "target": "fargate",
+            "difference": "Fargate como perfil de cómputo de EKS evita gestionar nodos; usa nodos EC2 cuando necesitas GPU, DaemonSets o control del host."
+          }
+        ],
+        "useCases": [
+          {
+            "scenario": "Migrar Kubernetes existente",
+            "example": "Una empresa con clústeres Kubernetes propios los mueve a AWS sin reescribir sus manifiestos."
+          },
+          {
+            "scenario": "Plataforma multi-cloud",
+            "example": "El mismo despliegue con Helm corre en AWS y en otra nube."
+          },
+          {
+            "scenario": "Ecosistema open source",
+            "example": "Usar operadores de Kubernetes para bases de datos o herramientas de observabilidad."
+          }
+        ],
+        "patterns": [
+          {
+            "name": "Plataforma Kubernetes administrada",
+            "problem": "Correr aplicaciones Kubernetes sin operar el plano de control.",
+            "whenToUse": "Equipos que ya usan Kubernetes o necesitan portabilidad.",
+            "whenNotToUse": "Equipos pequeños sin experiencia en Kubernetes, donde ECS es más simple.",
+            "steps": [
+              {
+                "target": "elb",
+                "role": "Expone los servicios mediante el AWS Load Balancer Controller"
+              },
+              {
+                "target": "eks",
+                "role": "Orquesta los pods con Kubernetes"
+              },
+              {
+                "target": "ec2",
+                "role": "Nodos que ejecutan los pods"
+              }
+            ]
+          }
+        ],
+        "examTraps": [
+          "Palabras clave como Kubernetes, open source, multi-cloud o migrar un clúster existente apuntan a EKS",
+          "EKS cobra por clúster por hora: no es la opción más barata para una carga pequeña",
+          "Para no gestionar nodos en EKS, usa Fargate como perfil de cómputo"
+        ],
+        "costs": "USD 0,10 por clúster por hora con soporte estándar (más en soporte extendido de versiones antiguas de Kubernetes), más el cómputo: instancias EC2 de los nodos o vCPU y memoria de Fargate."
+      }
     },
     {
       "id": "fargate",
       "name": "AWS Fargate",
       "roomId": "compute",
-      "summary": "Motor serverless para contenedores de ECS y EKS. Defines CPU y memoria por task o pod y AWS se encarga de servidores, parches y capacidad.",
-      "useCases": [
-        "Ejecutar contenedores sin gestionar instancias ni capacidad del clúster",
-        "Cargas en contenedores variables o con picos",
-        "Tareas en contenedor que superan los 15 minutos de Lambda"
-      ],
-      "examConcepts": [
-        "No es un orquestador: se usa junto con ECS o EKS",
-        "Cada task tiene su propia interfaz de red e IP privada en la VPC",
-        "Aislamiento por task: no comparte el kernel con otras tasks",
-        "Fargate Spot para tareas tolerantes a interrupciones",
-        "Almacenamiento persistente compartido con Amazon EFS"
-      ],
-      "compareWith": [
-        {
-          "target": "ecs",
-          "difference": "ECS decide qué contenedores correr y cuántos (orquestación); Fargate es dónde corren sin servidores que administrar. Se usan juntos."
-        },
-        {
-          "target": "eks",
-          "difference": "EKS orquesta pods con Kubernetes; Fargate puede ejecutarlos sin nodos que gestionar, a costa de no tener GPU ni DaemonSets."
-        },
-        {
+      "normal": {
+        "whatIs": "AWS Fargate ejecuta tus contenedores sin que tengas que administrar servidores. Le dices cuánta CPU y memoria necesita cada contenedor y AWS se encarga del resto: encontrar dónde correrlo, actualizarlo y mantenerlo. Fargate no trabaja solo: se usa junto con ECS o EKS, que deciden qué contenedores correr.",
+        "analogy": "Es como pedir un taxi en vez de tener auto: llegas a destino sin preocuparte del mantenimiento ni del estacionamiento.",
+        "glossary": [
+          {
+            "term": "Serverless",
+            "definition": "Tú no administras servidores; AWS se encarga de ellos."
+          },
+          {
+            "term": "Contenedor",
+            "definition": "Tu aplicación empaquetada con sus librerías para que funcione igual en cualquier lugar."
+          },
+          {
+            "term": "vCPU",
+            "definition": "Unidad de procesador virtual que asignas a tu contenedor."
+          }
+        ],
+        "examKeyPoints": [
+          "Contenedores sin administrar servidores → Fargate.",
+          "Fargate no ofrece GPU: para eso se usan instancias EC2.",
+          "A diferencia de Lambda, no tiene límite de 15 minutos."
+        ],
+        "quickComparison": {
           "target": "lambda",
-          "difference": "Lambda para funciones cortas (hasta 15 minutos) por eventos; Fargate para contenedores de larga duración o con dependencias empaquetadas en una imagen."
+          "rule": "Función corta que reacciona a un evento → Lambda. Contenedor que corre por horas o todo el día → Fargate."
         },
-        {
-          "target": "ec2",
-          "difference": "EC2 cuando necesitas GPU, acceso al host o optimizar costo con instancias reservadas; Fargate para no administrar servidores."
-        }
-      ],
-      "examTraps": [
-        "\"Contenedores sin gestionar servidores\" es Fargate, no el launch type EC2",
-        "Fargate no ofrece GPU: para machine learning con GPU usa instancias EC2",
-        "No hay acceso SSH ni daemons en el host"
-      ],
-      "costNote": "Pagas por la vCPU y la memoria asignadas, por segundo, mientras la task corre. Fargate Spot ofrece hasta 70% de descuento."
+        "costInOneLine": "Pagas por la CPU y la memoria que pides, por segundo, mientras el contenedor corre."
+      },
+      "deep": {
+        "definition": "AWS Fargate es un motor de cómputo serverless para contenedores que funciona con ECS y EKS. Cada task (o pod) corre en su propio entorno aislado con la CPU y memoria que defines, y con su propia interfaz de red en la VPC. AWS gestiona los servidores, el sistema operativo, los parches y la capacidad; no hay instancias visibles ni acceso al host.",
+        "keyConcepts": [
+          "No es un orquestador: necesita ECS o EKS.",
+          "Cada task tiene su propia interfaz de red (ENI) e IP privada en la VPC.",
+          "Aislamiento por task: no comparte el kernel con otras tasks.",
+          "Fargate Spot: hasta 70% de descuento para tareas tolerantes a interrupciones.",
+          "Almacenamiento efímero por task; persistente y compartido con Amazon EFS.",
+          "Sin GPU, sin acceso SSH al host y sin daemons por nodo."
+        ],
+        "compareWith": [
+          {
+            "target": "ecs",
+            "difference": "ECS decide qué contenedores correr y cuántos (orquestación); Fargate es dónde corren sin servidores que administrar. Se usan juntos."
+          },
+          {
+            "target": "eks",
+            "difference": "EKS orquesta pods con Kubernetes; Fargate puede ejecutarlos sin nodos que gestionar, a costa de no tener GPU ni DaemonSets."
+          },
+          {
+            "target": "lambda",
+            "difference": "Lambda para funciones cortas (hasta 15 minutos) por eventos; Fargate para contenedores de larga duración o con dependencias empaquetadas en una imagen."
+          },
+          {
+            "target": "ec2",
+            "difference": "EC2 cuando necesitas GPU, acceso al host o optimizar costo con instancias reservadas; Fargate para no administrar servidores."
+          }
+        ],
+        "useCases": [
+          {
+            "scenario": "Servicios web en contenedores",
+            "example": "Una API en Node.js empaquetada en Docker que corre 24/7 sin administrar instancias."
+          },
+          {
+            "scenario": "Tareas largas",
+            "example": "Una transformación de datos de 2 horas que no cabe en los 15 minutos de Lambda."
+          },
+          {
+            "scenario": "Cargas variables",
+            "example": "Trabajos que aumentan a fin de mes y bajan el resto del tiempo."
+          }
+        ],
+        "patterns": [
+          {
+            "name": "Tareas en contenedor disparadas por eventos",
+            "problem": "Ejecutar trabajos largos en respuesta a eventos sin servidores permanentes.",
+            "whenToUse": "Trabajos que superan los 15 minutos de Lambda o necesitan una imagen de contenedor.",
+            "whenNotToUse": "Trabajos de segundos, donde Lambda es más simple y barata.",
+            "steps": [
+              {
+                "target": "Amazon EventBridge",
+                "role": "Detecta el evento o la hora programada"
+              },
+              {
+                "target": "ecs",
+                "role": "Lanza una task con la definición del trabajo"
+              },
+              {
+                "target": "fargate",
+                "role": "Ejecuta la task y la termina al acabar"
+              },
+              {
+                "target": "Amazon S3",
+                "role": "Guarda el resultado"
+              }
+            ]
+          }
+        ],
+        "examTraps": [
+          "\"Contenedores sin gestionar servidores\" es Fargate, no el launch type EC2",
+          "Fargate no ofrece GPU: para machine learning con GPU usa instancias EC2",
+          "No hay acceso SSH ni daemons en el host"
+        ],
+        "costs": "Pagas por vCPU y memoria asignadas, por segundo (mínimo 1 minuto), mientras la task corre. Fargate Spot ofrece hasta 70% de descuento. Los Compute Savings Plans también aplican a Fargate."
+      }
     },
     {
       "id": "autoscaling",
       "name": "Amazon EC2 Auto Scaling",
       "roomId": "compute",
-      "summary": "Mantiene la cantidad adecuada de instancias EC2: reemplaza las que fallan y agrega o quita capacidad según la demanda.",
-      "useCases": [
-        "Alta disponibilidad: mantener un mínimo de instancias sanas en varias AZ",
-        "Absorber picos de tráfico detrás de un load balancer",
-        "Reducir costos quitando instancias en horas de baja demanda"
-      ],
-      "examConcepts": [
-        "Auto Scaling Group (ASG) con capacidad mínima, deseada y máxima",
-        "Launch template: AMI, tipo de instancia, Security Groups y user data",
-        "Políticas: target tracking (p. ej. CPU al 50%), step, simple, scheduled y predictive",
-        "Health checks de EC2 y de ELB para reemplazar instancias no sanas",
-        "Un ASG repartido en varias AZ da alta disponibilidad",
-        "Mixed instances policy para combinar On-Demand y Spot"
-      ],
-      "compareWith": [
-        {
+      "normal": {
+        "whatIs": "Amazon EC2 Auto Scaling ajusta automáticamente cuántos servidores EC2 tienes. Si llega mucho tráfico, agrega servidores; si baja, los quita para que no pagues de más. Además vigila la salud de cada servidor y reemplaza los que fallan.",
+        "analogy": "Es como un supermercado que abre más cajas cuando se forma fila y las cierra cuando hay pocos clientes.",
+        "glossary": [
+          {
+            "term": "Escalar",
+            "definition": "Aumentar o reducir la capacidad según la demanda."
+          },
+          {
+            "term": "Auto Scaling Group",
+            "definition": "El grupo de instancias que Auto Scaling administra, con un mínimo y un máximo."
+          },
+          {
+            "term": "Health check",
+            "definition": "Revisión periódica para saber si un servidor funciona bien."
+          }
+        ],
+        "examKeyPoints": [
+          "Auto Scaling no reparte el tráfico: para eso necesita un load balancer.",
+          "Repartir el grupo en varias zonas de disponibilidad da alta disponibilidad.",
+          "Picos con horario conocido → escalado programado."
+        ],
+        "quickComparison": {
           "target": "elb",
-          "difference": "ELB reparte el tráfico; Auto Scaling ajusta cuántas instancias hay. Se usan juntos: el ASG registra sus instancias en el target group del balanceador."
-        }
-      ],
-      "examTraps": [
-        "Auto Scaling no distribuye tráfico: para eso necesitas un load balancer",
-        "Si la aplicación falla pero la instancia sigue encendida, activa los health checks de ELB en el ASG",
-        "Para picos predecibles (por horario) usa scheduled o predictive scaling",
-        "Un ASG en una sola AZ no es altamente disponible"
-      ],
-      "costNote": "Sin costo adicional: pagas solo las instancias EC2 que lanza el grupo. Combinar Spot y On-Demand reduce el costo."
+          "rule": "Auto Scaling decide cuántos servidores hay; ELB reparte las visitas entre ellos. Se usan juntos."
+        },
+        "costInOneLine": "Auto Scaling es gratis: pagas solo los servidores EC2 que lanza."
+      },
+      "deep": {
+        "definition": "Amazon EC2 Auto Scaling administra grupos de instancias (Auto Scaling Groups, ASG) con capacidad mínima, deseada y máxima. Lanza instancias desde un launch template, las distribuye entre las AZ configuradas, reemplaza las que fallan los health checks y ajusta la capacidad deseada según políticas de escalado basadas en métricas o en horarios.",
+        "keyConcepts": [
+          "Capacidad mínima, deseada y máxima del ASG.",
+          "Launch template: AMI, tipo de instancia, Security Groups, user data y rol de IAM.",
+          "Políticas: target tracking (p. ej. CPU al 50%), step, simple, scheduled y predictive.",
+          "Health checks de EC2 (estado de la instancia) y de ELB (la aplicación responde).",
+          "Cooldown y warm-up evitan escalar de más mientras las instancias arrancan.",
+          "Mixed instances policy: combina On-Demand y Spot y varios tipos de instancia.",
+          "Lifecycle hooks: ejecutar acciones al lanzar o terminar instancias."
+        ],
+        "compareWith": [
+          {
+            "target": "elb",
+            "difference": "ELB reparte el tráfico; Auto Scaling ajusta cuántas instancias hay. Se usan juntos: el ASG registra sus instancias en el target group del balanceador."
+          }
+        ],
+        "useCases": [
+          {
+            "scenario": "Absorber picos de tráfico",
+            "example": "Una tienda online que duplica servidores durante una venta especial y los reduce al terminar."
+          },
+          {
+            "scenario": "Autorreparación",
+            "example": "Si una instancia falla, el ASG la termina y lanza una nueva automáticamente."
+          },
+          {
+            "scenario": "Ahorro nocturno",
+            "example": "Bajar a 2 instancias de noche con escalado programado."
+          }
+        ],
+        "patterns": [
+          {
+            "name": "Capa web elástica",
+            "problem": "Mantener buen rendimiento con tráfico variable sin pagar capacidad ociosa.",
+            "whenToUse": "Aplicaciones en EC2 con demanda que sube y baja.",
+            "whenNotToUse": "Cargas esporádicas o de eventos cortos, mejor con Lambda.",
+            "steps": [
+              {
+                "target": "elb",
+                "role": "Reparte el tráfico y reporta la salud de cada instancia"
+              },
+              {
+                "target": "autoscaling",
+                "role": "Ajusta la cantidad de instancias según la CPU o las solicitudes"
+              },
+              {
+                "target": "ec2",
+                "role": "Instancias que atienden las solicitudes"
+              },
+              {
+                "target": "Amazon CloudWatch",
+                "role": "Entrega las métricas y alarmas que disparan el escalado"
+              }
+            ]
+          }
+        ],
+        "examTraps": [
+          "Auto Scaling no distribuye tráfico: para eso necesitas un load balancer",
+          "Si la aplicación falla pero la instancia sigue encendida, activa los health checks de ELB en el ASG",
+          "Para picos predecibles (por horario) usa scheduled o predictive scaling",
+          "Un ASG en una sola AZ no es altamente disponible"
+        ],
+        "costs": "Sin costo adicional: pagas las instancias EC2 (y las métricas detalladas de CloudWatch si las activas). Combinar Spot y On-Demand con una mixed instances policy reduce el costo."
+      }
     },
     {
       "id": "elb",
       "name": "Elastic Load Balancing",
       "roomId": "compute",
-      "summary": "Distribuye el tráfico entrante entre varios destinos (instancias, contenedores, IPs o funciones Lambda) en una o más AZ y solo lo envía a destinos sanos.",
-      "useCases": [
-        "Alta disponibilidad de aplicaciones web en varias AZ",
-        "Enrutar por ruta o por host hacia distintos microservicios (ALB)",
-        "Tráfico TCP o UDP de muy baja latencia o con IP estática (NLB)",
-        "Insertar appliances de seguridad de terceros en la red (GWLB)"
-      ],
-      "examConcepts": [
-        "ALB: capa 7 (HTTP/HTTPS) con reglas por ruta, host y headers",
-        "NLB: capa 4 (TCP/UDP/TLS), muy alto rendimiento e IP estática o Elastic IP por AZ",
-        "GWLB: capa 3, para firewalls e IDS/IPS virtuales",
-        "Health checks por target group",
-        "Terminación TLS con certificados de AWS Certificate Manager (ACM)",
-        "Sticky sessions y cross-zone load balancing"
-      ],
-      "compareWith": [
-        {
+      "normal": {
+        "whatIs": "Elastic Load Balancing reparte las visitas de tu aplicación entre varios servidores para que ninguno se sature. Si un servidor deja de responder, deja de enviarle tráfico. Así tu aplicación sigue funcionando aunque falle una máquina o una zona completa.",
+        "analogy": "Es como el anfitrión de un restaurante que asigna cada cliente a la mesa de un mesero disponible.",
+        "glossary": [
+          {
+            "term": "Balanceador de carga",
+            "definition": "Servicio que reparte el tráfico entre varios destinos."
+          },
+          {
+            "term": "Zona de disponibilidad (AZ)",
+            "definition": "Uno o más centros de datos independientes dentro de una región de AWS."
+          },
+          {
+            "term": "Destino (target)",
+            "definition": "Cada servidor, contenedor o función que recibe tráfico del balanceador."
+          }
+        ],
+        "examKeyPoints": [
+          "Rutas o dominios web (HTTP) → Application Load Balancer (ALB).",
+          "IP fija o tráfico TCP/UDP de altísimo rendimiento → Network Load Balancer (NLB).",
+          "Classic Load Balancer es antiguo: casi nunca es la respuesta."
+        ],
+        "quickComparison": {
           "target": "autoscaling",
-          "difference": "Auto Scaling ajusta la cantidad de instancias; ELB reparte las solicitudes entre ellas. Juntos dan elasticidad y alta disponibilidad."
+          "rule": "ELB reparte las visitas; Auto Scaling decide cuántos servidores hay. Juntos dan elasticidad y alta disponibilidad."
         },
-        {
-          "target": "Amazon Route 53",
-          "difference": "Route 53 balancea a nivel de DNS entre regiones o endpoints; ELB reparte solicitudes dentro de una región."
-        }
-      ],
-      "examTraps": [
-        "Si necesitas IP estática o Elastic IP en el balanceador, la respuesta es NLB, no ALB",
-        "Para enrutar por ruta de URL o por nombre de host, la respuesta es ALB",
-        "Classic Load Balancer es legado: casi nunca es la respuesta correcta",
-        "Detrás de un ALB, la IP original del cliente llega en el header X-Forwarded-For"
-      ],
-      "costNote": "Cargo por hora por balanceador más unidades de capacidad (LCU en ALB, NLCU en NLB) según conexiones, solicitudes y bytes procesados."
+        "costInOneLine": "Pagas por hora por balanceador y por la cantidad de tráfico que procesa."
+      },
+      "deep": {
+        "definition": "Elastic Load Balancing distribuye automáticamente el tráfico entrante entre destinos registrados en target groups (instancias EC2, IPs, contenedores o funciones Lambda) en una o varias AZ. Hace health checks continuos y solo envía tráfico a destinos sanos. Tiene tres tipos principales: Application Load Balancer (capa 7), Network Load Balancer (capa 4) y Gateway Load Balancer (capa 3).",
+        "keyConcepts": [
+          "ALB: HTTP/HTTPS con reglas por ruta, host, headers o parámetros; destinos EC2, IP, contenedores y Lambda.",
+          "NLB: TCP/UDP/TLS, millones de solicitudes por segundo e IP estática o Elastic IP por AZ.",
+          "GWLB: inserta appliances de seguridad de terceros (firewalls, IDS/IPS).",
+          "Health checks por target group.",
+          "Terminación TLS con certificados de AWS Certificate Manager (ACM).",
+          "Sticky sessions mantienen a un usuario en el mismo destino.",
+          "Cross-zone load balancing reparte de forma pareja entre AZ."
+        ],
+        "compareWith": [
+          {
+            "target": "autoscaling",
+            "difference": "Auto Scaling ajusta la cantidad de instancias; ELB reparte las solicitudes entre ellas. Juntos dan elasticidad y alta disponibilidad."
+          },
+          {
+            "target": "Amazon Route 53",
+            "difference": "Route 53 balancea a nivel de DNS entre regiones o endpoints; ELB reparte solicitudes dentro de una región."
+          }
+        ],
+        "useCases": [
+          {
+            "scenario": "Alta disponibilidad web",
+            "example": "Un sitio con instancias en 3 AZ que sigue en línea si una AZ falla."
+          },
+          {
+            "scenario": "Enrutamiento de microservicios",
+            "example": "Un ALB envía /api/pagos a un servicio y /api/catalogo a otro."
+          },
+          {
+            "scenario": "IP fija para clientes",
+            "example": "Un NLB con Elastic IP para que un socio agregue esa IP a su lista de permitidos."
+          }
+        ],
+        "patterns": [
+          {
+            "name": "Arquitectura web de tres capas",
+            "problem": "Separar presentación, lógica y datos para escalar y proteger cada capa por separado.",
+            "whenToUse": "Aplicaciones web tradicionales con requisitos de alta disponibilidad.",
+            "whenNotToUse": "Sitios completamente estáticos, mejor servidos con S3 y CloudFront.",
+            "steps": [
+              {
+                "target": "elb",
+                "role": "El ALB público recibe el tráfico en subredes públicas"
+              },
+              {
+                "target": "ec2",
+                "role": "Servidores de aplicación en subredes privadas"
+              },
+              {
+                "target": "Amazon RDS",
+                "role": "Base de datos en subredes privadas"
+              }
+            ]
+          }
+        ],
+        "examTraps": [
+          "Si necesitas IP estática o Elastic IP en el balanceador, la respuesta es NLB, no ALB",
+          "Para enrutar por ruta de URL o por nombre de host, la respuesta es ALB",
+          "Classic Load Balancer es legado: casi nunca es la respuesta correcta",
+          "Detrás de un ALB, la IP original del cliente llega en el header X-Forwarded-For"
+        ],
+        "costs": "Cargo por hora por balanceador más unidades de capacidad según conexiones nuevas, conexiones activas, bytes procesados y reglas evaluadas (LCU en ALB, NLCU en NLB)."
+      }
     }
   ]
 }

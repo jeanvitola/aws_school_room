@@ -23,19 +23,19 @@ description: "Task list for Niveles de profundidad en las fichas"
 
 ### Tests (primero, deben fallar)
 
-- [ ] T001 [P] Actualizar `tests/fixtures.ts` a Service v2 (`makeService` con bloques `normal` y `deep`, `makePattern`)
-- [ ] T002 [P] Tests del esquema v2 en `tests/content/schema.test.ts`: acepta v2 válido; rechaza `normal` o `deep` ausentes; `glossary` fuera de 1–4; `examKeyPoints` fuera de 1–3; `quickComparison` sin `target` o `rule`; listas vacías en `keyConcepts`, `compareWith`, `useCases`, `patterns`, `examTraps`; caso de uso sin `example`; patrón con < 2 o > 6 pasos; patrón sin un paso con el `id` del propio servicio; `normal` > 250 palabras; `deep` > 900 palabras; y conserva las reglas de 001 (ids duplicados, `roomId` inexistente, sala `upcoming`, `version`/`lastReviewed`)
-- [ ] T003 [P] Tests de `resolveTarget(catalog, target, fromServiceId)` en `tests/unit/catalog.test.ts`: servicio de la misma sala → `isOpenable: true`; el propio servicio → `isCurrent: true`, no abrible; nombre externo → `service: undefined`, `label` = texto; servicio de otra sala → no abrible. `resolveComparisons` lee `deep.compareWith`
-- [ ] T004 [P] Tests de contenido en `tests/content/compute-services.test.ts`: los 7 servicios tienen ambos niveles; cada uno tiene ≥ 1 patrón; las comparaciones recíprocas de 001 se mantienen en `deep.compareWith`; `normal.quickComparison.target` existe en el catálogo
+- [X] T001 [P] Actualizar `tests/fixtures.ts` a Service v2 (`makeService` con bloques `normal` y `deep`, `makePattern`)
+- [X] T002 [P] Tests del esquema v2 en `tests/content/schema.test.ts`: acepta v2 válido; rechaza `normal` o `deep` ausentes; `glossary` fuera de 1–4; `examKeyPoints` fuera de 1–3; `quickComparison` sin `target` o `rule`; listas vacías en `keyConcepts`, `compareWith`, `useCases`, `patterns`, `examTraps`; caso de uso sin `example`; patrón con < 2 o > 6 pasos; patrón sin un paso con el `id` del propio servicio; `normal` > 250 palabras; `deep` > 900 palabras; y conserva las reglas de 001 (ids duplicados, `roomId` inexistente, sala `upcoming`, `version`/`lastReviewed`)
+- [X] T003 [P] Tests de `resolveTarget(catalog, target, fromServiceId)` en `tests/unit/catalog.test.ts`: servicio de la misma sala → `isOpenable: true`; el propio servicio → `isCurrent: true`, no abrible; nombre externo → `service: undefined`, `label` = texto; servicio de otra sala → no abrible. `resolveComparisons` lee `deep.compareWith`
+- [X] T004 [P] Tests de contenido en `tests/content/compute-services.test.ts`: los 7 servicios tienen ambos niveles; cada uno tiene ≥ 1 patrón; las comparaciones recíprocas de 001 se mantienen en `deep.compareWith`; `normal.quickComparison.target` existe en el catálogo
 
 ### Implementation
 
-- [ ] T005 Tipos v2 en `src/domain/types.ts`: `NormalContent`, `GlossaryTerm`, `DeepContent`, `UseCase`, `ArchitecturePattern`, `PatternStep`, `DepthLevel` (`'normal' | 'deep'`) y `DEFAULT_DEPTH_LEVEL = 'normal'`
-- [ ] T006 Esquema v2 y reglas de contenido en `src/content/schema.ts` — hace pasar T002
-- [ ] T007 `resolveTarget` y `resolveComparisons` sobre `deep.compareWith` en `src/domain/catalog.ts` — hace pasar T003
-- [ ] T008 Redactar el nivel **Normal** de los 7 servicios en `src/content/services.json` con el tono aprobado (ejemplo de Lambda en la conversación del 2026-09-30): lenguaje cotidiano, una analogía, 1–4 palabras clave, 1–3 puntos clave, comparación rápida y costo en una frase; ≤ 250 palabras
-- [ ] T009 Redactar el nivel **Profundo** de los 7 servicios en `src/content/services.json`: migrar el contenido de 001 y ampliarlo (definición y funcionamiento, conceptos y límites, comparación detallada, casos de uso con ejemplo, ≥ 1 patrón con flujo, trampas, costos); ≤ 900 palabras — junto con T008 hace pasar T004
-- [ ] T010 Adaptar `src/ui/serviceCard.ts` y `src/ui/textFallback.ts` al contrato v2 renderizando provisionalmente el nivel Profundo con las secciones de 001, para que la app y los E2E de 001 sigan pasando
+- [X] T005 Tipos v2 en `src/domain/types.ts`: `NormalContent`, `GlossaryTerm`, `DeepContent`, `UseCase`, `ArchitecturePattern`, `PatternStep`, `DepthLevel` (`'normal' | 'deep'`) y `DEFAULT_DEPTH_LEVEL = 'normal'`
+- [X] T006 Esquema v2 y reglas de contenido en `src/content/schema.ts` — hace pasar T002
+- [X] T007 `resolveTarget` y `resolveComparisons` sobre `deep.compareWith` en `src/domain/catalog.ts` — hace pasar T003
+- [X] T008 Redactar el nivel **Normal** de los 7 servicios en `src/content/services.json` con el tono aprobado (ejemplo de Lambda en la conversación del 2026-09-30): lenguaje cotidiano, una analogía, 1–4 palabras clave, 1–3 puntos clave, comparación rápida y costo en una frase; ≤ 250 palabras
+- [X] T009 Redactar el nivel **Profundo** de los 7 servicios en `src/content/services.json`: migrar el contenido de 001 y ampliarlo (definición y funcionamiento, conceptos y límites, comparación detallada, casos de uso con ejemplo, ≥ 1 patrón con flujo, trampas, costos); ≤ 900 palabras — junto con T008 hace pasar T004
+- [X] T010 Adaptar `src/ui/serviceCard.ts` y `src/ui/textFallback.ts` al contrato v2 renderizando provisionalmente el nivel Profundo con las secciones de 001, para que la app y los E2E de 001 sigan pasando
 
 **Checkpoint**: `npm run test` y `npm run test:e2e` en verde con el contenido v2
 

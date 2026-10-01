@@ -82,16 +82,21 @@ export function renderCardSections(
     return element;
   }
 
-  const traps = section('traps', 'Trampas del examen', bulletList(service.examTraps));
+  const { deep } = service;
+  const traps = section('traps', 'Trampas del examen', bulletList(deep.examTraps));
   traps.prepend(alertIcon());
 
   return [
-    section('summary', 'Qué es', paragraph(service.summary)),
-    section('use-cases', 'Casos de uso', bulletList(service.useCases)),
-    section('concepts', 'Conceptos clave del examen', bulletList(service.examConcepts)),
+    section('summary', 'Qué es', paragraph(deep.definition)),
+    section(
+      'use-cases',
+      'Casos de uso',
+      bulletList(deep.useCases.map(({ scenario, example }) => `${scenario}: ${example}`)),
+    ),
+    section('concepts', 'Conceptos clave del examen', bulletList(deep.keyConcepts)),
     section('comparison', 'Comparación', comparisonList(service, options)),
     traps,
-    section('cost', 'Costos', paragraph(service.costNote)),
+    section('cost', 'Costos', paragraph(deep.costs)),
   ];
 }
 

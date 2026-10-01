@@ -42,6 +42,9 @@ export function createGame(
       mode: Phaser.Scale.FIT,
       autoCenter: Phaser.Scale.CENTER_BOTH,
     },
+    // Solo eventos sobre el canvas: un clic en la UI superpuesta (ficha, lista) no debe
+    // activar la estación que queda detrás.
+    input: { windowEvents: false },
     scene: [new PreloadScene(() => resolveReady()), ...scenes],
   });
   return { game, ready };
