@@ -3,6 +3,7 @@ export const SPRITE_KEYS = [
   'floor-tile',
   'wall-left',
   'wall-right',
+  'workstation',
   'service-ec2',
   'service-lambda',
   'service-ecs',

@@ -137,6 +137,17 @@ description: "Task list for Torre AWS MVP"
 
 ---
 
+## Phase 5b: Ajustes por feedback — Sala de informática
+
+**Purpose**: Sala más grande, estaciones organizadas sin superposición y viaje de cámara (research.md, Decision 9)
+
+- [X] T053 [US2] Tests de geometría en `tests/unit/iso.test.ts` (sala centrada, cabe completa con el zoom general y ocupa > 85% del ancho; `cameraCenterFor`) y de layout en `tests/unit/compute-layout.test.ts` (2 filas de laboratorio, separación ≥ 3 baldosas, lejos de las paredes)
+- [X] T054 [US2] Grilla 12×10, origen centrado y zoom calculado en `src/scene/iso.ts`; estaciones reubicadas en `src/scene/layouts/compute.ts`
+- [X] T055 [P] [US2] Sprites de laboratorio (piso, paredes y estación con monitor) en `scripts/generate-placeholder-sprites.mjs`
+- [X] T056 [US2] Estaciones con ícono flotante, brillo de pantalla y viaje de cámara a la estación seleccionada en `src/scene/RoomScene.ts`; posición junto a la ficha calculada en `src/main.ts`
+
+---
+
 ## Phase 6: Polish & Cross-Cutting Concerns
 
 **Purpose**: Accesibilidad, rendimiento, revisión editorial y despliegue

@@ -78,3 +78,13 @@
 
 **Domain boundary enforcement**: ESLint forbids importing `phaser`, `scene/` or `ui/` and using `document`/`window` inside `src/domain/` (Constitution, Principle III).
 
+## Decision 9: Compute room as a computer lab with camera travel (user feedback, 2026-09-30)
+
+**Decision**: The room grid grows from 8×8 to 12×10 tiles and the overview zoom is computed so the whole room fills the view. Each service is a workstation (desk + monitor) with its icon floating above the monitor, arranged in two lab rows (4 + 3) with at least 3 tiles between stations. Selecting a service makes the camera travel and zoom to that station, keeping it visible beside the card; closing the card returns to the overview.
+
+**Rationale**: Feedback after US3: the room felt small and icons overlapped. The lab metaphor ("sala de informática") makes stations clearly separate, and camera travel implements the clarified "click-to-travel" navigation (Clarifications, Q1 → B) without an avatar.
+
+**Alternatives considered**:
+- Walking avatar: deferred; it changes the clarified navigation model and would need its own spec.
+- Larger sprites in the 8×8 grid: rejected because it worsens overlap.
+

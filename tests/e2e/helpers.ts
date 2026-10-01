@@ -35,8 +35,8 @@ export async function clickHotspot(page: Page, serviceId: keyof typeof computeLa
 
   const scale = box.width / GAME_WIDTH;
   const tile = isoToScreen(placement.col, placement.row);
-  // El sprite se apoya sobre el centro de la baldosa: se hace clic en su mitad.
-  const target = worldToView({ x: tile.x, y: tile.y - 12 });
+  // Se hace clic sobre el escritorio de la estación.
+  const target = worldToView({ x: tile.x, y: tile.y - 8 });
   await page.mouse.click(box.x + target.x * scale, box.y + target.y * scale);
 }
 

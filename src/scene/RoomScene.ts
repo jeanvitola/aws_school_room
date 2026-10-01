@@ -1,12 +1,24 @@
 import Phaser from 'phaser';
-import { GRID_SIZE, ROOM_ZOOM, TILE_HEIGHT, TILE_WIDTH, isoToScreen } from './iso';
+import {
+  FOCUS_ZOOM,
+  GAME_HEIGHT,
+  GAME_WIDTH,
+  GRID_COLS,
+  GRID_ROWS,
+  ROOM_ZOOM,
+  TILE_HEIGHT,
+  TILE_WIDTH,
+  cameraCenterFor,
+  isoToScreen,
+} from './iso';
 import type { SpriteKey } from './sprites';
 
 export const ROOM_SCENE_KEY = 'room';
 
-const SPRITE_SCALE = 2;
+const ICON_SCALE = 1.5;
 const HOVER_TINT = 0xffe9a8;
 const MARKER_COLOR = 0xff9900;
+const CAMERA_TRAVEL_MS = 450;
 
 export interface Hotspot {
   id: string;
@@ -21,15 +33,23 @@ export interface RoomSceneData {
   onSelect: (serviceId: string) => void;
 }
 
-interface HotspotView {
-  sprite: Phaser.GameObjects.Image;
+/** Dónde debe quedar la estación seleccionada dentro de la vista (0.5, 0.5 = centro). */
+export interface ViewFraction {
+  x: number;
+  y: number;
+}
+
+interface StationView {
+  focusPoint: { x: number; y: number };
+  desk: Phaser.GameObjects.Image;
+  icon: Phaser.GameObjects.Image;
   marker: Phaser.GameObjects.Graphics;
   label: Phaser.GameObjects.Text;
 }
 
-/** Sala isométrica. Solo dibuja e interpreta input; las reglas viven en src/domain/. */
+/** Sala de informática isométrica. Solo dibuja e interpreta input; las reglas viven en src/domain/. */
 export class RoomScene extends Phaser.Scene {
-  private views = new Map<string, HotspotView>();
+  private stations = new Map<string, StationView>();
   private highlightedId: string | null = null;
   private selectedId: string | null = null;
 
@@ -38,99 +58,134 @@ export class RoomScene extends Phaser.Scene {
   }
 
   create(data: RoomSceneData): void {
-    this.views = new Map();
+    this.stations = new Map();
     this.highlightedId = null;
     this.selectedId = null;
 
     this.drawWalls();
     this.drawFloor();
     const byDepth = [...data.hotspots].sort((a, b) => a.col + a.row - (b.col + b.row));
-    byDepth.forEach((hotspot, index) => this.addHotspot(hotspot, index, data.onSelect));
-    this.cameras.main.setZoom(ROOM_ZOOM);
-    this.cameras.main.fadeIn(250, 27, 22, 38);
+    byDepth.forEach((hotspot, index) => this.addStation(hotspot, index, data.onSelect));
+
+    const camera = this.cameras.main;
+    camera.setZoom(ROOM_ZOOM);
+    camera.centerOn(GAME_WIDTH / 2, GAME_HEIGHT / 2);
+    camera.fadeIn(250, 27, 22, 38);
   }
 
-  /** Resalta un servicio (hover o foco en la lista accesible). */
+  /** Resalta una estación (hover o foco en la lista accesible). */
   setHighlighted(serviceId: string | null): void {
     this.highlightedId = serviceId;
-    this.refreshHotspots();
+    this.refreshStations();
   }
 
-  /** Marca el servicio cuya ficha está abierta. */
-  setSelected(serviceId: string | null): void {
+  /**
+   * Marca la estación cuya ficha está abierta y viaja hasta ella con la cámara.
+   * Con `null` vuelve a la vista general de la sala.
+   */
+  setSelected(serviceId: string | null, viewFraction: ViewFraction = { x: 0.5, y: 0.5 }): void {
     this.selectedId = serviceId;
-    this.refreshHotspots();
+    this.refreshStations();
+
+    const station = serviceId ? this.stations.get(serviceId) : undefined;
+    const camera = this.cameras.main;
+    if (station) {
+      const center = cameraCenterFor(station.focusPoint, viewFraction);
+      camera.pan(center.x, center.y, CAMERA_TRAVEL_MS, 'Sine.easeInOut', true);
+      camera.zoomTo(FOCUS_ZOOM, CAMERA_TRAVEL_MS, 'Sine.easeInOut', true);
+    } else {
+      camera.pan(GAME_WIDTH / 2, GAME_HEIGHT / 2, CAMERA_TRAVEL_MS, 'Sine.easeInOut', true);
+      camera.zoomTo(ROOM_ZOOM, CAMERA_TRAVEL_MS, 'Sine.easeInOut', true);
+    }
   }
 
-  private refreshHotspots(): void {
-    for (const [id, view] of this.views) {
-      const highlighted = id === this.highlightedId;
-      const selected = id === this.selectedId;
-      if (highlighted || selected) view.sprite.setTint(HOVER_TINT);
-      else view.sprite.clearTint();
-      view.label.setVisible(highlighted || selected);
-      view.marker.setVisible(selected);
+  private refreshStations(): void {
+    for (const [id, station] of this.stations) {
+      const active = id === this.highlightedId || id === this.selectedId;
+      for (const image of [station.desk, station.icon]) {
+        if (active) image.setTint(HOVER_TINT);
+        else image.clearTint();
+      }
+      // La etiqueta solo en hover: con la estación seleccionada, la ficha ya muestra el nombre.
+      station.label.setVisible(id === this.highlightedId && id !== this.selectedId);
+      station.marker.setVisible(id === this.selectedId);
     }
   }
 
   private drawFloor(): void {
-    for (let row = 0; row < GRID_SIZE; row++) {
-      for (let col = 0; col < GRID_SIZE; col++) {
+    for (let row = 0; row < GRID_ROWS; row++) {
+      for (let col = 0; col < GRID_COLS; col++) {
         const { x, y } = isoToScreen(col, row);
         const tile = this.add.image(x, y, 'floor-tile');
-        if ((col + row) % 2 === 1) tile.setTint(0xe6d2bb);
+        if ((col + row) % 2 === 1) tile.setTint(0xe8ecf2);
       }
     }
   }
 
   private drawWalls(): void {
-    for (let i = 0; i < GRID_SIZE; i++) {
-      // Pared del fondo izquierdo: sobre el borde superior-izquierdo de las baldosas col = 0.
-      const left = isoToScreen(0, i);
-      this.add.image(left.x - TILE_WIDTH / 2, left.y, 'wall-right').setOrigin(0, 1);
-      // Pared del fondo derecho: sobre el borde superior-derecho de las baldosas row = 0.
-      const right = isoToScreen(i, 0);
-      this.add.image(right.x + TILE_WIDTH / 2, right.y, 'wall-left').setOrigin(1, 1);
+    // Pared del fondo izquierdo: sobre el borde superior-izquierdo de las baldosas col = 0.
+    for (let row = 0; row < GRID_ROWS; row++) {
+      const { x, y } = isoToScreen(0, row);
+      this.add.image(x - TILE_WIDTH / 2, y, 'wall-right').setOrigin(0, 1);
+    }
+    // Pared del fondo derecho: sobre el borde superior-derecho de las baldosas row = 0.
+    for (let col = 0; col < GRID_COLS; col++) {
+      const { x, y } = isoToScreen(col, 0);
+      this.add.image(x + TILE_WIDTH / 2, y, 'wall-left').setOrigin(1, 1);
     }
   }
 
-  private addHotspot(hotspot: Hotspot, index: number, onSelect: (id: string) => void): void {
+  private addStation(hotspot: Hotspot, index: number, onSelect: (id: string) => void): void {
     const { x, y } = isoToScreen(hotspot.col, hotspot.row);
 
     const marker = this.add.graphics();
     marker.lineStyle(2, MARKER_COLOR, 1);
     marker.strokePoints(
       [
-        new Phaser.Math.Vector2(x, y - TILE_HEIGHT / 2),
-        new Phaser.Math.Vector2(x + TILE_WIDTH / 2, y),
-        new Phaser.Math.Vector2(x, y + TILE_HEIGHT / 2),
-        new Phaser.Math.Vector2(x - TILE_WIDTH / 2, y),
+        new Phaser.Math.Vector2(x, y - TILE_HEIGHT),
+        new Phaser.Math.Vector2(x + TILE_WIDTH, y),
+        new Phaser.Math.Vector2(x, y + TILE_HEIGHT),
+        new Phaser.Math.Vector2(x - TILE_WIDTH, y),
       ],
       true,
     );
     marker.setVisible(false);
     this.tweens.add({ targets: marker, alpha: 0.35, duration: 500, yoyo: true, repeat: -1 });
 
-    this.add.ellipse(x, y + 2, 20, 8, 0x000000, 0.25);
+    // Escritorio con monitor: su base se apoya en el vértice inferior de la baldosa.
+    const desk = this.add.image(x, y + TILE_HEIGHT / 2, 'workstation').setOrigin(0.5, 1);
 
-    const sprite = this.add
-      .image(x, y + 4, hotspot.sprite)
-      .setOrigin(0.5, 1)
-      .setScale(SPRITE_SCALE)
-      .setInteractive({ useHandCursor: true });
+    // Brillo de la pantalla
+    const glow = this.add.rectangle(x - 2, y - 14, 6, 9, 0x7fd1e8, 0.15);
+    glow.setBlendMode(Phaser.BlendModes.ADD);
     this.tweens.add({
-      targets: sprite,
-      y: sprite.y - 2,
+      targets: glow,
+      alpha: 0.45,
+      duration: 900 + index * 70,
+      ease: 'Stepped',
+      easeParams: [3],
+      yoyo: true,
+      repeat: -1,
+    });
+
+    // Ícono del servicio flotando sobre el monitor
+    const icon = this.add
+      .image(x + 2, y - 21, hotspot.sprite)
+      .setOrigin(0.5, 1)
+      .setScale(ICON_SCALE);
+    this.tweens.add({
+      targets: icon,
+      y: icon.y - 3,
       duration: 700,
       delay: index * 120,
       ease: 'Stepped',
-      easeParams: [2],
+      easeParams: [3],
       yoyo: true,
       repeat: -1,
     });
 
     const label = this.add
-      .text(x, y - 16 * SPRITE_SCALE - 4, hotspot.name, {
+      .text(x + 2, icon.y - 16 * ICON_SCALE - 3, hotspot.name, {
         fontFamily: '"Press Start 2P", monospace',
         fontSize: '8px',
         color: '#ffd166',
@@ -138,16 +193,26 @@ export class RoomScene extends Phaser.Scene {
         padding: { x: 4, y: 3 },
       })
       .setOrigin(0.5, 1)
-      .setResolution(2)
+      .setResolution(3)
       .setDepth(10)
       .setVisible(false);
 
-    sprite.on('pointerover', () => this.setHighlighted(hotspot.id));
-    sprite.on('pointerout', () => {
+    // Área de clic que cubre escritorio e ícono.
+    const hitArea = this.add
+      .zone(x, y - 20, TILE_WIDTH + 4, 60)
+      .setInteractive({ useHandCursor: true });
+    hitArea.on('pointerover', () => this.setHighlighted(hotspot.id));
+    hitArea.on('pointerout', () => {
       if (this.highlightedId === hotspot.id) this.setHighlighted(null);
     });
-    sprite.on('pointerup', () => onSelect(hotspot.id));
+    hitArea.on('pointerup', () => onSelect(hotspot.id));
 
-    this.views.set(hotspot.id, { sprite, marker, label });
+    this.stations.set(hotspot.id, {
+      focusPoint: { x, y: y - 16 },
+      desk,
+      icon,
+      marker,
+      label,
+    });
   }
 }

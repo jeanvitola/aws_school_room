@@ -211,11 +211,47 @@ const SERVICES = {
   ],
 };
 
-// --- Baldosa isométrica de piso (32×16) ---
+// --- Utilidades de dibujo procedural ---
+function createCanvas(width, height) {
+  return { width, height, pixels: Array.from({ length: width * height }, () => TRANSPARENT) };
+}
+
+function setPixel(canvas, x, y, color) {
+  if (x < 0 || y < 0 || x >= canvas.width || y >= canvas.height) return;
+  canvas.pixels[y * canvas.width + x] = color;
+}
+
+function insidePolygon(px, py, points) {
+  let inside = false;
+  for (let i = 0, j = points.length - 1; i < points.length; j = i++) {
+    const [xi, yi] = points[i];
+    const [xj, yj] = points[j];
+    if (yi > py !== yj > py && px < ((xj - xi) * (py - yi)) / (yj - yi) + xi) inside = !inside;
+  }
+  return inside;
+}
+
+function fillPolygon(canvas, points, color) {
+  for (let y = 0; y < canvas.height; y++) {
+    for (let x = 0; x < canvas.width; x++) {
+      if (insidePolygon(x + 0.5, y + 0.5, points)) setPixel(canvas, x, y, color);
+    }
+  }
+}
+
+/** Caja isométrica: rombo superior centrado en (cx, cy) con caras izquierda y derecha de altura h. */
+function drawIsoBox(canvas, { cx, cy, halfW, h, top, left, right }) {
+  const halfH = halfW / 2;
+  fillPolygon(canvas, [[cx - halfW, cy], [cx, cy + halfH], [cx, cy + halfH + h], [cx - halfW, cy + h]], left);
+  fillPolygon(canvas, [[cx, cy + halfH], [cx + halfW, cy], [cx + halfW, cy + h], [cx, cy + halfH + h]], right);
+  fillPolygon(canvas, [[cx, cy - halfH], [cx + halfW, cy], [cx, cy + halfH], [cx - halfW, cy]], top);
+}
+
+// --- Baldosa isométrica de piso de laboratorio (32×16) ---
 function isoFloorTile(width = 32, height = 16) {
-  const fill = hex('#c89b6d');
-  const light = hex('#d9b183');
-  const edge = hex('#8a6440');
+  const fill = hex('#aab4c3');
+  const light = hex('#b9c2cf');
+  const edge = hex('#7d889a');
   const pixels = [];
   const halfW = width / 2;
   const halfH = height / 2;
@@ -225,20 +261,21 @@ function isoFloorTile(width = 32, height = 16) {
       const dy = Math.abs(y + 0.5 - halfH) / halfH;
       const distance = dx + dy;
       if (distance > 1) pixels.push(TRANSPARENT);
-      else if (distance > 0.88) pixels.push(edge);
-      else pixels.push((x + y) % 8 < 4 ? fill : light);
+      else if (distance > 0.9) pixels.push(edge);
+      else pixels.push(y < halfH ? light : fill);
     }
   }
   return { width, height, pixels };
 }
 
-// --- Pared isométrica (16×40): encaja sobre un borde de baldosa (16 px de ancho, 8 px de caída) ---
+// --- Pared isométrica de laboratorio (16×40): encaja sobre un borde de baldosa ---
 // 'left'  = arista superior baja hacia la derecha (pared del fondo derecho).
 // 'right' = arista superior baja hacia la izquierda (pared del fondo izquierdo).
 function isoWallTile(side, width = 16, height = 40) {
-  const face = hex(side === 'left' ? '#7a4f35' : '#6a432c');
-  const plank = hex(side === 'left' ? '#8d5d3f' : '#7a4f35');
-  const edge = hex('#3b2618');
+  const face = hex(side === 'left' ? '#d9dee6' : '#c6ccd6');
+  const panel = hex(side === 'left' ? '#cdd3dc' : '#b8bfca');
+  const baseboard = hex('#5b6577');
+  const edge = hex('#4a5263');
   const slope = 0.5;
   const drop = width * slope;
   const pixels = [];
@@ -249,10 +286,43 @@ function isoWallTile(side, width = 16, height = 40) {
       const bottom = height - drop + offset;
       if (y < top || y > bottom) pixels.push(TRANSPARENT);
       else if (y - top < 1 || bottom - y < 1) pixels.push(edge);
-      else pixels.push(x % 8 === 0 ? edge : x % 8 < 4 ? face : plank);
+      else if (bottom - y < 5) pixels.push(baseboard);
+      else pixels.push(x % 16 === 0 ? edge : y - top < 14 ? face : panel);
     }
   }
   return { width, height, pixels };
+}
+
+// --- Estación de trabajo (32×32): escritorio + monitor + teclado ---
+function workstation() {
+  const canvas = createCanvas(32, 32);
+  // Escritorio
+  drawIsoBox(canvas, {
+    cx: 16, cy: 17, halfW: 14, h: 7,
+    top: hex('#e6e9ee'), left: hex('#8b95a7'), right: hex('#6f7a8d'),
+  });
+  // Teclado
+  drawIsoBox(canvas, {
+    cx: 12, cy: 20, halfW: 4, h: 1,
+    top: hex('#3a4150'), left: hex('#2a2f3a'), right: hex('#2a2f3a'),
+  });
+  // Monitor: la cara izquierda es la pantalla (mira hacia el frente)
+  drawIsoBox(canvas, {
+    cx: 18, cy: 4, halfW: 7, h: 11,
+    top: hex('#2a2f3a'), left: hex('#7fd1e8'), right: hex('#1f2430'),
+  });
+  // Marco de la pantalla y brillo
+  for (let i = 0; i < 7; i++) {
+    setPixel(canvas, 11 + i, 4 + Math.floor(i / 2), hex('#1f2430'));
+    setPixel(canvas, 11 + i, 15 + Math.floor(i / 2), hex('#1f2430'));
+  }
+  for (let y = 5; y < 15; y++) setPixel(canvas, 11, y, hex('#1f2430'));
+  setPixel(canvas, 13, 7, hex('#f4efe6'));
+  setPixel(canvas, 14, 8, hex('#f4efe6'));
+  // Base del monitor
+  setPixel(canvas, 18, 16, hex('#2a2f3a'));
+  setPixel(canvas, 18, 17, hex('#2a2f3a'));
+  return canvas;
 }
 
 mkdirSync(OUT_DIR, { recursive: true });
@@ -260,6 +330,7 @@ const sprites = {
   'floor-tile': isoFloorTile(),
   'wall-left': isoWallTile('left'),
   'wall-right': isoWallTile('right'),
+  workstation: workstation(),
   ...Object.fromEntries(
     Object.entries(SERVICES).map(([id, rows]) => [`service-${id}`, fromCharMap(rows)]),
   ),

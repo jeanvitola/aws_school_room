@@ -9,7 +9,13 @@ import { createNavigation, type NavigationState } from './domain/navigation';
 import type { ContentCatalog, Service } from './domain/types';
 import { createGame } from './scene/game';
 import { computeLayout, type ServicePlacement } from './scene/layouts/compute';
-import { ROOM_SCENE_KEY, RoomScene, type Hotspot, type RoomSceneData } from './scene/RoomScene';
+import {
+  ROOM_SCENE_KEY,
+  RoomScene,
+  type Hotspot,
+  type RoomSceneData,
+  type ViewFraction,
+} from './scene/RoomScene';
 import { renderLobby } from './ui/lobby';
 import { renderNavBar, type NavBar } from './ui/navBar';
 import { renderRoomServiceList, type RoomServiceList } from './ui/roomServiceList';
@@ -48,6 +54,23 @@ function toHotspots(services: Service[], layout: Record<string, ServicePlacement
     const placement = layout[service.id];
     return placement ? [{ id: service.id, name: service.name, ...placement }] : [];
   });
+}
+
+/** Dónde dejar la estación seleccionada para que no la tape la ficha. */
+function focusFractionBeside(card: HTMLElement | null): ViewFraction {
+  const canvas = document.querySelector('#game canvas');
+  if (!card || !canvas) return { x: 0.5, y: 0.5 };
+  const canvasRect = canvas.getBoundingClientRect();
+  const cardRect = card.getBoundingClientRect();
+  if (canvasRect.width === 0 || canvasRect.height === 0) return { x: 0.5, y: 0.5 };
+
+  const isBottomSheet = cardRect.left <= canvasRect.left + 1;
+  if (isBottomSheet) {
+    const visibleHeight = Math.max(cardRect.top - canvasRect.top, 0);
+    return { x: 0.5, y: Math.max(visibleHeight / 2 / canvasRect.height, 0.15) };
+  }
+  const visibleWidth = Math.max(cardRect.left - canvasRect.left, 0);
+  return { x: Math.max(visibleWidth / 2 / canvasRect.width, 0.2), y: 0.5 };
 }
 
 interface RoomView {
@@ -164,7 +187,9 @@ function start(): void {
     } else if (previousServiceId) {
       view.serviceList.focusService(previousServiceId);
     }
-    if (game.scene.isActive(ROOM_SCENE_KEY)) roomScene().setSelected(serviceId);
+    if (game.scene.isActive(ROOM_SCENE_KEY)) {
+      roomScene().setSelected(serviceId, focusFractionBeside(view.card));
+    }
   }
 
   async function render(state: NavigationState): Promise<void> {

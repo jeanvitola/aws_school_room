@@ -6,13 +6,16 @@ export interface ServicePlacement {
   sprite: SpriteKey;
 }
 
-/** Ubicación de cada servicio en la Sala de Máquinas (grilla 8×8), por id de servicio. */
+/**
+ * Sala de Máquinas como sala de informática (grilla 12×10): dos filas de estaciones con pasillos.
+ * Fila del fondo: cómputo y contenedores. Fila del frente: escalado, balanceo y serverless.
+ */
 export const computeLayout = {
-  ec2: { col: 1, row: 1, sprite: 'service-ec2' },
-  ecs: { col: 4, row: 1, sprite: 'service-ecs' },
-  eks: { col: 6, row: 2, sprite: 'service-eks' },
-  lambda: { col: 1, row: 4, sprite: 'service-lambda' },
-  autoscaling: { col: 3, row: 4, sprite: 'service-autoscaling' },
-  fargate: { col: 6, row: 5, sprite: 'service-fargate' },
-  elb: { col: 3, row: 6, sprite: 'service-elb' },
+  ec2: { col: 1, row: 3, sprite: 'service-ec2' },
+  ecs: { col: 4, row: 3, sprite: 'service-ecs' },
+  eks: { col: 7, row: 3, sprite: 'service-eks' },
+  fargate: { col: 10, row: 3, sprite: 'service-fargate' },
+  lambda: { col: 3, row: 7, sprite: 'service-lambda' },
+  autoscaling: { col: 6, row: 7, sprite: 'service-autoscaling' },
+  elb: { col: 9, row: 7, sprite: 'service-elb' },
 } as const satisfies Record<string, ServicePlacement>;
