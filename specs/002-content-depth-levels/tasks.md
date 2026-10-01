@@ -91,12 +91,12 @@ description: "Task list for Niveles de profundidad en las fichas"
 
 ### Tests ⚠️
 
-- [ ] T021 [P] [US3] E2E en `tests/e2e/patterns.spec.ts`: el patrón muestra nombre, "Problema", "Cuándo usarlo", "Cuándo no usarlo" y un flujo `<ol>` en orden; el propio servicio aparece marcado como actual y sin botón; un servicio externo (Amazon S3) es texto; un servicio de la sala (p. ej. Elastic Load Balancing en el patrón de EC2) abre su ficha con clic y teclado
+- [X] T021 [P] [US3] E2E en `tests/e2e/patterns.spec.ts`: el patrón muestra nombre, "Problema", "Cuándo usarlo", "Cuándo no usarlo" y un flujo `<ol>` en orden; el propio servicio aparece marcado como actual y sin botón; un servicio externo (Amazon S3) es texto; un servicio de la sala (p. ej. Elastic Load Balancing en el patrón de EC2) abre su ficha con clic y teclado
 
 ### Implementation
 
-- [ ] T022 [US3] Render de patrones en `src/ui/serviceCard.ts` (`renderPatterns`): encabezado por patrón, problema, cuándo sí/no, flujo como `<ol class="flow">` con chips vía `resolveTarget` — hace pasar T021
-- [ ] T023 [P] [US3] Estilos de los flujos en `src/styles/room.css`: chips pixel, flechas entre pasos con CSS, variante vertical en móvil, chip del servicio actual resaltado
+- [X] T022 [US3] Render de patrones en `src/ui/serviceCard.ts` (`renderPatterns`): encabezado por patrón, problema, cuándo sí/no, flujo como `<ol class="flow">` con chips vía `resolveTarget` — hace pasar T021
+- [X] T023 [P] [US3] Estilos de los flujos en `src/styles/room.css`: chips pixel, flechas entre pasos con CSS, variante vertical en móvil, chip del servicio actual resaltado
 
 **Checkpoint**: Las 3 user stories funcionan de forma independiente
 

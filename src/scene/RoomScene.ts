@@ -106,8 +106,9 @@ export class RoomScene extends Phaser.Scene {
         if (active) image.setTint(HOVER_TINT);
         else image.clearTint();
       }
-      // La etiqueta solo en hover: con la estación seleccionada, la ficha ya muestra el nombre.
-      station.label.setVisible(id === this.highlightedId && id !== this.selectedId);
+      // La etiqueta solo en hover y en la vista general: con una estación seleccionada la cámara
+      // está en zoom (la etiqueta se vería enorme) y la ficha ya muestra el nombre.
+      station.label.setVisible(id === this.highlightedId && this.selectedId === null);
       station.marker.setVisible(id === this.selectedId);
     }
   }

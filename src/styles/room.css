@@ -295,6 +295,79 @@ body[data-view='room'] #game {
   color: var(--color-text);
 }
 
+.pattern__details dt {
+  font-weight: 700;
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+}
+
+.pattern__details dd {
+  margin: 0 0 0.5rem;
+}
+
+/* Flujo del patrón: pasos en columna (chip + papel) unidos por flechas hacia abajo. */
+.flow {
+  display: flex;
+  flex-direction: column;
+  gap: 1.375rem;
+  margin: 0.875rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.flow__step {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(7.5rem, auto) 1fr;
+  align-items: center;
+  column-gap: 0.75rem;
+}
+
+.flow__step + .flow__step::before {
+  content: '↓';
+  position: absolute;
+  left: 0.75rem;
+  top: -1.3rem;
+  font-family: var(--font-pixel);
+  font-size: 0.75rem;
+  color: var(--color-accent);
+}
+
+.flow__chip {
+  justify-self: start;
+  padding: 0.3rem 0.5rem;
+  border: 2px solid var(--color-text-muted);
+  background: var(--color-bg);
+  color: var(--color-text);
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  line-height: 1.3;
+  text-align: left;
+}
+
+.flow__chip.service-link {
+  border-color: var(--color-focus);
+  color: var(--color-focus);
+  cursor: pointer;
+}
+
+.flow__chip.service-link:hover {
+  background: rgb(127 209 232 / 0.12);
+}
+
+.flow__chip--current {
+  border-color: var(--color-accent);
+  background: var(--color-accent);
+  color: var(--color-bg);
+}
+
+.flow__role {
+  margin: 0 !important;
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+}
+
 .text-fallback__toolbar {
   position: sticky;
   top: calc(var(--nav-height) + 0.5rem);

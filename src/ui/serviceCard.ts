@@ -1,5 +1,5 @@
 import type { ResolvedComparison, ResolvedTarget } from '../domain/catalog';
-import type { DepthLevel, Service } from '../domain/types';
+import type { ArchitecturePattern, DepthLevel, Service } from '../domain/types';
 import { renderDepthSelector } from './depthSelector';
 
 export type HeadingLevel = 2 | 3 | 4;
@@ -152,14 +152,63 @@ function useCaseList(service: Service): HTMLUListElement {
   return list;
 }
 
-function patternList(service: Service, level: HeadingLevel): HTMLElement {
+function definitionList(entries: [string, string][], className: string): HTMLDListElement {
+  const list = document.createElement('dl');
+  list.className = className;
+  for (const [term, definition] of entries) {
+    const termElement = document.createElement('dt');
+    termElement.textContent = term;
+    const definitionElement = document.createElement('dd');
+    definitionElement.textContent = definition;
+    list.append(termElement, definitionElement);
+  }
+  return list;
+}
+
+/** Flujo de un patrón como lista ordenada: el orden se comunica sin depender de las flechas. */
+function patternFlow(
+  service: Service,
+  pattern: ArchitecturePattern,
+  options: CardOptions,
+): HTMLOListElement {
+  const flow = document.createElement('ol');
+  flow.className = 'flow';
+  flow.setAttribute('aria-label', `Flujo: ${pattern.name}`);
+  for (const step of pattern.steps) {
+    const resolved = options.resolveTarget(step.target, service.id);
+    const item = document.createElement('li');
+    item.className = 'flow__step';
+    const chip = serviceReference(resolved, options);
+    chip.classList.add('flow__chip');
+    if (resolved.isCurrent) {
+      item.setAttribute('aria-current', 'true');
+      chip.classList.add('flow__chip--current');
+    }
+    item.append(chip, paragraph(step.role, 'flow__role'));
+    flow.append(item);
+  }
+  return flow;
+}
+
+function patternList(service: Service, level: HeadingLevel, options: CardOptions): HTMLElement {
   const list = document.createElement('div');
   list.className = 'pattern-list';
   const patternLevel = Math.min(level + 1, 4) as HeadingLevel;
   for (const pattern of service.deep.patterns) {
     const article = document.createElement('article');
     article.className = 'pattern';
-    article.append(heading(patternLevel, pattern.name), paragraph(pattern.problem));
+    article.append(
+      heading(patternLevel, pattern.name),
+      definitionList(
+        [
+          ['Problema', pattern.problem],
+          ['Cuándo usarlo', pattern.whenToUse],
+          ['Cuándo no usarlo', pattern.whenNotToUse],
+        ],
+        'pattern__details',
+      ),
+      patternFlow(service, pattern, options),
+    );
     list.append(article);
   }
   return list;
@@ -181,7 +230,7 @@ export function renderDeepSections(
     section('concepts', 'Conceptos clave y límites', bulletList(deep.keyConcepts)),
     section('comparison', 'Comparación detallada', comparisonList(service, options)),
     section('use-cases', 'Casos de uso', useCaseList(service)),
-    section('patterns', 'Patrones de arquitectura', patternList(service, level)),
+    section('patterns', 'Patrones de arquitectura', patternList(service, level, options)),
     traps,
     section('cost', 'Costos', paragraph(deep.costs)),
   ];
