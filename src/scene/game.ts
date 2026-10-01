@@ -1,21 +1,6 @@
 import Phaser from 'phaser';
-
-export const GAME_WIDTH = 480;
-export const GAME_HEIGHT = 270;
-
-/** Sprites en public/assets/sprites/<key>.png */
-export const SPRITE_KEYS = [
-  'floor-tile',
-  'wall-left',
-  'wall-right',
-  'service-ec2',
-  'service-lambda',
-  'service-ecs',
-  'service-eks',
-  'service-fargate',
-  'service-autoscaling',
-  'service-elb',
-] as const;
+import { GAME_HEIGHT, GAME_WIDTH } from './iso';
+import { SPRITE_KEYS } from './sprites';
 
 class PreloadScene extends Phaser.Scene {
   constructor(private readonly onReady: () => void) {
