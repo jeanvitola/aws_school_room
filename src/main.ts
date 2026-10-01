@@ -225,7 +225,9 @@ function start(): void {
       return;
     }
     const view = roomView?.roomId === state.roomId ? roomView : await enterRoom(state.roomId);
-    if (!view) return;
+    // Mientras se esperaba la carga de la sala, el usuario pudo navegar (p. ej. abrir una ficha):
+    // ese render más nuevo ya dibujó el estado actual y este no debe pisarlo con el estado viejo.
+    if (!view || navigation.getState() !== state) return;
     showCard(view, state.view === 'card' ? state.serviceId : null);
   }
 

@@ -1,0 +1,26 @@
+{
+  "paletteColors": 32,
+  "pieces": [
+    {
+      "sprite": "workstation",
+      "source": "public/assets/sprites/CAPA 3 · Mobiliario.png",
+      "crop": [52, 160, 456, 608],
+      "anchor": "bottom",
+      "enhance": { "saturation": 1.3, "contrast": 1.1 }
+    },
+    {
+      "sprite": "service-lambda",
+      "source": "public/assets/sprites/CAPA 4 · Íconos de servicios.png",
+      "crop": [240, 312, 376, 452],
+      "anchor": "center",
+      "enhance": { "saturation": 1.4, "contrast": 1.2 }
+    },
+    {
+      "sprite": "floor-tile",
+      "source": "public/assets/sprites/CAPA 2 · Estructura de la sala (baldosas y paredes).png",
+      "crop": [282, 292, 460, 390],
+      "anchor": "fill",
+      "mask": "diamond"
+    }
+  ]
+}

@@ -11,11 +11,11 @@
 
 ## Phase 2: Piloto (US1, US2)
 
-- [ ] T005 Crear `art/manifest.json` con las 3 piezas del piloto (workstation, service-lambda, floor-tile)
-- [ ] T006 Script `scripts/convert-art.py`: recorte, quitar magenta y halos, reducción, paleta común de ≤ 32 colores, exportación de sprites y `art/palette.gpl`; script `npm run art`
-- [ ] T007 Convertir las piezas del piloto y generar una lámina comparativa antes/después para el autor
-- [ ] T008 Actualizar `public/assets/CREDITS.md` (arte de Jean Vitola)
-- [ ] T009 Verificar en el navegador y con las suites completas (SC-003)
+- [X] T005 Crear `art/manifest.json` con las 3 piezas del piloto (workstation, service-lambda, floor-tile)
+- [X] T006 Script `scripts/convert-art.py`: recorte, quitar magenta y halos, reducción, paleta común de ≤ 32 colores, exportación de sprites y `art/palette.gpl`; script `npm run art`
+- [X] T007 Convertir las piezas del piloto y generar una lámina comparativa antes/después para el autor
+- [X] T008 Actualizar `public/assets/CREDITS.md` (arte de Jean Vitola)
+- [X] T009 Verificar en el navegador y con las suites completas (SC-003)
 
 **Checkpoint (autor)**: aprobar el piloto (SC-001) antes de convertir el resto
 

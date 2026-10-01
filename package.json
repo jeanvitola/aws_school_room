@@ -11,7 +11,9 @@
     "test:watch": "vitest",
     "test:e2e": "playwright test",
     "lint": "eslint .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "art": "python scripts/convert-art.py",
+    "art:placeholders": "node scripts/generate-placeholder-sprites.mjs"
   },
   "dependencies": {
     "phaser": "^3.90.0",

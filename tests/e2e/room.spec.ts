@@ -130,3 +130,18 @@ test.describe('US2 - Sala de Máquinas', () => {
   });
 });
 
+// Regresión: si el usuario abre una ficha mientras los sprites todavía cargan, el render de la
+// sala que esperaba la carga terminaba después con el estado viejo y cerraba la ficha.
+test('a card opened while sprites are still loading stays open', async ({ page }) => {
+  await page.route('**/assets/sprites/*.png', async (route) => {
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+    await route.continue();
+  });
+  await page.goto('/');
+  await page.getByRole('button', { name: /Sala de Máquinas/ }).click();
+  await serviceList(page).getByRole('button', { name: 'AWS Lambda' }).click();
+
+  await page.waitForTimeout(2500); // la carga de sprites termina con la ficha ya abierta
+  await expect(serviceCard(page).getByRole('heading', { level: 2 })).toHaveText('AWS Lambda');
+});
+
