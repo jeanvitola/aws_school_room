@@ -1,0 +1,70 @@
+{
+  "version": "0.1.0",
+  "lastReviewed": "2026-09-30",
+  "rooms": [
+    {
+      "id": "compute",
+      "name": "Sala de Máquinas",
+      "slug": "compute",
+      "description": "Servicios de cómputo, contenedores y escalado.",
+      "status": "available",
+      "order": 1
+    },
+    {
+      "id": "storage",
+      "name": "Bodega",
+      "slug": "storage",
+      "description": "Almacenamiento de objetos, bloques y archivos.",
+      "status": "upcoming",
+      "order": 2
+    },
+    {
+      "id": "databases",
+      "name": "Biblioteca",
+      "slug": "databases",
+      "description": "Bases de datos relacionales, NoSQL y caché.",
+      "status": "upcoming",
+      "order": 3
+    },
+    {
+      "id": "networking",
+      "name": "Sala de Correo",
+      "slug": "networking",
+      "description": "Redes, DNS y distribución de contenido.",
+      "status": "upcoming",
+      "order": 4
+    },
+    {
+      "id": "security",
+      "name": "Bóveda",
+      "slug": "security",
+      "description": "Identidad, cifrado y protección.",
+      "status": "upcoming",
+      "order": 5
+    },
+    {
+      "id": "integration",
+      "name": "Oficina de Mensajería",
+      "slug": "integration",
+      "description": "Colas, notificaciones, eventos y flujos.",
+      "status": "upcoming",
+      "order": 6
+    },
+    {
+      "id": "monitoring",
+      "name": "Sala de Control",
+      "slug": "monitoring",
+      "description": "Monitoreo, auditoría y cumplimiento.",
+      "status": "upcoming",
+      "order": 7
+    },
+    {
+      "id": "costs",
+      "name": "Tesorería",
+      "slug": "costs",
+      "description": "Modelos de precios y gestión de costos.",
+      "status": "upcoming",
+      "order": 8
+    }
+  ]
+}

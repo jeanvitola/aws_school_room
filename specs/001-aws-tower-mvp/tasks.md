@@ -26,15 +26,15 @@ description: "Task list for Torre AWS MVP"
 
 **Purpose**: Inicializar el proyecto estático Vite + TypeScript con las herramientas de test
 
-- [ ] T001 Inicializar el proyecto Vite + TypeScript (plantilla `vanilla-ts`) en la raíz del repo, con `package.json` y scripts `dev`, `build`, `preview`, `test` (Vitest), `test:e2e` (Playwright) y `lint`
-- [ ] T002 Instalar dependencias: `phaser`, `zod`; dev: `vitest`, `@playwright/test`, `@axe-core/playwright`, `eslint`, `prettier`, `typescript-eslint` (actualiza `package.json`)
-- [ ] T003 [P] Configurar TypeScript en modo `strict` (`"strict": true`, `"noUncheckedIndexedAccess": true`, `"resolveJsonModule": true`) en `tsconfig.json`
-- [ ] T004 [P] Configurar Vitest para `tests/unit/**` y `tests/content/**` en `vitest.config.ts`
-- [ ] T005 [P] Configurar Playwright para `tests/e2e/**` con `webServer` apuntando a `npm run preview` y proyectos `desktop` (1280×720) y `mobile` (375×812, touch) en `playwright.config.ts`
-- [ ] T006 [P] Configurar ESLint + Prettier en `eslint.config.js` y `.prettierrc`
-- [ ] T007 Crear la estructura de carpetas del plan: `src/domain/`, `src/content/`, `src/scene/layouts/`, `src/ui/`, `src/styles/`, `public/assets/sprites/`, `tests/unit/`, `tests/content/`, `tests/e2e/`
-- [ ] T008 Crear `index.html` con un contenedor `#game` (canvas de Phaser) y un contenedor `#ui` (overlay DOM), `lang="es"`, y `src/styles/main.css` base con fuente pixel (p. ej. "Press Start 2P" vía Google Fonts), `image-rendering: pixelated` y paleta de colores en variables CSS
-- [ ] T009 [P] Agregar sprites pixel art placeholder (tileset isométrico de piso/paredes y 7 objetos de servicio) en `public/assets/sprites/`, usando assets con licencia libre (p. ej. CC0) y registrando autor/licencia en `public/assets/CREDITS.md`
+- [X] T001 Inicializar el proyecto Vite + TypeScript (plantilla `vanilla-ts`) en la raíz del repo, con `package.json` y scripts `dev`, `build`, `preview`, `test` (Vitest), `test:e2e` (Playwright) y `lint`
+- [X] T002 Instalar dependencias: `phaser`, `zod`; dev: `vitest`, `@playwright/test`, `@axe-core/playwright`, `eslint`, `prettier`, `typescript-eslint` (actualiza `package.json`)
+- [X] T003 [P] Configurar TypeScript en modo `strict` (`"strict": true`, `"noUncheckedIndexedAccess": true`, `"resolveJsonModule": true`) en `tsconfig.json`
+- [X] T004 [P] Configurar Vitest para `tests/unit/**` y `tests/content/**` en `vitest.config.ts`
+- [X] T005 [P] Configurar Playwright para `tests/e2e/**` con `webServer` apuntando a `npm run preview` y proyectos `desktop` (1280×720) y `mobile` (375×812, touch) en `playwright.config.ts`
+- [X] T006 [P] Configurar ESLint + Prettier en `eslint.config.js` y `.prettierrc`
+- [X] T007 Crear la estructura de carpetas del plan: `src/domain/`, `src/content/`, `src/scene/layouts/`, `src/ui/`, `src/styles/`, `public/assets/sprites/`, `tests/unit/`, `tests/content/`, `tests/e2e/`
+- [X] T008 Crear `index.html` con un contenedor `#game` (canvas de Phaser) y un contenedor `#ui` (overlay DOM), `lang="es"`, y `src/styles/main.css` base con fuente pixel (p. ej. "Press Start 2P" vía Google Fonts), `image-rendering: pixelated` y paleta de colores en variables CSS
+- [X] T009 [P] Agregar sprites pixel art placeholder (tileset isométrico de piso/paredes y 7 objetos de servicio) en `public/assets/sprites/`, usando assets con licencia libre (p. ej. CC0) y registrando autor/licencia en `public/assets/CREDITS.md` — *Implementado con sprites propios generados por `scripts/generate-placeholder-sprites.mjs` (ver research.md, Decision 8)*
 
 ---
 
@@ -46,19 +46,19 @@ description: "Task list for Torre AWS MVP"
 
 ### Tests (escribir primero, deben fallar)
 
-- [ ] T010 [P] Test de esquema del contenido en `tests/content/schema.test.ts`: acepta un catálogo válido y rechaza: room sin `id`/`name`/`slug`/`description`/`status`/`order`; `status` distinto de `available` | `upcoming`; IDs de room o service duplicados; service con `roomId` inexistente; service que referencia una room `upcoming`; listas vacías en `useCases`, `examConcepts`, `compareWith`, `examTraps`; `costNote` vacío; `compareWith` sin `target` o `difference` no vacíos; `summary` > 50 palabras; ficha completa (todos los campos de texto) > 350 palabras; falta `version` o `lastReviewed` (fecha ISO)
-- [ ] T011 [P] Test del catálogo en `tests/unit/catalog.test.ts`: `listRooms()` devuelve salas ordenadas por `order`; `getRoom(id)` devuelve la sala o `undefined`; `isRoomAvailable(id)`; `getServicesByRoom(roomId)` deriva los servicios desde `Service.roomId`; `getService(id)`
-- [ ] T012 [P] Test de navegación en `tests/unit/navigation.test.ts`: estado inicial `lobby`; `enterRoom(id)` pasa a `room` solo si la sala está `available` y devuelve un resultado de rechazo para `upcoming`/inexistente; `selectService(id)` pasa a `card` solo para servicios de la sala actual; seleccionar otro servicio estando en `card` reemplaza el servicio activo; `closeCard()` vuelve a `room`; `goToLobby()` funciona desde `room` y `card`; los listeners suscritos reciben cada cambio de estado
+- [X] T010 [P] Test de esquema del contenido en `tests/content/schema.test.ts`: acepta un catálogo válido y rechaza: room sin `id`/`name`/`slug`/`description`/`status`/`order`; `status` distinto de `available` | `upcoming`; IDs de room o service duplicados; service con `roomId` inexistente; service que referencia una room `upcoming`; listas vacías en `useCases`, `examConcepts`, `compareWith`, `examTraps`; `costNote` vacío; `compareWith` sin `target` o `difference` no vacíos; `summary` > 50 palabras; ficha completa (todos los campos de texto) > 350 palabras; falta `version` o `lastReviewed` (fecha ISO)
+- [X] T011 [P] Test del catálogo en `tests/unit/catalog.test.ts`: `listRooms()` devuelve salas ordenadas por `order`; `getRoom(id)` devuelve la sala o `undefined`; `isRoomAvailable(id)`; `getServicesByRoom(roomId)` deriva los servicios desde `Service.roomId`; `getService(id)`
+- [X] T012 [P] Test de navegación en `tests/unit/navigation.test.ts`: estado inicial `lobby`; `enterRoom(id)` pasa a `room` solo si la sala está `available` y devuelve un resultado de rechazo para `upcoming`/inexistente; `selectService(id)` pasa a `card` solo para servicios de la sala actual; seleccionar otro servicio estando en `card` reemplaza el servicio activo; `closeCard()` vuelve a `room`; `goToLobby()` funciona desde `room` y `card`; los listeners suscritos reciben cada cambio de estado
 
 ### Implementation
 
-- [ ] T013 Implementar el esquema Zod y `loadCatalog(rooms, services)` que valida y devuelve un `ContentCatalog` tipado (lanza error descriptivo si es inválido) en `src/content/schema.ts` — hace pasar T010
-- [ ] T014 [P] Crear `src/content/rooms.json` según el contrato: `compute` ("Sala de Máquinas", `available`, order 1) y salas `upcoming`: `storage` ("Bodega"), `databases` ("Biblioteca"), `networking` ("Sala de Correo"), `security` ("Bóveda"), `integration` ("Oficina de Mensajería"), `monitoring` ("Sala de Control"), `costs` ("Tesorería"); con `version` y `lastReviewed`
-- [ ] T015 Implementar consultas del catálogo en `src/domain/catalog.ts` (sin imports de Phaser ni DOM) — hace pasar T011
-- [ ] T016 Implementar la máquina de estados de navegación (`lobby` → `room` → `card`) con suscripción a cambios en `src/domain/navigation.ts` (sin imports de Phaser ni DOM) — hace pasar T012
-- [ ] T017 Configurar Phaser (`pixelArt: true`, `Scale.FIT`, `autoCenter`, parent `#game`) y precarga de sprites en `src/scene/game.ts`
-- [ ] T018 Implementar el arranque en `src/main.ts`: carga `rooms.json` y `services.json` con `loadCatalog`, crea la navegación, inicia Phaser y monta el overlay `#ui`; muestra un mensaje de error legible si el contenido es inválido
-- [ ] T019 Crear `src/content/services.json` inicial con `{ "services": [] }` para que la app arranque antes de US2
+- [X] T013 Implementar el esquema Zod y `loadCatalog(rooms, services)` que valida y devuelve un `ContentCatalog` tipado (lanza error descriptivo si es inválido) en `src/content/schema.ts` — hace pasar T010
+- [X] T014 [P] Crear `src/content/rooms.json` según el contrato: `compute` ("Sala de Máquinas", `available`, order 1) y salas `upcoming`: `storage` ("Bodega"), `databases` ("Biblioteca"), `networking` ("Sala de Correo"), `security` ("Bóveda"), `integration` ("Oficina de Mensajería"), `monitoring` ("Sala de Control"), `costs` ("Tesorería"); con `version` y `lastReviewed`
+- [X] T015 Implementar consultas del catálogo en `src/domain/catalog.ts` (sin imports de Phaser ni DOM) — hace pasar T011
+- [X] T016 Implementar la máquina de estados de navegación (`lobby` → `room` → `card`) con suscripción a cambios en `src/domain/navigation.ts` (sin imports de Phaser ni DOM) — hace pasar T012
+- [X] T017 Configurar Phaser (`pixelArt: true`, `Scale.FIT`, `autoCenter`, parent `#game`) y precarga de sprites en `src/scene/game.ts`
+- [X] T018 Implementar el arranque en `src/main.ts`: carga `rooms.json` y `services.json` con `loadCatalog`, crea la navegación, inicia Phaser y monta el overlay `#ui`; muestra un mensaje de error legible si el contenido es inválido
+- [X] T019 Crear `src/content/services.json` inicial con `{ "services": [] }` para que la app arranque antes de US2
 
 **Checkpoint**: `npm run test` pasa; `npm run dev` arranca sin errores con el contenido validado
 
