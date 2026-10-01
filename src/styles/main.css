@@ -57,8 +57,10 @@ h3 {
   inset: 0;
 }
 
+/* visibility (no display: none) para que Phaser conserve el tamaño del contenedor al escalar. */
 #game[hidden] {
-  display: none;
+  display: block;
+  visibility: hidden;
 }
 
 #ui {

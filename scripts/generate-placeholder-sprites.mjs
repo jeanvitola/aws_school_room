@@ -232,21 +232,23 @@ function isoFloorTile(width = 32, height = 16) {
   return { width, height, pixels };
 }
 
-// --- Pared isométrica (32×48): lado izquierdo o derecho ---
-function isoWallTile(side, width = 32, height = 48) {
+// --- Pared isométrica (16×40): encaja sobre un borde de baldosa (16 px de ancho, 8 px de caída) ---
+// 'left'  = arista superior baja hacia la derecha (pared del fondo derecho).
+// 'right' = arista superior baja hacia la izquierda (pared del fondo izquierdo).
+function isoWallTile(side, width = 16, height = 40) {
   const face = hex(side === 'left' ? '#7a4f35' : '#6a432c');
   const plank = hex(side === 'left' ? '#8d5d3f' : '#7a4f35');
   const edge = hex('#3b2618');
-  const pixels = [];
   const slope = 0.5;
+  const drop = width * slope;
+  const pixels = [];
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
-      // Paralelogramo: la arista superior baja (izquierda) o sube (derecha) con pendiente 1:2.
       const offset = side === 'left' ? x * slope : (width - 1 - x) * slope;
       const top = offset;
-      const bottom = height - 16 + offset;
+      const bottom = height - drop + offset;
       if (y < top || y > bottom) pixels.push(TRANSPARENT);
-      else if (y - top < 1 || bottom - y < 1 || x === 0 || x === width - 1) pixels.push(edge);
+      else if (y - top < 1 || bottom - y < 1) pixels.push(edge);
       else pixels.push(x % 8 === 0 ? edge : x % 8 < 4 ? face : plank);
     }
   }

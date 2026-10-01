@@ -72,15 +72,15 @@ description: "Task list for Torre AWS MVP"
 
 ### Tests for User Story 1 ⚠️
 
-- [ ] T020 [P] [US1] Test E2E en `tests/e2e/lobby.spec.ts`: el lobby lista todas las salas de `rooms.json` en orden; las `upcoming` muestran la etiqueta "Próximamente" y tienen `aria-disabled="true"`; activarlas muestra un aviso visible y la URL/vista sigue en el lobby; activar "Sala de Máquinas" con clic y con teclado (Tab + Enter) muestra la vista de la sala
-- [ ] T021 [P] [US1] Test E2E en el proyecto `mobile` (mismo archivo `tests/e2e/lobby.spec.ts`): el lobby es usable sin scroll horizontal a 375px y la sala se abre con tap
+- [X] T020 [P] [US1] Test E2E en `tests/e2e/lobby.spec.ts`: el lobby lista todas las salas de `rooms.json` en orden; las `upcoming` muestran la etiqueta "Próximamente" y tienen `aria-disabled="true"`; activarlas muestra un aviso visible y la URL/vista sigue en el lobby; activar "Sala de Máquinas" con clic y con teclado (Tab + Enter) muestra la vista de la sala
+- [X] T021 [P] [US1] Test E2E en el proyecto `mobile` (mismo archivo `tests/e2e/lobby.spec.ts`): el lobby es usable sin scroll horizontal a 375px y la sala se abre con tap
 
 ### Implementation for User Story 1
 
-- [ ] T022 [US1] Implementar `renderLobby(catalog, navigation)` en `src/ui/lobby.ts`: una "puerta" por sala como `<button>`; las `available` llaman a `navigation.enterRoom`; las `upcoming` usan `aria-disabled="true"`, etiqueta "Próximamente" y muestran un aviso (región `aria-live="polite"`) sin navegar
-- [ ] T023 [P] [US1] Estilos pixel art del lobby en `src/styles/lobby.css`: grilla responsive (desktop-first), puertas con animación de hover/focus (FR-010), estado atenuado para "Próximamente", foco visible
-- [ ] T024 [US1] Implementar `RoomScene` mínima en `src/scene/RoomScene.ts`: dibuja el piso y las paredes isométricas de la sala a partir del tileset; se inicia/detiene según el estado `room` de la navegación
-- [ ] T025 [US1] Conectar en `src/main.ts` el cambio de estado: `lobby` muestra `#ui` con el lobby y oculta la escena; `room` oculta el lobby e inicia `RoomScene` — hace pasar T020 y T021
+- [X] T022 [US1] Implementar `renderLobby(catalog, navigation)` en `src/ui/lobby.ts`: una "puerta" por sala como `<button>`; las `available` llaman a `navigation.enterRoom`; las `upcoming` usan `aria-disabled="true"`, etiqueta "Próximamente" y muestran un aviso (región `aria-live="polite"`) sin navegar
+- [X] T023 [P] [US1] Estilos pixel art del lobby en `src/styles/lobby.css`: grilla responsive (desktop-first), puertas con animación de hover/focus (FR-010), estado atenuado para "Próximamente", foco visible
+- [X] T024 [US1] Implementar `RoomScene` mínima en `src/scene/RoomScene.ts`: dibuja el piso y las paredes isométricas de la sala a partir del tileset; se inicia/detiene según el estado `room` de la navegación
+- [X] T025 [US1] Conectar en `src/main.ts` el cambio de estado: `lobby` muestra `#ui` con el lobby y oculta la escena; `room` oculta el lobby e inicia `RoomScene` — hace pasar T020 y T021
 
 **Checkpoint**: US1 funcional y probada de forma independiente (lobby → entrar a la sala)
 

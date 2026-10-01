@@ -1,10 +1,16 @@
 import './styles/main.css';
+import './styles/lobby.css';
+import './styles/room.css';
 import roomsFile from './content/rooms.json';
 import servicesFile from './content/services.json';
 import { ContentValidationError, loadCatalog } from './content/schema';
-import { createNavigation } from './domain/navigation';
+import { getRoom } from './domain/catalog';
+import { createNavigation, type NavigationState } from './domain/navigation';
 import type { ContentCatalog } from './domain/types';
 import { createGame } from './scene/game';
+import { ROOM_SCENE_KEY, RoomScene, type RoomSceneData } from './scene/RoomScene';
+import { renderLobby } from './ui/lobby';
+import { renderNavBar } from './ui/navBar';
 
 function getElement(id: string): HTMLElement {
   const element = document.getElementById(id);
@@ -13,9 +19,7 @@ function getElement(id: string): HTMLElement {
 }
 
 function renderContentError(ui: HTMLElement, error: unknown): void {
-  const details =
-    error instanceof ContentValidationError ? error.issues : [String(error)];
-  ui.innerHTML = '';
+  const details = error instanceof ContentValidationError ? error.issues : [String(error)];
   const box = document.createElement('section');
   box.className = 'app-error';
   box.setAttribute('role', 'alert');
@@ -28,7 +32,7 @@ function renderContentError(ui: HTMLElement, error: unknown): void {
     list.append(item);
   }
   box.append(title, list);
-  ui.append(box);
+  ui.replaceChildren(box);
 }
 
 function start(): void {
@@ -44,14 +48,38 @@ function start(): void {
   }
 
   const navigation = createNavigation(catalog);
-  createGame(gameContainer);
-  gameContainer.hidden = true;
+  const { game, ready } = createGame(gameContainer, [RoomScene]);
+  const lobby = renderLobby(catalog, navigation);
+  let currentRoomId: string | null = null;
 
-  // Las vistas (lobby, sala, ficha) se conectan a `navigation` en las fases de cada user story.
-  const heading = document.createElement('h1');
-  heading.textContent = 'Torre AWS';
-  ui.append(heading);
-  void navigation;
+  async function showRoom(roomId: string): Promise<void> {
+    if (currentRoomId === roomId) return;
+    currentRoomId = roomId;
+    const room = getRoom(catalog, roomId);
+    if (!room) return;
+
+    ui.replaceChildren(renderNavBar(room));
+    gameContainer.hidden = false;
+    await ready;
+    game.scale.refresh();
+    const data: RoomSceneData = { roomId };
+    game.scene.start(ROOM_SCENE_KEY, data);
+  }
+
+  function showLobby(): void {
+    currentRoomId = null;
+    game.scene.stop(ROOM_SCENE_KEY);
+    gameContainer.hidden = true;
+    ui.replaceChildren(lobby);
+  }
+
+  function render(state: NavigationState): void {
+    if (state.view === 'lobby') showLobby();
+    else void showRoom(state.roomId);
+  }
+
+  navigation.subscribe(render);
+  render(navigation.getState());
 }
 
 start();

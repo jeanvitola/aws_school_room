@@ -18,7 +18,7 @@ export const SPRITE_KEYS = [
 ] as const;
 
 class PreloadScene extends Phaser.Scene {
-  constructor() {
+  constructor(private readonly onReady: () => void) {
     super('preload');
   }
 
@@ -27,11 +27,26 @@ class PreloadScene extends Phaser.Scene {
       this.load.image(key, `assets/sprites/${key}.png`);
     }
   }
+
+  create(): void {
+    this.onReady();
+  }
+}
+
+export interface GameHandle {
+  game: Phaser.Game;
+  /** Se resuelve cuando todos los sprites están cargados. */
+  ready: Promise<void>;
 }
 
 /** Crea el juego con resolución interna baja escalada a la ventana (pixel art nítido). */
-export function createGame(parent: HTMLElement, scenes: Phaser.Types.Scenes.SceneType[] = []): Phaser.Game {
-  return new Phaser.Game({
+export function createGame(
+  parent: HTMLElement,
+  scenes: Phaser.Types.Scenes.SceneType[] = [],
+): GameHandle {
+  let resolveReady!: () => void;
+  const ready = new Promise<void>((resolve) => (resolveReady = resolve));
+  const game = new Phaser.Game({
     type: Phaser.AUTO,
     parent,
     width: GAME_WIDTH,
@@ -42,6 +57,7 @@ export function createGame(parent: HTMLElement, scenes: Phaser.Types.Scenes.Scen
       mode: Phaser.Scale.FIT,
       autoCenter: Phaser.Scale.CENTER_BOTH,
     },
-    scene: [PreloadScene, ...scenes],
+    scene: [new PreloadScene(() => resolveReady()), ...scenes],
   });
+  return { game, ready };
 }
