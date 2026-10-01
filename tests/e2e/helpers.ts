@@ -1,15 +1,30 @@
 import { expect, type Locator, type Page } from '@playwright/test';
-import { GAME_WIDTH, isoToScreen, worldToView } from '../../src/scene/iso';
+import { CAMERA_TRAVEL_MS, GAME_WIDTH, isoToScreen, worldToView } from '../../src/scene/iso';
 import { computeLayout } from '../../src/scene/layouts/compute';
 
-export const CARD_SECTIONS = [
+export const NORMAL_SECTIONS = [
   'Qué es',
+  'Palabras clave',
+  'Lo clave para el examen',
+  'Comparación rápida',
+  'Costo en una frase',
+];
+
+export const DEEP_SECTIONS = [
+  'Definición y funcionamiento',
+  'Conceptos clave y límites',
+  'Comparación detallada',
   'Casos de uso',
-  'Conceptos clave del examen',
-  'Comparación',
+  'Patrones de arquitectura',
   'Trampas del examen',
   'Costos',
 ];
+
+export function depthButton(page: Page, level: 'Normal' | 'Profundo'): Locator {
+  return serviceCard(page)
+    .getByRole('group', { name: 'Nivel de profundidad' })
+    .getByRole('button', { name: level });
+}
 
 export async function enterComputeRoom(page: Page): Promise<void> {
   await page.goto('/');
@@ -23,6 +38,11 @@ export function serviceList(page: Page): Locator {
 
 export function serviceCard(page: Page): Locator {
   return page.getByRole('dialog');
+}
+
+/** Espera a que la cámara termine de viajar (a una estación o de vuelta a la vista general). */
+export async function waitForCameraTravel(page: Page): Promise<void> {
+  await page.waitForTimeout(CAMERA_TRAVEL_MS + 150);
 }
 
 /** Hace clic sobre el sprite de un servicio en el canvas, a partir del layout y la escala del juego. */

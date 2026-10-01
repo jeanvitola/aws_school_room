@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import {
+  CAMERA_TRAVEL_MS,
   FOCUS_ZOOM,
   GAME_HEIGHT,
   GAME_WIDTH,
@@ -18,7 +19,6 @@ export const ROOM_SCENE_KEY = 'room';
 const ICON_SCALE = 1.5;
 const HOVER_TINT = 0xffe9a8;
 const MARKER_COLOR = 0xff9900;
-const CAMERA_TRAVEL_MS = 450;
 
 export interface Hotspot {
   id: string;

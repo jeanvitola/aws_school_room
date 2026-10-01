@@ -2,11 +2,12 @@ import { expect, test } from '@playwright/test';
 import roomsFile from '../../src/content/rooms.json' with { type: 'json' };
 import servicesFile from '../../src/content/services.json' with { type: 'json' };
 import {
-  CARD_SECTIONS,
+  NORMAL_SECTIONS,
   clickHotspot,
   enterComputeRoom,
   serviceCard,
   serviceList,
+  waitForCameraTravel,
 } from './helpers';
 
 const computeServices = servicesFile.services.filter((service) => service.roomId === 'compute');
@@ -28,7 +29,7 @@ test.describe('US2 - Sala de Máquinas', () => {
     const card = serviceCard(page);
     await expect(card).toBeVisible();
     await expect(card.getByRole('heading', { level: 2 })).toHaveText('Amazon EC2');
-    await expect(card.getByRole('heading', { level: 3 })).toHaveText(CARD_SECTIONS);
+    await expect(card.getByRole('heading', { level: 3 })).toHaveText(NORMAL_SECTIONS);
   });
 
   test('opens a service card by clicking its object in the room', async ({ page }) => {
@@ -93,8 +94,18 @@ test.describe('US2 - Sala de Máquinas', () => {
     );
     for (const service of computeServices) {
       await expect(textView.getByRole('heading', { name: service.name, exact: true })).toBeVisible();
+      await expect(textView.getByText(service.normal.whatIs)).toBeVisible();
+    }
+
+    // Spec 002: el modo texto tiene el mismo selector de nivel.
+    await textView
+      .getByRole('group', { name: 'Nivel de profundidad' })
+      .getByRole('button', { name: 'Profundo' })
+      .click();
+    for (const service of computeServices) {
       await expect(textView.getByText(service.deep.definition)).toBeVisible();
     }
+    await expect(textView.getByText(computeServices[0]!.normal.whatIs)).toHaveCount(0);
 
     await toggle.click();
     await expect(textView).toBeHidden();
@@ -107,7 +118,7 @@ test.describe('US2 - Sala de Máquinas', () => {
     await serviceList(page).getByRole('button', { name: 'Amazon EC2', exact: true }).click();
     const card = serviceCard(page);
     await expect(card).toBeVisible();
-    await page.waitForTimeout(600); // la cámara termina de viajar
+    await waitForCameraTravel(page);
     const box = await card.boundingBox();
     if (!box) throw new Error('La ficha no tiene tamaño');
 

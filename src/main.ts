@@ -4,9 +4,15 @@ import './styles/room.css';
 import roomsFile from './content/rooms.json';
 import servicesFile from './content/services.json';
 import { ContentValidationError, loadCatalog } from './content/schema';
-import { getRoom, getService, getServicesByRoom, resolveComparisons } from './domain/catalog';
+import {
+  getRoom,
+  getService,
+  getServicesByRoom,
+  resolveComparisons,
+  resolveTarget,
+} from './domain/catalog';
 import { createNavigation, type NavigationState } from './domain/navigation';
-import type { ContentCatalog, Service } from './domain/types';
+import { DEFAULT_DEPTH_LEVEL, type ContentCatalog, type DepthLevel, type Service } from './domain/types';
 import { createGame } from './scene/game';
 import { computeLayout, type ServicePlacement } from './scene/layouts/compute';
 import {
@@ -97,7 +103,10 @@ function start(): void {
   const { game, ready } = createGame(gameContainer, [RoomScene]);
   const lobby = renderLobby(catalog, navigation);
   const resolveServiceComparisons = (serviceId: string) => resolveComparisons(catalog, serviceId);
-  let textFallback: HTMLElement | null = null;
+  const resolveServiceTarget = (target: string, fromServiceId: string) =>
+    resolveTarget(catalog, target, fromServiceId);
+  // Nivel de lectura de las fichas: se mantiene durante la visita y vuelve a Normal al recargar.
+  let depthLevel: DepthLevel = DEFAULT_DEPTH_LEVEL;
   let roomView: RoomView | null = null;
   let textMode = false;
 
@@ -118,9 +127,12 @@ function start(): void {
 
   function renderRoomContent(view: RoomView): void {
     if (textMode) {
-      textFallback ??= renderTextFallback(catalog, {
-        resolveComparisons: resolveServiceComparisons,
-      });
+      const textFallback = renderTextFallback(
+        catalog,
+        { resolveComparisons: resolveServiceComparisons, resolveTarget: resolveServiceTarget },
+        depthLevel,
+        (depth) => (depthLevel = depth),
+      );
       setGameVisible(false);
       ui.replaceChildren(view.navBar.element, textFallback);
     } else {
@@ -179,6 +191,9 @@ function start(): void {
       if (!service) return;
       view.card = renderServiceCard(service, {
         resolveComparisons: resolveServiceComparisons,
+        resolveTarget: resolveServiceTarget,
+        depth: depthLevel,
+        onDepthChange: (depth) => (depthLevel = depth),
         onSelectService: (id) => navigation.selectService(id),
         onClose: () => navigation.closeCard(),
       });

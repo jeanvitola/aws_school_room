@@ -29,6 +29,9 @@ export const ROOM_ZOOM = Math.min(
 /** Zoom al viajar a una estación. */
 export const FOCUS_ZOOM = 2.4;
 
+/** Duración del viaje de la cámara entre la vista general y una estación. */
+export const CAMERA_TRAVEL_MS = 450;
+
 /** Convierte una celda de la grilla isométrica al centro de la baldosa en coordenadas del mundo. */
 export function isoToScreen(col: number, row: number) {
   return {

@@ -49,15 +49,15 @@ description: "Task list for Niveles de profundidad en las fichas"
 
 ### Tests ⚠️
 
-- [ ] T011 [P] [US1] E2E en `tests/e2e/depth.spec.ts`: la ficha abre con "Normal" en `aria-pressed="true"`; muestra las secciones "Qué es", "Palabras clave", "Lo clave para el examen", "Comparación rápida" y "Costo en una frase"; la analogía y los términos del glosario de Lambda son visibles; la comparación rápida de Lambda abre la ficha de EC2
+- [X] T011 [P] [US1] E2E en `tests/e2e/depth.spec.ts`: la ficha abre con "Normal" en `aria-pressed="true"`; muestra las secciones "Qué es", "Palabras clave", "Lo clave para el examen", "Comparación rápida" y "Costo en una frase"; la analogía y los términos del glosario de Lambda son visibles; la comparación rápida de Lambda abre la ficha de EC2
 
 ### Implementation
 
-- [ ] T012 [P] [US1] Selector `renderDepthSelector(level, onChange)` en `src/ui/depthSelector.ts`: `role="group"` con nombre "Nivel de profundidad", dos `<button>` con `aria-pressed`
-- [ ] T013 [US1] Render del nivel Normal en `src/ui/serviceCard.ts` (`renderNormalSections`): analogía destacada, glosario como `<dl>`, comparación rápida "¿X o Y?" con enlace vía `resolveTarget`
-- [ ] T014 [US1] Estado del nivel en `src/main.ts`: `DEFAULT_DEPTH_LEVEL` al cargar, se pasa a cada ficha; cambiar de nivel re-renderiza el cuerpo, sube el scroll y mantiene el foco en el selector
-- [ ] T015 [P] [US1] Estilos del selector, la analogía y el glosario en `src/styles/room.css`
-- [ ] T016 [US1] Actualizar `tests/e2e/helpers.ts`, `room.spec.ts` y `keyboard.spec.ts` a las secciones del nivel Normal — hace pasar T011
+- [X] T012 [P] [US1] Selector `renderDepthSelector(level, onChange)` en `src/ui/depthSelector.ts`: `role="group"` con nombre "Nivel de profundidad", dos `<button>` con `aria-pressed`
+- [X] T013 [US1] Render del nivel Normal en `src/ui/serviceCard.ts` (`renderNormalSections`): analogía destacada, glosario como `<dl>`, comparación rápida "¿X o Y?" con enlace vía `resolveTarget`
+- [X] T014 [US1] Estado del nivel en `src/main.ts`: `DEFAULT_DEPTH_LEVEL` al cargar, se pasa a cada ficha; cambiar de nivel re-renderiza el cuerpo, sube el scroll y mantiene el foco en el selector
+- [X] T015 [P] [US1] Estilos del selector, la analogía y el glosario en `src/styles/room.css`
+- [X] T016 [US1] Actualizar `tests/e2e/helpers.ts`, `room.spec.ts` y `keyboard.spec.ts` a las secciones del nivel Normal — hace pasar T011
 
 **Checkpoint**: US1 funciona; las fichas se entienden sin conocimientos previos
 
@@ -71,13 +71,13 @@ description: "Task list for Niveles de profundidad en las fichas"
 
 ### Tests ⚠️
 
-- [ ] T017 [P] [US2] E2E en `tests/e2e/depth.spec.ts`: Profundo muestra "Definición y funcionamiento", "Conceptos clave y límites", "Comparación detallada", "Casos de uso", "Patrones de arquitectura", "Trampas del examen" y "Costos"; abrir otro servicio (lista, sala y comparación) conserva Profundo; volver a Normal sin cerrar la ficha; recargar vuelve a Normal; el cambio de nivel deja el scroll arriba; cambio con teclado (Tab + Enter)
-- [ ] T018 [P] [US2] Ajustar `tests/e2e/compare.spec.ts` para cambiar a Profundo antes de verificar comparaciones detalladas y trampas
+- [X] T017 [P] [US2] E2E en `tests/e2e/depth.spec.ts`: Profundo muestra "Definición y funcionamiento", "Conceptos clave y límites", "Comparación detallada", "Casos de uso", "Patrones de arquitectura", "Trampas del examen" y "Costos"; abrir otro servicio (lista, sala y comparación) conserva Profundo; volver a Normal sin cerrar la ficha; recargar vuelve a Normal; el cambio de nivel deja el scroll arriba; cambio con teclado (Tab + Enter)
+- [X] T018 [P] [US2] Ajustar `tests/e2e/compare.spec.ts` para cambiar a Profundo antes de verificar comparaciones detalladas y trampas
 
 ### Implementation
 
-- [ ] T019 [US2] Render del nivel Profundo en `src/ui/serviceCard.ts` (`renderDeepSections`): definición, conceptos, comparación detallada (enlaces vía `resolveTarget`), casos de uso con ejemplo, trampas destacadas y costos; reemplaza el render provisional de T010
-- [ ] T020 [US2] Selector y render por nivel en el modo texto (`src/ui/textFallback.ts`, `src/main.ts`) compartiendo el mismo estado de nivel; agregar el caso a `tests/e2e/room.spec.ts`
+- [X] T019 [US2] Render del nivel Profundo en `src/ui/serviceCard.ts` (`renderDeepSections`): definición, conceptos, comparación detallada (enlaces vía `resolveTarget`), casos de uso con ejemplo, trampas destacadas y costos; reemplaza el render provisional de T010
+- [X] T020 [US2] Selector y render por nivel en el modo texto (`src/ui/textFallback.ts`, `src/main.ts`) compartiendo el mismo estado de nivel; agregar el caso a `tests/e2e/room.spec.ts`
 
 **Checkpoint**: US1 y US2 funcionan; ambos niveles completos salvo patrones
 

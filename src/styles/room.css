@@ -153,6 +153,40 @@ body[data-view='room'] #game {
   color: var(--color-accent-soft);
 }
 
+/* --- Selector de nivel --- */
+.service-card__toolbar {
+  padding: 0.625rem 1rem 0;
+}
+
+.depth-selector {
+  display: inline-flex;
+  border: 2px solid var(--color-surface-raised);
+}
+
+.depth-selector__button {
+  padding: 0.375rem 0.875rem;
+  border: 0;
+  background: var(--color-bg);
+  color: var(--color-text-muted);
+  font: inherit;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.depth-selector__button + .depth-selector__button {
+  border-left: 2px solid var(--color-surface-raised);
+}
+
+.depth-selector__button:hover {
+  color: var(--color-text);
+}
+
+.depth-selector__button[aria-pressed='true'] {
+  background: var(--color-accent-soft);
+  color: var(--color-bg);
+  font-weight: 700;
+}
+
 .service-card__body {
   flex: 1;
   overflow-y: auto;
@@ -187,7 +221,7 @@ body[data-view='room'] #game {
   color: var(--color-accent-soft);
 }
 
-.comparison-list__link {
+.service-link {
   padding: 0 0 2px;
   border: 0;
   border-bottom: 2px dashed currentColor;
@@ -197,8 +231,76 @@ body[data-view='room'] #game {
   cursor: pointer;
 }
 
-.comparison-list__link:hover {
+.service-link:hover {
   border-bottom-style: solid;
+}
+
+/* --- Nivel Normal --- */
+.card-analogy {
+  margin-top: 0.75rem !important;
+  padding: 0.625rem 0.75rem;
+  border: 2px dashed var(--color-focus);
+  background: rgb(127 209 232 / 0.08);
+}
+
+.card-analogy__label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-family: var(--font-pixel);
+  font-size: 0.5625rem;
+  color: var(--color-focus);
+}
+
+.glossary dt {
+  font-weight: 700;
+  color: var(--color-accent-soft);
+}
+
+.glossary dd {
+  margin: 0.125rem 0 0.625rem;
+}
+
+.quick-comparison__question {
+  font-weight: 700;
+  margin-bottom: 0.375rem !important;
+}
+
+/* --- Nivel Profundo --- */
+.use-case-list strong {
+  color: var(--color-accent-soft);
+}
+
+.use-case-list__example {
+  margin: 0.125rem 0 0 !important;
+}
+
+.use-case-list__example::before {
+  content: 'Ejemplo: ';
+  color: var(--color-text-muted);
+}
+
+.pattern {
+  margin-top: 0.75rem;
+  padding: 0.5rem 0.75rem 0.75rem;
+  border: 2px solid var(--color-surface-raised);
+  background: rgb(0 0 0 / 0.15);
+}
+
+.pattern h4,
+.pattern h5 {
+  margin: 0.25rem 0 0.5rem;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--color-text);
+}
+
+.text-fallback__toolbar {
+  position: sticky;
+  top: calc(var(--nav-height) + 0.5rem);
+  z-index: 1;
+  display: flex;
+  justify-content: flex-end;
 }
 
 /* Trampas del examen: sección destacada */

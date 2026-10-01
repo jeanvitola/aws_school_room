@@ -1,17 +1,14 @@
 import { getServicesByRoom, listRooms } from '../domain/catalog';
-import type { ContentCatalog } from '../domain/types';
+import type { ContentCatalog, DepthLevel } from '../domain/types';
+import { renderDepthSelector } from './depthSelector';
 import { renderCardSections, type CardOptions } from './serviceCard';
 
-/** Vista alternativa en texto: todas las salas y, para las disponibles, sus fichas completas. */
-export function renderTextFallback(
+function renderRooms(
   catalog: ContentCatalog,
-  options: Pick<CardOptions, 'resolveComparisons'>,
-): HTMLElement {
-  const region = document.createElement('section');
-  region.className = 'text-fallback';
-  region.setAttribute('aria-label', 'Torre AWS en modo texto');
-
-  for (const room of listRooms(catalog)) {
+  options: Pick<CardOptions, 'resolveComparisons' | 'resolveTarget'>,
+  depth: DepthLevel,
+): HTMLElement[] {
+  return listRooms(catalog).map((room) => {
     const roomSection = document.createElement('section');
     roomSection.className = 'text-fallback__room';
 
@@ -33,11 +30,38 @@ export function renderTextFallback(
       article.className = 'text-fallback__service';
       const serviceTitle = document.createElement('h3');
       serviceTitle.textContent = service.name;
-      article.append(serviceTitle, ...renderCardSections(service, 4, { ...options, idPrefix: 'text' }));
+      article.append(
+        serviceTitle,
+        ...renderCardSections(service, depth, 4, { ...options, idPrefix: 'text' }),
+      );
       roomSection.append(article);
     }
+    return roomSection;
+  });
+}
 
-    region.append(roomSection);
-  }
+/** Vista alternativa en texto: todas las salas y sus fichas completas, con selector de nivel. */
+export function renderTextFallback(
+  catalog: ContentCatalog,
+  options: Pick<CardOptions, 'resolveComparisons' | 'resolveTarget'>,
+  depth: DepthLevel,
+  onDepthChange: (depth: DepthLevel) => void,
+): HTMLElement {
+  const region = document.createElement('section');
+  region.className = 'text-fallback';
+  region.setAttribute('aria-label', 'Torre AWS en modo texto');
+
+  const content = document.createElement('div');
+  const selector = renderDepthSelector(depth, (next) => {
+    selector.setLevel(next);
+    content.replaceChildren(...renderRooms(catalog, options, next));
+    onDepthChange(next);
+  });
+  const toolbar = document.createElement('div');
+  toolbar.className = 'text-fallback__toolbar';
+  toolbar.append(selector.element);
+
+  content.replaceChildren(...renderRooms(catalog, options, depth));
+  region.append(toolbar, content);
   return region;
 }

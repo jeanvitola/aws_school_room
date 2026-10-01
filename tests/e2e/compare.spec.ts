@@ -1,13 +1,16 @@
 import { expect, test } from '@playwright/test';
-import { enterComputeRoom, serviceCard, serviceList, tabUntilFocused } from './helpers';
+import { depthButton, enterComputeRoom, serviceCard, serviceList, tabUntilFocused } from './helpers';
 
 function comparisonSection(page: Parameters<typeof serviceCard>[0]) {
-  return serviceCard(page).getByRole('region', { name: 'Comparación' });
+  return serviceCard(page).getByRole('region', { name: 'Comparación detallada' });
 }
 
-test.describe('US3 - Comparar servicios', () => {
+test.describe('US3 - Comparar servicios (nivel Profundo)', () => {
   test.beforeEach(async ({ page }) => {
     await enterComputeRoom(page);
+    // Las comparaciones detalladas y las trampas viven en el nivel Profundo (spec 002).
+    await serviceList(page).getByRole('button', { name: 'Amazon EKS' }).click();
+    await depthButton(page, 'Profundo').click();
   });
 
   test('opens the compared service card from a comparison link', async ({ page }) => {
