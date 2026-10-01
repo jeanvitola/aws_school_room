@@ -5,8 +5,8 @@ import questionsFile from '../../src/content/questions.json';
 import roomsFile from '../../src/content/rooms.json';
 import servicesFile from '../../src/content/services.json';
 
-// Servicios con preguntas redactadas. Se amplía a los 7 en la fase 5 (T017).
-const SERVICES_WITH_QUESTIONS = ['lambda'];
+// SC-001: los 7 servicios de la Sala de Máquinas tienen sus 15 preguntas.
+const SERVICES_WITH_QUESTIONS = ['ec2', 'lambda', 'ecs', 'eks', 'fargate', 'autoscaling', 'elb'];
 
 describe('practice questions content', () => {
   const catalog = loadCatalog(roomsFile, servicesFile);

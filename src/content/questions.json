@@ -519,6 +519,3126 @@
         "url": "https://docs.aws.amazon.com/secretsmanager/latest/userguide/retrieving-secrets_lambda.html"
       },
       "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "ec2-n1",
+      "serviceId": "ec2",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "¿Qué pasa con los datos de un volumen Instance Store cuando se detiene (stop) la instancia EC2?",
+      "options": [
+        {
+          "text": "Se conservan hasta que se vuelva a iniciar",
+          "correct": false,
+          "explanation": "Solo se conservan al reiniciar (reboot); al detener se pierden."
+        },
+        {
+          "text": "Se pierden: el Instance Store es almacenamiento temporal",
+          "correct": true,
+          "explanation": "Correcto: los datos no persisten si la instancia se detiene, hiberna o termina."
+        },
+        {
+          "text": "Se copian automáticamente a un volumen EBS",
+          "correct": false,
+          "explanation": "AWS no copia el Instance Store a EBS; esa copia es responsabilidad tuya."
+        },
+        {
+          "text": "Se mueven a Amazon S3",
+          "correct": false,
+          "explanation": "No existe esa copia automática."
+        }
+      ],
+      "source": {
+        "title": "Data persistence for Amazon EC2 instance store volumes",
+        "url": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-store-lifetime.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "ec2-n2",
+      "serviceId": "ec2",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "Una empresa ejecuta trabajos de procesamiento por lotes que pueden interrumpirse y reintentarse. ¿Qué opción de compra de EC2 es la más barata?",
+      "options": [
+        {
+          "text": "On-Demand",
+          "correct": false,
+          "explanation": "No tiene compromiso, pero es la opción más cara de las tres."
+        },
+        {
+          "text": "Dedicated Hosts",
+          "correct": false,
+          "explanation": "Son servidores físicos exclusivos: útiles para licencias, no para ahorrar."
+        },
+        {
+          "text": "Spot Instances",
+          "correct": true,
+          "explanation": "Correcto: Spot ofrece hasta 90% de descuento frente a On-Demand y sirve para cargas tolerantes a interrupciones."
+        },
+        {
+          "text": "Capacity Reservations",
+          "correct": false,
+          "explanation": "Reserva capacidad, pero no reduce el precio por sí misma."
+        }
+      ],
+      "source": {
+        "title": "Amazon EC2 Pricing",
+        "url": "https://aws.amazon.com/ec2/pricing/"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "ec2-n3",
+      "serviceId": "ec2",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "¿Cómo se factura el uso On-Demand de una instancia EC2 con Linux?",
+      "options": [
+        {
+          "text": "Por segundo, con un mínimo de 60 segundos",
+          "correct": true,
+          "explanation": "Correcto: el uso de EC2 se factura en incrementos de un segundo con un mínimo de 60 segundos."
+        },
+        {
+          "text": "Por hora completa, aunque se use un minuto",
+          "correct": false,
+          "explanation": "Era el modelo antiguo; hoy se factura por segundo."
+        },
+        {
+          "text": "Por cada solicitud recibida",
+          "correct": false,
+          "explanation": "Ese modelo es el de Lambda, no el de EC2."
+        },
+        {
+          "text": "Una tarifa mensual fija",
+          "correct": false,
+          "explanation": "On-Demand no tiene tarifa mensual: pagas lo que usas."
+        }
+      ],
+      "source": {
+        "title": "Amazon EC2 Pricing",
+        "url": "https://aws.amazon.com/ec2/pricing/"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "ec2-n4",
+      "serviceId": "ec2",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "¿Con cuánta anticipación avisa AWS antes de interrumpir una instancia Spot?",
+      "options": [
+        {
+          "text": "30 segundos",
+          "correct": false,
+          "explanation": "El aviso estándar es mayor."
+        },
+        {
+          "text": "10 minutos",
+          "correct": false,
+          "explanation": "No hay un aviso tan largo."
+        },
+        {
+          "text": "Una hora",
+          "correct": false,
+          "explanation": "No hay un aviso tan largo."
+        },
+        {
+          "text": "2 minutos",
+          "correct": true,
+          "explanation": "Correcto: el aviso de interrupción Spot llega dos minutos antes de detener o terminar la instancia."
+        }
+      ],
+      "source": {
+        "title": "Spot Instance interruption notices",
+        "url": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/spot-instance-termination-notices.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "ec2-n5",
+      "serviceId": "ec2",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "¿Qué versión del servicio de metadatos de instancia (IMDS) exige un token de sesión para leer los metadatos?",
+      "options": [
+        {
+          "text": "IMDSv1",
+          "correct": false,
+          "explanation": "IMDSv1 usa solicitud/respuesta sin token."
+        },
+        {
+          "text": "IMDSv2",
+          "correct": true,
+          "explanation": "Correcto: IMDSv2 es orientado a sesión; primero se pide un token con PUT y luego se usa en cada lectura."
+        },
+        {
+          "text": "Ambas por igual",
+          "correct": false,
+          "explanation": "Solo IMDSv2 usa tokens de sesión."
+        },
+        {
+          "text": "Ninguna; los metadatos son públicos",
+          "correct": false,
+          "explanation": "Los metadatos solo son accesibles desde la propia instancia."
+        }
+      ],
+      "source": {
+        "title": "Use the Instance Metadata Service to access instance metadata",
+        "url": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-instance-metadata-service.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "ec2-m1",
+      "serviceId": "ec2",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Una aplicación de cómputo de alto rendimiento (HPC) necesita la menor latencia y el mayor throughput de red posible entre sus instancias. ¿Qué placement group debe usar?",
+      "options": [
+        {
+          "text": "Cluster",
+          "correct": true,
+          "explanation": "Correcto: agrupa las instancias en una sola AZ para lograr baja latencia y alto throughput."
+        },
+        {
+          "text": "Spread",
+          "correct": false,
+          "explanation": "Separa instancias en hardware distinto para aislar fallas; no optimiza la latencia."
+        },
+        {
+          "text": "Partition",
+          "correct": false,
+          "explanation": "Sirve para sistemas distribuidos como HDFS o Cassandra que necesitan aislar racks."
+        },
+        {
+          "text": "No usar placement groups y repartir en tres regiones",
+          "correct": false,
+          "explanation": "Repartir en regiones aumenta la latencia."
+        }
+      ],
+      "source": {
+        "title": "Placement strategies for your placement groups",
+        "url": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/placement-strategies.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "ec2-m2",
+      "serviceId": "ec2",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Una empresa tiene 5 instancias críticas que nunca deben compartir hardware, para que una falla física no afecte a más de una. ¿Qué solución cumple?",
+      "options": [
+        {
+          "text": "Un cluster placement group",
+          "correct": false,
+          "explanation": "Hace lo contrario: junta las instancias para reducir la latencia."
+        },
+        {
+          "text": "Un Auto Scaling Group en una sola AZ",
+          "correct": false,
+          "explanation": "No garantiza hardware separado y además concentra todo en una AZ."
+        },
+        {
+          "text": "Un spread placement group",
+          "correct": true,
+          "explanation": "Correcto: ubica cada instancia en hardware distinto; admite hasta 7 instancias en ejecución por AZ."
+        },
+        {
+          "text": "Instancias más grandes",
+          "correct": false,
+          "explanation": "El tamaño no cambia dónde se ubican físicamente."
+        }
+      ],
+      "source": {
+        "title": "Placement strategies for your placement groups",
+        "url": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/placement-strategies.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "ec2-m3",
+      "serviceId": "ec2",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Una aplicación tarda mucho en arrancar porque carga datos en memoria. El equipo quiere detener las instancias de noche y retomarlas con la memoria intacta. ¿Qué debe usar?",
+      "options": [
+        {
+          "text": "Detener (stop) las instancias normalmente",
+          "correct": false,
+          "explanation": "Al detener se pierde el contenido de la memoria RAM."
+        },
+        {
+          "text": "Guardar la memoria en el Instance Store",
+          "correct": false,
+          "explanation": "El Instance Store se borra al detener o hibernar."
+        },
+        {
+          "text": "Crear una AMI cada noche",
+          "correct": false,
+          "explanation": "La AMI guarda los discos, no el estado de la memoria."
+        },
+        {
+          "text": "Hibernación de EC2, con el volumen raíz EBS cifrado",
+          "correct": true,
+          "explanation": "Correcto: la hibernación guarda la RAM en el volumen raíz EBS, que debe estar cifrado."
+        }
+      ],
+      "source": {
+        "title": "Prerequisites for EC2 instance hibernation",
+        "url": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/hibernating-prerequisites.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "ec2-m4",
+      "serviceId": "ec2",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Una empresa quiere llevar a AWS un software con licencia por socket y por núcleo físico, y necesita ver esos sockets y núcleos. ¿Qué opción debe elegir?",
+      "options": [
+        {
+          "text": "Dedicated Instances",
+          "correct": false,
+          "explanation": "Corren en hardware dedicado, pero no dan visibilidad de sockets ni núcleos."
+        },
+        {
+          "text": "Dedicated Hosts",
+          "correct": true,
+          "explanation": "Correcto: dan visibilidad de sockets y núcleos físicos y soporte completo de BYOL."
+        },
+        {
+          "text": "Spot Instances",
+          "correct": false,
+          "explanation": "Pueden interrumpirse y no dan control del hardware."
+        },
+        {
+          "text": "Instancias On-Demand compartidas",
+          "correct": false,
+          "explanation": "No dan visibilidad del hardware físico."
+        }
+      ],
+      "source": {
+        "title": "Amazon EC2 Dedicated Hosts",
+        "url": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/dedicated-hosts-overview.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "ec2-m5",
+      "serviceId": "ec2",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Una aplicación en clúster necesita que varias instancias de la misma AZ escriban en un mismo volumen de bloques. ¿Qué solución lo permite?",
+      "options": [
+        {
+          "text": "Un volumen EBS io2 con Multi-Attach y un sistema de archivos de clúster",
+          "correct": true,
+          "explanation": "Correcto: Multi-Attach solo existe en volúmenes io1 e io2, entre instancias Nitro de la misma AZ."
+        },
+        {
+          "text": "Un volumen gp3 conectado a todas las instancias",
+          "correct": false,
+          "explanation": "gp3 no admite Multi-Attach."
+        },
+        {
+          "text": "Compartir el Instance Store entre instancias",
+          "correct": false,
+          "explanation": "El Instance Store pertenece a una sola instancia."
+        },
+        {
+          "text": "Un volumen EBS en otra AZ",
+          "correct": false,
+          "explanation": "EBS se conecta solo a instancias de su misma AZ."
+        }
+      ],
+      "source": {
+        "title": "Attach an EBS volume to multiple EC2 instances using Multi-Attach",
+        "url": "https://docs.aws.amazon.com/ebs/latest/userguide/ebs-volumes-multi.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "ec2-h1",
+      "serviceId": "ec2",
+      "difficulty": "hard",
+      "type": "single",
+      "prompt": "Al revisar la factura, una empresa ve cargos por direcciones IPv4 públicas, incluidas algunas Elastic IP que no están asociadas a nada. ¿Qué afirmación es correcta?",
+      "options": [
+        {
+          "text": "Solo se cobran las Elastic IP que no están en uso",
+          "correct": false,
+          "explanation": "Hoy también se cobran las IPv4 públicas en uso."
+        },
+        {
+          "text": "Las IPv4 públicas son gratis si la instancia está encendida",
+          "correct": false,
+          "explanation": "Las IPv4 públicas en uso también tienen cargo por hora."
+        },
+        {
+          "text": "Toda IPv4 pública se cobra por hora, esté en uso o inactiva; conviene liberar las que no se usan",
+          "correct": true,
+          "explanation": "Correcto: tanto las IPv4 públicas en uso como las inactivas tienen cargo por hora."
+        },
+        {
+          "text": "Solo se cobran las IPv4 traídas con BYOIP",
+          "correct": false,
+          "explanation": "Las direcciones BYOIP justamente no se cobran."
+        }
+      ],
+      "source": {
+        "title": "Amazon VPC pricing",
+        "url": "https://aws.amazon.com/vpc/pricing/"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "ec2-h2",
+      "serviceId": "ec2",
+      "difficulty": "hard",
+      "type": "single",
+      "prompt": "Un equipo de seguridad quiere reducir el riesgo de que una vulnerabilidad SSRF en una aplicación web filtre las credenciales del rol de la instancia. ¿Qué cambio es el más efectivo?",
+      "options": [
+        {
+          "text": "Mover las credenciales a variables de entorno",
+          "correct": false,
+          "explanation": "Empeora la exposición y no protege el servicio de metadatos."
+        },
+        {
+          "text": "Configurar la instancia para aceptar solo IMDSv2 (tokens requeridos)",
+          "correct": true,
+          "explanation": "Correcto: con tokens requeridos, las llamadas sin un token de sesión válido reciben 401, lo que dificulta el SSRF."
+        },
+        {
+          "text": "Desactivar el rol de IAM y usar access keys",
+          "correct": false,
+          "explanation": "Las access keys de larga duración son un riesgo mayor."
+        },
+        {
+          "text": "Abrir el puerto 80 solo a la VPC",
+          "correct": false,
+          "explanation": "No impide que la aplicación vulnerable consulte el servicio de metadatos."
+        }
+      ],
+      "source": {
+        "title": "Use the Instance Metadata Service to access instance metadata",
+        "url": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-instance-metadata-service.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "ec2-h3",
+      "serviceId": "ec2",
+      "difficulty": "hard",
+      "type": "single",
+      "prompt": "Una base de datos distribuida y replicada de 21 nodos debe repartir sus réplicas en racks aislados, y la aplicación necesita saber en qué grupo de racks está cada nodo. La región tiene 3 AZ. ¿Qué solución es la más adecuada?",
+      "options": [
+        {
+          "text": "Un cluster placement group",
+          "correct": false,
+          "explanation": "Pone todos los nodos juntos: maximiza el impacto de una falla de rack."
+        },
+        {
+          "text": "Un spread placement group en una sola AZ",
+          "correct": false,
+          "explanation": "En una AZ admite como máximo 7 instancias en ejecución."
+        },
+        {
+          "text": "Instancias sin placement group en una AZ",
+          "correct": false,
+          "explanation": "No garantiza el aislamiento de racks."
+        },
+        {
+          "text": "Un partition placement group repartido en las AZ",
+          "correct": true,
+          "explanation": "Correcto: las particiones no comparten racks y la aplicación puede ver en qué partición está cada instancia (HDFS, Cassandra)."
+        }
+      ],
+      "source": {
+        "title": "Placement strategies for your placement groups",
+        "url": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/placement-strategies.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "ec2-h4",
+      "serviceId": "ec2",
+      "difficulty": "hard",
+      "type": "multiple",
+      "prompt": "Una empresa tiene una aplicación de producción que corre 24/7 con uso estable y trabajos nocturnos tolerantes a interrupciones. Quiere minimizar el costo de EC2. ¿Qué dos acciones aplican? (Elige 2)",
+      "options": [
+        {
+          "text": "Cubrir la carga estable con un Savings Plan de 1 o 3 años",
+          "correct": true,
+          "explanation": "Correcto: los Savings Plans reducen hasta 72% a cambio de un compromiso de uso."
+        },
+        {
+          "text": "Ejecutar todo en On-Demand para tener flexibilidad",
+          "correct": false,
+          "explanation": "Es la opción más cara para cargas estables."
+        },
+        {
+          "text": "Usar Dedicated Hosts para los trabajos nocturnos",
+          "correct": false,
+          "explanation": "Son caros y no aportan nada a trabajos interrumpibles."
+        },
+        {
+          "text": "Ejecutar los trabajos nocturnos en Spot",
+          "correct": true,
+          "explanation": "Correcto: Spot ofrece hasta 90% de descuento para cargas que toleran interrupciones."
+        },
+        {
+          "text": "Hibernar las instancias de producción de noche",
+          "correct": false,
+          "explanation": "La aplicación es 24/7: no puede apagarse."
+        }
+      ],
+      "source": {
+        "title": "Amazon EC2 Pricing",
+        "url": "https://aws.amazon.com/ec2/pricing/"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "ec2-h5",
+      "serviceId": "ec2",
+      "difficulty": "hard",
+      "type": "multiple",
+      "prompt": "Un servicio corre sobre instancias Spot y quiere minimizar el impacto de las interrupciones. ¿Qué dos acciones ayudan? (Elige 2)",
+      "options": [
+        {
+          "text": "Reaccionar a las señales de rebalance recommendation e interruption notice (por ejemplo, con EventBridge) para guardar el estado",
+          "correct": true,
+          "explanation": "Correcto: la recomendación de rebalanceo puede llegar antes que el aviso de 2 minutos y da tiempo para prepararse."
+        },
+        {
+          "text": "Confiar en un lifecycle hook para impedir la terminación",
+          "correct": false,
+          "explanation": "Un lifecycle hook no impide que una instancia Spot termine tras el aviso de dos minutos."
+        },
+        {
+          "text": "Activar Capacity Rebalancing en el Auto Scaling Group",
+          "correct": true,
+          "explanation": "Correcto: reemplaza de forma proactiva las instancias Spot con riesgo de interrupción."
+        },
+        {
+          "text": "Guardar el estado en el Instance Store",
+          "correct": false,
+          "explanation": "El Instance Store se borra cuando la instancia se detiene o termina."
+        },
+        {
+          "text": "Usar un solo tipo de instancia Spot para simplificar",
+          "correct": false,
+          "explanation": "Diversificar tipos de instancia reduce el riesgo; un solo tipo lo aumenta."
+        }
+      ],
+      "source": {
+        "title": "EC2 instance rebalance recommendations",
+        "url": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/rebalance-recommendations.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "ecs-n1",
+      "serviceId": "ecs",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "Una aplicación que corre en una task de Amazon ECS necesita leer archivos de un bucket de S3. ¿Dónde se configuran esos permisos?",
+      "options": [
+        {
+          "text": "En el task role (rol de IAM de la task)",
+          "correct": true,
+          "explanation": "Correcto: el task role entrega permisos al código de la aplicación que corre en el contenedor."
+        },
+        {
+          "text": "En el task execution role",
+          "correct": false,
+          "explanation": "Ese rol lo usan los agentes de ECS (descargar imágenes, enviar logs), no tu aplicación."
+        },
+        {
+          "text": "En access keys dentro de la imagen",
+          "correct": false,
+          "explanation": "Guardar llaves en la imagen es inseguro e innecesario."
+        },
+        {
+          "text": "En el security group de la task",
+          "correct": false,
+          "explanation": "Los security groups controlan tráfico de red, no permisos de IAM."
+        }
+      ],
+      "source": {
+        "title": "Amazon ECS task IAM role",
+        "url": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-iam-roles.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "ecs-n2",
+      "serviceId": "ecs",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "¿Qué rol permite a Amazon ECS descargar la imagen desde un repositorio privado de Amazon ECR y enviar los logs a CloudWatch Logs?",
+      "options": [
+        {
+          "text": "El task role",
+          "correct": false,
+          "explanation": "El task role es para tu aplicación, no para los agentes de ECS."
+        },
+        {
+          "text": "El rol del usuario que creó el clúster",
+          "correct": false,
+          "explanation": "ECS no usa los permisos de quien creó el clúster."
+        },
+        {
+          "text": "El task execution role",
+          "correct": true,
+          "explanation": "Correcto: otorga a los agentes de ECS y Fargate permisos como descargar imágenes de ECR y enviar logs."
+        },
+        {
+          "text": "Ningún rol; ECS lo hace sin permisos",
+          "correct": false,
+          "explanation": "ECS necesita permisos explícitos para esas llamadas."
+        }
+      ],
+      "source": {
+        "title": "Amazon ECS task execution IAM role",
+        "url": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_execution_IAM_role.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "ecs-n3",
+      "serviceId": "ecs",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "Un equipo quiere ejecutar contenedores en Amazon ECS sin crear ni administrar instancias EC2. ¿Qué debe usar?",
+      "options": [
+        {
+          "text": "Un Auto Scaling Group de instancias pequeñas",
+          "correct": false,
+          "explanation": "Sigue siendo administrar servidores."
+        },
+        {
+          "text": "AWS Fargate como capacidad del clúster",
+          "correct": true,
+          "explanation": "Correcto: con Fargate las tasks corren sin servidores que administrar."
+        },
+        {
+          "text": "Instancias Spot",
+          "correct": false,
+          "explanation": "Siguen siendo instancias EC2 que hay que gestionar."
+        },
+        {
+          "text": "Un placement group",
+          "correct": false,
+          "explanation": "Los placement groups son de EC2 y no eliminan la administración de servidores."
+        }
+      ],
+      "source": {
+        "title": "Amazon ECS clusters for Fargate",
+        "url": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/fargate-capacity-providers.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "ecs-n4",
+      "serviceId": "ecs",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "¿Cómo se puede abrir una terminal dentro de un contenedor que corre en ECS, sin SSH ni puertos de entrada abiertos?",
+      "options": [
+        {
+          "text": "Abriendo el puerto 22 en el security group",
+          "correct": false,
+          "explanation": "Justamente es lo que se quiere evitar."
+        },
+        {
+          "text": "Con un bastion host",
+          "correct": false,
+          "explanation": "Agrega un servidor que administrar y exige SSH."
+        },
+        {
+          "text": "Reconstruyendo la imagen con un servidor SSH",
+          "correct": false,
+          "explanation": "Añade superficie de ataque innecesaria."
+        },
+        {
+          "text": "Con ECS Exec, que usa Session Manager de AWS Systems Manager",
+          "correct": true,
+          "explanation": "Correcto: ECS Exec permite ejecutar comandos o abrir un shell sin abrir puertos ni administrar llaves SSH."
+        }
+      ],
+      "source": {
+        "title": "Monitor Amazon ECS containers with ECS Exec",
+        "url": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-exec.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "ecs-n5",
+      "serviceId": "ecs",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "¿Qué servicio usa Amazon ECS para escalar automáticamente la cantidad de tasks de un service?",
+      "options": [
+        {
+          "text": "Application Auto Scaling",
+          "correct": true,
+          "explanation": "Correcto: Service Auto Scaling de ECS se basa en Application Auto Scaling."
+        },
+        {
+          "text": "Amazon EC2 Auto Scaling",
+          "correct": false,
+          "explanation": "Escala instancias EC2, no la cantidad de tasks de un service."
+        },
+        {
+          "text": "AWS Lambda",
+          "correct": false,
+          "explanation": "Lambda no administra la cantidad de tasks."
+        },
+        {
+          "text": "Amazon Route 53",
+          "correct": false,
+          "explanation": "Route 53 es DNS, no escalado."
+        }
+      ],
+      "source": {
+        "title": "Automatically scale your Amazon ECS service",
+        "url": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/service-auto-scaling.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "ecs-m1",
+      "serviceId": "ecs",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Un contenedor necesita la contraseña de la base de datos como variable de entorno, sin dejarla en texto plano en la task definition. ¿Qué solución es la recomendada?",
+      "options": [
+        {
+          "text": "Escribir la contraseña en la sección environment",
+          "correct": false,
+          "explanation": "Quedaría en texto plano en la task definition."
+        },
+        {
+          "text": "Referenciar un secreto de Secrets Manager o Parameter Store en el parámetro secrets del contenedor",
+          "correct": true,
+          "explanation": "Correcto: ECS inyecta el valor como variable de entorno; el execution role necesita permiso para leer el secreto."
+        },
+        {
+          "text": "Guardar la contraseña en la imagen de Docker",
+          "correct": false,
+          "explanation": "Cualquiera con acceso a la imagen podría leerla."
+        },
+        {
+          "text": "Enviarla por un mensaje de SQS al arrancar",
+          "correct": false,
+          "explanation": "Es complejo y no es el mecanismo previsto por ECS."
+        }
+      ],
+      "source": {
+        "title": "Pass sensitive data to an Amazon ECS container",
+        "url": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/specifying-sensitive-data.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "ecs-m2",
+      "serviceId": "ecs",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Un clúster de ECS con launch type EC2 debe usar la menor cantidad posible de instancias para ahorrar costos. ¿Qué estrategia de ubicación de tasks conviene?",
+      "options": [
+        {
+          "text": "random",
+          "correct": false,
+          "explanation": "Ubica al azar, sin optimizar el uso de instancias."
+        },
+        {
+          "text": "spread por instanceId",
+          "correct": false,
+          "explanation": "Reparte las tasks en todas las instancias, lo contrario de lo buscado."
+        },
+        {
+          "text": "spread por zona de disponibilidad",
+          "correct": false,
+          "explanation": "Mejora la disponibilidad, pero no minimiza instancias."
+        },
+        {
+          "text": "binpack por memoria o CPU",
+          "correct": true,
+          "explanation": "Correcto: binpack deja la menor cantidad de CPU o memoria sin usar y minimiza las instancias en uso."
+        }
+      ],
+      "source": {
+        "title": "Use strategies to define Amazon ECS task placement",
+        "url": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-placement-strategies.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "ecs-m3",
+      "serviceId": "ecs",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Varios services de ECS se llaman entre sí. El equipo quiere referirse a ellos con nombres cortos, con balanceo entre tasks y métricas estándar, sin operar una service mesh propia. ¿Qué debe usar?",
+      "options": [
+        {
+          "text": "ECS Service Connect",
+          "correct": true,
+          "explanation": "Correcto: aporta descubrimiento de servicios y una service mesh administrada como configuración de ECS, sin costo adicional."
+        },
+        {
+          "text": "Un Network Load Balancer por cada service",
+          "correct": false,
+          "explanation": "Funciona, pero agrega costo y no da nombres cortos ni métricas unificadas."
+        },
+        {
+          "text": "Escribir las IP de las tasks en el código",
+          "correct": false,
+          "explanation": "Las IP de las tasks cambian con cada despliegue."
+        },
+        {
+          "text": "ECS Exec",
+          "correct": false,
+          "explanation": "Sirve para entrar a los contenedores, no para comunicar services."
+        }
+      ],
+      "source": {
+        "title": "Use Service Connect to connect Amazon ECS services with short names",
+        "url": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/service-connect.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "ecs-m4",
+      "serviceId": "ecs",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Se rotó un secreto en AWS Secrets Manager, pero las tasks de ECS siguen usando el valor anterior. ¿Por qué y cómo se resuelve?",
+      "options": [
+        {
+          "text": "ECS lee el secreto cada minuto; hay que esperar",
+          "correct": false,
+          "explanation": "ECS no vuelve a leer el secreto mientras la task corre."
+        },
+        {
+          "text": "Secrets Manager no permite rotar secretos usados por ECS",
+          "correct": false,
+          "explanation": "Sí se pueden rotar; el problema es otro."
+        },
+        {
+          "text": "El secreto se inyecta al iniciar la task: hay que forzar un nuevo despliegue o lanzar tasks nuevas",
+          "correct": true,
+          "explanation": "Correcto: si el secreto cambia, hay que forzar un nuevo despliegue para que las tasks lean el nuevo valor."
+        },
+        {
+          "text": "Hay que cambiar el task role",
+          "correct": false,
+          "explanation": "Los permisos no son el problema; el valor ya se leyó al iniciar."
+        }
+      ],
+      "source": {
+        "title": "Pass sensitive data to an Amazon ECS container",
+        "url": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/specifying-sensitive-data.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "ecs-m5",
+      "serviceId": "ecs",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Un service de ECS procesa mensajes de una cola de SQS y la cola crece en los picos. ¿Cómo debe escalar la cantidad de tasks?",
+      "options": [
+        {
+          "text": "Con scheduled scaling cada hora",
+          "correct": false,
+          "explanation": "Los picos no siguen un horario fijo."
+        },
+        {
+          "text": "Con target tracking sobre una métrica de mensajes pendientes por task (backlog per task)",
+          "correct": true,
+          "explanation": "Correcto: ECS documenta el escalado basado en una cola de SQS con la métrica de backlog por task."
+        },
+        {
+          "text": "Aumentando la memoria de cada task",
+          "correct": false,
+          "explanation": "No aumenta la cantidad de mensajes procesados en paralelo."
+        },
+        {
+          "text": "Con EC2 Auto Scaling sobre el uso de CPU de las instancias",
+          "correct": false,
+          "explanation": "Escala instancias, no tasks, y la CPU no refleja la cola."
+        }
+      ],
+      "source": {
+        "title": "Automatically scale your Amazon ECS service",
+        "url": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/service-auto-scaling.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "ecs-h1",
+      "serviceId": "ecs",
+      "difficulty": "hard",
+      "type": "single",
+      "prompt": "Un service de ECS con launch type EC2 debe mantenerse disponible si falla una AZ, pero también usar las instancias de forma eficiente. ¿Qué configuración de ubicación es la más adecuada?",
+      "options": [
+        {
+          "text": "Solo binpack por memoria",
+          "correct": false,
+          "explanation": "Puede concentrar todas las tasks en una AZ."
+        },
+        {
+          "text": "Solo random",
+          "correct": false,
+          "explanation": "No garantiza el reparto entre AZ ni la eficiencia."
+        },
+        {
+          "text": "spread por attribute:ecs.availability-zone y luego binpack por memoria",
+          "correct": true,
+          "explanation": "Correcto: primero reparte entre AZ (disponibilidad) y luego llena cada instancia (eficiencia)."
+        },
+        {
+          "text": "Una placement constraint distinctInstance sin estrategias",
+          "correct": false,
+          "explanation": "Separa por instancia, pero no garantiza el reparto entre AZ ni la eficiencia."
+        }
+      ],
+      "source": {
+        "title": "Use strategies to define Amazon ECS task placement",
+        "url": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-placement-strategies.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "ecs-h2",
+      "serviceId": "ecs",
+      "difficulty": "hard",
+      "type": "single",
+      "prompt": "Una task en Fargate procesa archivos y necesita 150 GiB de almacenamiento local temporal. ¿Qué solución es la más simple?",
+      "options": [
+        {
+          "text": "Definir ephemeralStorage en 150 GiB en la task definition",
+          "correct": true,
+          "explanation": "Correcto: Fargate da al menos 20 GiB y se puede ampliar hasta 200 GiB con el parámetro ephemeralStorage."
+        },
+        {
+          "text": "Montar el Instance Store del host",
+          "correct": false,
+          "explanation": "En Fargate no hay acceso al host."
+        },
+        {
+          "text": "Cambiar a una task con más vCPU, que trae más disco",
+          "correct": false,
+          "explanation": "El disco no aumenta con la CPU."
+        },
+        {
+          "text": "No es posible: Fargate solo da 20 GiB",
+          "correct": false,
+          "explanation": "20 GiB es el valor por defecto, no el máximo."
+        }
+      ],
+      "source": {
+        "title": "Fargate task ephemeral storage for Amazon ECS",
+        "url": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/fargate-task-storage.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "ecs-h3",
+      "serviceId": "ecs",
+      "difficulty": "hard",
+      "type": "single",
+      "prompt": "Un equipo activó ECS Exec en su service de Fargate, pero no logra conectarse a las tasks que ya estaban corriendo. ¿Cuál es la causa más probable?",
+      "options": [
+        {
+          "text": "ECS Exec no funciona en Fargate",
+          "correct": false,
+          "explanation": "ECS Exec funciona tanto en EC2 como en Fargate."
+        },
+        {
+          "text": "Falta abrir el puerto 22",
+          "correct": false,
+          "explanation": "ECS Exec no usa SSH ni requiere abrir puertos."
+        },
+        {
+          "text": "ECS Exec requiere instancias con IP pública",
+          "correct": false,
+          "explanation": "No necesita IP pública."
+        },
+        {
+          "text": "ECS Exec solo se activa en tasks nuevas, y además el task role necesita permisos para SSM",
+          "correct": true,
+          "explanation": "Correcto: no se puede activar en tasks existentes y el task role debe permitir la comunicación con SSM."
+        }
+      ],
+      "source": {
+        "title": "Monitor Amazon ECS containers with ECS Exec",
+        "url": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-exec.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "ecs-h4",
+      "serviceId": "ecs",
+      "difficulty": "hard",
+      "type": "multiple",
+      "prompt": "Un service de ECS usa Fargate Spot para ahorrar costos. ¿Qué dos prácticas reducen el impacto de las interrupciones? (Elige 2)",
+      "options": [
+        {
+          "text": "Manejar la señal SIGTERM y configurar stopTimeout (hasta 120 segundos) para terminar el trabajo en curso",
+          "correct": true,
+          "explanation": "Correcto: Fargate Spot avisa dos minutos antes con SIGTERM y un evento de EventBridge."
+        },
+        {
+          "text": "Confiar en que Fargate reemplace la capacidad Spot con On-Demand",
+          "correct": false,
+          "explanation": "Fargate no reemplaza la capacidad Spot con On-Demand."
+        },
+        {
+          "text": "Combinar los capacity providers FARGATE y FARGATE_SPOT, con una base en FARGATE",
+          "correct": true,
+          "explanation": "Correcto: mantiene una parte de las tasks en capacidad que no se interrumpe."
+        },
+        {
+          "text": "Usar Fargate Spot para contenedores Windows",
+          "correct": false,
+          "explanation": "Fargate Spot solo está disponible para Linux."
+        },
+        {
+          "text": "Esperar un aviso de 10 minutos antes de la interrupción",
+          "correct": false,
+          "explanation": "El aviso es de dos minutos."
+        }
+      ],
+      "source": {
+        "title": "Amazon ECS clusters for Fargate",
+        "url": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/fargate-capacity-providers.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "ecs-h5",
+      "serviceId": "ecs",
+      "difficulty": "hard",
+      "type": "multiple",
+      "prompt": "Una task de Fargate lee objetos de S3 y recibe la contraseña de la base de datos desde Secrets Manager mediante el parámetro secrets. Aplicando mínimo privilegio, ¿qué dos permisos se configuran? (Elige 2)",
+      "options": [
+        {
+          "text": "s3:GetObject en el task role",
+          "correct": true,
+          "explanation": "Correcto: el acceso a S3 lo hace tu aplicación, así que va en el task role."
+        },
+        {
+          "text": "s3:GetObject en el task execution role",
+          "correct": false,
+          "explanation": "El execution role lo usan los agentes de ECS, no tu aplicación."
+        },
+        {
+          "text": "secretsmanager:GetSecretValue en el task execution role",
+          "correct": true,
+          "explanation": "Correcto: ECS lee el secreto al iniciar la task usando el execution role."
+        },
+        {
+          "text": "Un instance profile de EC2 para la task",
+          "correct": false,
+          "explanation": "En Fargate los instance profiles no están disponibles para los contenedores."
+        },
+        {
+          "text": "Access keys como variables de entorno",
+          "correct": false,
+          "explanation": "Son credenciales de larga duración e innecesarias."
+        }
+      ],
+      "source": {
+        "title": "Amazon ECS task execution IAM role",
+        "url": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_execution_IAM_role.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "eks-n1",
+      "serviceId": "eks",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "En Amazon EKS, ¿qué parte de Kubernetes administra AWS por ti?",
+      "options": [
+        {
+          "text": "Las aplicaciones que despliegas",
+          "correct": false,
+          "explanation": "Tus aplicaciones las despliegas y gestionas tú."
+        },
+        {
+          "text": "El plano de control (control plane) de Kubernetes",
+          "correct": true,
+          "explanation": "Correcto: AWS opera el plano de control; tú ejecutas tus pods en nodos o en Fargate."
+        },
+        {
+          "text": "El código de tus contenedores",
+          "correct": false,
+          "explanation": "El código es responsabilidad tuya."
+        },
+        {
+          "text": "Nada: EKS es Kubernetes instalado a mano en EC2",
+          "correct": false,
+          "explanation": "EKS es un servicio administrado."
+        }
+      ],
+      "source": {
+        "title": "Simplify node lifecycle with managed node groups",
+        "url": "https://docs.aws.amazon.com/eks/latest/userguide/managed-node-groups.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "eks-n2",
+      "serviceId": "eks",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "¿Cuánto cuesta por hora un clúster de EKS con una versión de Kubernetes en soporte estándar, sin contar los nodos?",
+      "options": [
+        {
+          "text": "Es gratis",
+          "correct": false,
+          "explanation": "EKS cobra por clúster por hora."
+        },
+        {
+          "text": "USD 0,60 por hora",
+          "correct": false,
+          "explanation": "Ese es el precio con soporte extendido."
+        },
+        {
+          "text": "USD 0,10 por hora",
+          "correct": true,
+          "explanation": "Correcto: el soporte estándar cuesta USD 0,10 por clúster por hora, más el cómputo de los nodos."
+        },
+        {
+          "text": "USD 1,00 por hora",
+          "correct": false,
+          "explanation": "No es el precio vigente."
+        }
+      ],
+      "source": {
+        "title": "Amazon EKS Pricing",
+        "url": "https://aws.amazon.com/eks/pricing/"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "eks-n3",
+      "serviceId": "eks",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "¿Qué automatizan los managed node groups de EKS?",
+      "options": [
+        {
+          "text": "El aprovisionamiento y el ciclo de vida de los nodos EC2 (crear, actualizar y terminar)",
+          "correct": true,
+          "explanation": "Correcto: cada nodo forma parte de un Auto Scaling Group administrado por EKS, sin costo adicional."
+        },
+        {
+          "text": "La escritura de los manifiestos de Kubernetes",
+          "correct": false,
+          "explanation": "Los manifiestos los escribes tú."
+        },
+        {
+          "text": "La migración de bases de datos",
+          "correct": false,
+          "explanation": "No tienen relación con bases de datos."
+        },
+        {
+          "text": "El plano de control",
+          "correct": false,
+          "explanation": "El plano de control siempre lo administra AWS, con o sin node groups."
+        }
+      ],
+      "source": {
+        "title": "Simplify node lifecycle with managed node groups",
+        "url": "https://docs.aws.amazon.com/eks/latest/userguide/managed-node-groups.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "eks-n4",
+      "serviceId": "eks",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "¿Cuánto dura el soporte estándar de una versión menor de Kubernetes en Amazon EKS?",
+      "options": [
+        {
+          "text": "6 meses",
+          "correct": false,
+          "explanation": "Es menos que el plazo real."
+        },
+        {
+          "text": "5 años",
+          "correct": false,
+          "explanation": "No hay soporte tan largo."
+        },
+        {
+          "text": "Para siempre",
+          "correct": false,
+          "explanation": "Las versiones tienen un ciclo de vida con fin de soporte."
+        },
+        {
+          "text": "14 meses, seguidos de 12 meses de soporte extendido",
+          "correct": true,
+          "explanation": "Correcto: 14 meses de soporte estándar más 12 de soporte extendido."
+        }
+      ],
+      "source": {
+        "title": "Understand the Kubernetes version lifecycle on EKS",
+        "url": "https://docs.aws.amazon.com/eks/latest/userguide/kubernetes-versions.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "eks-n5",
+      "serviceId": "eks",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "Una empresa ya usa Kubernetes en su centro de datos y quiere ejecutar las mismas aplicaciones en AWS con las herramientas estándar (kubectl, Helm). ¿Qué servicio encaja mejor?",
+      "options": [
+        {
+          "text": "Amazon ECS",
+          "correct": false,
+          "explanation": "Es un orquestador propio de AWS, no Kubernetes."
+        },
+        {
+          "text": "Amazon EKS",
+          "correct": true,
+          "explanation": "Correcto: EKS ejecuta Kubernetes estándar y mantiene la portabilidad con otros entornos."
+        },
+        {
+          "text": "AWS Lambda",
+          "correct": false,
+          "explanation": "Lambda ejecuta funciones, no clústeres de Kubernetes."
+        },
+        {
+          "text": "AWS Elastic Beanstalk",
+          "correct": false,
+          "explanation": "No es Kubernetes."
+        }
+      ],
+      "source": {
+        "title": "Understand the Kubernetes version lifecycle on EKS",
+        "url": "https://docs.aws.amazon.com/eks/latest/userguide/kubernetes-versions.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "eks-m1",
+      "serviceId": "eks",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Los pods de un clúster EKS con nodos EC2 necesitan permisos de IAM distintos según la aplicación. El equipo busca la forma más simple, sin configurar un proveedor OIDC. ¿Qué debe usar?",
+      "options": [
+        {
+          "text": "EKS Pod Identity",
+          "correct": true,
+          "explanation": "Correcto: asocia un rol de IAM a una service account y es más simple que IRSA porque no usa proveedores OIDC."
+        },
+        {
+          "text": "El rol de IAM del nodo para todos los pods",
+          "correct": false,
+          "explanation": "Todos los pods del nodo tendrían los mismos permisos (no es mínimo privilegio)."
+        },
+        {
+          "text": "Access keys en un Secret de Kubernetes",
+          "correct": false,
+          "explanation": "Son credenciales de larga duración."
+        },
+        {
+          "text": "Security groups por pod",
+          "correct": false,
+          "explanation": "Controlan la red, no los permisos de IAM."
+        }
+      ],
+      "source": {
+        "title": "Learn how EKS Pod Identity grants pods access to AWS services",
+        "url": "https://docs.aws.amazon.com/eks/latest/userguide/pod-identities.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "eks-m2",
+      "serviceId": "eks",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "La factura de un clúster EKS subió de USD 0,10 a USD 0,60 por hora sin cambios en los nodos. ¿Cuál es la causa más probable?",
+      "options": [
+        {
+          "text": "Se activó EKS Auto Mode",
+          "correct": false,
+          "explanation": "Auto Mode cobra por las instancias que administra, no cambia la tarifa del clúster."
+        },
+        {
+          "text": "Se agregaron más pods",
+          "correct": false,
+          "explanation": "La tarifa del clúster no depende de la cantidad de pods."
+        },
+        {
+          "text": "La versión de Kubernetes del clúster pasó a soporte extendido",
+          "correct": true,
+          "explanation": "Correcto: el soporte extendido cuesta USD 0,60 por clúster por hora; actualizar la versión vuelve al soporte estándar."
+        },
+        {
+          "text": "Se usaron managed node groups",
+          "correct": false,
+          "explanation": "Los managed node groups no tienen costo adicional."
+        }
+      ],
+      "source": {
+        "title": "Amazon EKS Pricing",
+        "url": "https://aws.amazon.com/eks/pricing/"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "eks-m3",
+      "serviceId": "eks",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Un equipo quiere que AWS administre también los nodos, su escalado, la red de pods, la integración con balanceadores y los drivers de almacenamiento del clúster. ¿Qué opción de EKS cumple?",
+      "options": [
+        {
+          "text": "Nodos autogestionados",
+          "correct": false,
+          "explanation": "Son los que más administración requieren."
+        },
+        {
+          "text": "Managed node groups con Cluster Autoscaler instalado a mano",
+          "correct": false,
+          "explanation": "Siguen siendo componentes que el equipo instala y opera."
+        },
+        {
+          "text": "EKS Anywhere",
+          "correct": false,
+          "explanation": "Sirve para correr EKS fuera de AWS, no para delegar la operación."
+        },
+        {
+          "text": "EKS Auto Mode",
+          "correct": true,
+          "explanation": "Correcto: AWS administra el escalado de cómputo, la red de pods, la integración con ELB y los drivers de almacenamiento."
+        }
+      ],
+      "source": {
+        "title": "Automate cluster infrastructure with EKS Auto Mode",
+        "url": "https://docs.aws.amazon.com/eks/latest/userguide/automode.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "eks-m4",
+      "serviceId": "eks",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Un equipo quiere ejecutar un agente de logs como DaemonSet en todos sus pods de EKS que corren en Fargate. ¿Qué ocurre?",
+      "options": [
+        {
+          "text": "Funciona igual que en nodos EC2",
+          "correct": false,
+          "explanation": "Fargate en EKS no soporta DaemonSets."
+        },
+        {
+          "text": "Los DaemonSets no se soportan en Fargate: hay que ejecutar el agente como contenedor sidecar en los pods",
+          "correct": true,
+          "explanation": "Correcto: AWS recomienda reconvertir el daemon en un sidecar."
+        },
+        {
+          "text": "Se debe usar un privileged container",
+          "correct": false,
+          "explanation": "Los contenedores privilegiados tampoco se soportan en Fargate."
+        },
+        {
+          "text": "Hay que montar un volumen EBS compartido",
+          "correct": false,
+          "explanation": "No se pueden montar volúmenes EBS en pods de Fargate."
+        }
+      ],
+      "source": {
+        "title": "Simplify compute management with AWS Fargate",
+        "url": "https://docs.aws.amazon.com/eks/latest/userguide/fargate.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "eks-m5",
+      "serviceId": "eks",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Unos pods de EKS que corren en Fargate necesitan acceder a DynamoDB con permisos de IAM. ¿Qué mecanismo deben usar?",
+      "options": [
+        {
+          "text": "IAM roles for service accounts (IRSA)",
+          "correct": true,
+          "explanation": "Correcto: EKS Pod Identity no soporta pods en Fargate, y el servicio de metadatos tampoco está disponible; se usa IRSA."
+        },
+        {
+          "text": "EKS Pod Identity",
+          "correct": false,
+          "explanation": "No soporta pods que corren en Fargate."
+        },
+        {
+          "text": "El servicio de metadatos de la instancia (IMDS)",
+          "correct": false,
+          "explanation": "IMDS no está disponible para pods en Fargate."
+        },
+        {
+          "text": "Access keys en el código",
+          "correct": false,
+          "explanation": "Son credenciales de larga duración e inseguras."
+        }
+      ],
+      "source": {
+        "title": "Simplify compute management with AWS Fargate",
+        "url": "https://docs.aws.amazon.com/eks/latest/userguide/fargate.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "eks-h1",
+      "serviceId": "eks",
+      "difficulty": "hard",
+      "type": "single",
+      "prompt": "Un equipo quiere reducir costos ejecutando parte de sus pods de EKS en capacidad Spot, con reemplazo proactivo de las instancias con riesgo de interrupción y la menor operación posible. ¿Qué solución cumple?",
+      "options": [
+        {
+          "text": "Perfiles de Fargate con Fargate Spot",
+          "correct": false,
+          "explanation": "EKS no soporta Fargate Spot."
+        },
+        {
+          "text": "Nodos autogestionados con Spot y scripts propios de drenado",
+          "correct": false,
+          "explanation": "Funciona, pero con mucha más operación."
+        },
+        {
+          "text": "Un managed node group con capacity type Spot",
+          "correct": true,
+          "explanation": "Correcto: usa Capacity Rebalancing y la estrategia price-capacity-optimized en versiones recientes de Kubernetes."
+        },
+        {
+          "text": "Instancias On-Demand con descuento manual",
+          "correct": false,
+          "explanation": "No existe ese mecanismo."
+        }
+      ],
+      "source": {
+        "title": "Simplify node lifecycle with managed node groups",
+        "url": "https://docs.aws.amazon.com/eks/latest/userguide/managed-node-groups.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "eks-h2",
+      "serviceId": "eks",
+      "difficulty": "hard",
+      "type": "single",
+      "prompt": "Una carga de machine learning en EKS necesita GPU y algunos contenedores privilegiados. El equipo prefería Fargate para no administrar nodos. ¿Qué debe hacer?",
+      "options": [
+        {
+          "text": "Usar Fargate y solicitar GPU en el pod",
+          "correct": false,
+          "explanation": "Fargate no ofrece GPU."
+        },
+        {
+          "text": "Ejecutar esos pods en nodos EC2 con GPU (por ejemplo, un managed node group)",
+          "correct": true,
+          "explanation": "Correcto: los contenedores privilegiados y las GPU no se soportan en Fargate."
+        },
+        {
+          "text": "Usar Fargate con un perfil Windows",
+          "correct": false,
+          "explanation": "No resuelve la GPU y Fargate en EKS no soporta Windows."
+        },
+        {
+          "text": "Usar Fargate Spot",
+          "correct": false,
+          "explanation": "EKS no soporta Fargate Spot y tampoco resuelve la GPU."
+        }
+      ],
+      "source": {
+        "title": "Simplify compute management with AWS Fargate",
+        "url": "https://docs.aws.amazon.com/eks/latest/userguide/fargate.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "eks-h3",
+      "serviceId": "eks",
+      "difficulty": "hard",
+      "type": "single",
+      "prompt": "Una empresa tiene 20 clústeres EKS con versiones antiguas de Kubernetes y quiere reducir el costo de los planos de control. ¿Qué acción tiene el mayor impacto?",
+      "options": [
+        {
+          "text": "Pasar los nodos a Spot",
+          "correct": false,
+          "explanation": "Reduce el costo de los nodos, no el de los planos de control."
+        },
+        {
+          "text": "Reducir la cantidad de pods por clúster",
+          "correct": false,
+          "explanation": "La tarifa del clúster no depende de los pods."
+        },
+        {
+          "text": "Desactivar los managed node groups",
+          "correct": false,
+          "explanation": "No tienen costo adicional."
+        },
+        {
+          "text": "Actualizar los clústeres a versiones en soporte estándar",
+          "correct": true,
+          "explanation": "Correcto: el soporte extendido cuesta USD 0,60 por hora frente a USD 0,10 del estándar, por cada clúster."
+        }
+      ],
+      "source": {
+        "title": "Amazon EKS Pricing",
+        "url": "https://aws.amazon.com/eks/pricing/"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "eks-h4",
+      "serviceId": "eks",
+      "difficulty": "hard",
+      "type": "multiple",
+      "prompt": "¿Qué dos afirmaciones sobre ejecutar pods de Amazon EKS en AWS Fargate son correctas? (Elige 2)",
+      "options": [
+        {
+          "text": "Los DaemonSets no se soportan",
+          "correct": true,
+          "explanation": "Correcto: hay que usar contenedores sidecar."
+        },
+        {
+          "text": "Se puede usar Fargate Spot para ahorrar",
+          "correct": false,
+          "explanation": "EKS no soporta Fargate Spot."
+        },
+        {
+          "text": "Los pods en Fargate solo se soportan en subredes privadas",
+          "correct": true,
+          "explanation": "Correcto: la documentación indica que los pods de Fargate solo se soportan en subredes privadas."
+        },
+        {
+          "text": "Se pueden montar volúmenes EBS en los pods",
+          "correct": false,
+          "explanation": "No se pueden montar volúmenes EBS en pods de Fargate."
+        },
+        {
+          "text": "Se pueden pedir GPU en el manifiesto",
+          "correct": false,
+          "explanation": "Fargate no ofrece GPU."
+        }
+      ],
+      "source": {
+        "title": "Simplify compute management with AWS Fargate",
+        "url": "https://docs.aws.amazon.com/eks/latest/userguide/fargate.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "eks-h5",
+      "serviceId": "eks",
+      "difficulty": "hard",
+      "type": "multiple",
+      "prompt": "Un equipo pequeño quiere reducir al mínimo la operación de la infraestructura de su clúster EKS. ¿Qué dos opciones lo ayudan? (Elige 2)",
+      "options": [
+        {
+          "text": "Instalar Kubernetes a mano en instancias EC2",
+          "correct": false,
+          "explanation": "Aumenta la operación: el equipo administraría también el plano de control."
+        },
+        {
+          "text": "Usar EKS Auto Mode",
+          "correct": true,
+          "explanation": "Correcto: AWS administra cómputo, red, balanceo y almacenamiento del clúster."
+        },
+        {
+          "text": "Usar nodos autogestionados con AMI propias",
+          "correct": false,
+          "explanation": "Requiere parchear y actualizar los nodos manualmente."
+        },
+        {
+          "text": "Usar managed node groups en lugar de nodos autogestionados",
+          "correct": true,
+          "explanation": "Correcto: automatizan el aprovisionamiento y el ciclo de vida de los nodos."
+        },
+        {
+          "text": "Mantener versiones antiguas en soporte extendido",
+          "correct": false,
+          "explanation": "No reduce la operación y aumenta el costo."
+        }
+      ],
+      "source": {
+        "title": "Automate cluster infrastructure with EKS Auto Mode",
+        "url": "https://docs.aws.amazon.com/eks/latest/userguide/automode.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "fargate-n1",
+      "serviceId": "fargate",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "¿Qué es AWS Fargate?",
+      "options": [
+        {
+          "text": "Un motor de cómputo serverless para contenedores que se usa con Amazon ECS o Amazon EKS",
+          "correct": true,
+          "explanation": "Correcto: ejecuta tasks o pods sin servidores que administrar."
+        },
+        {
+          "text": "Un orquestador de contenedores que reemplaza a ECS",
+          "correct": false,
+          "explanation": "Fargate no orquesta: necesita ECS o EKS."
+        },
+        {
+          "text": "Un registro de imágenes de contenedor",
+          "correct": false,
+          "explanation": "Ese es Amazon ECR."
+        },
+        {
+          "text": "Un tipo de instancia EC2",
+          "correct": false,
+          "explanation": "Fargate no expone instancias."
+        }
+      ],
+      "source": {
+        "title": "Amazon ECS task definition differences for Fargate",
+        "url": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/fargate-tasks-services.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "fargate-n2",
+      "serviceId": "fargate",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "¿Cómo se factura AWS Fargate para contenedores Linux?",
+      "options": [
+        {
+          "text": "Por hora completa por task",
+          "correct": false,
+          "explanation": "Se factura por segundo."
+        },
+        {
+          "text": "Por cantidad de solicitudes recibidas",
+          "correct": false,
+          "explanation": "Ese es el modelo de Lambda."
+        },
+        {
+          "text": "Por vCPU y memoria asignadas, por segundo, con un mínimo de 1 minuto",
+          "correct": true,
+          "explanation": "Correcto: se calcula por segundo con un mínimo de un minuto (5 minutos en Windows)."
+        },
+        {
+          "text": "Una tarifa fija por clúster",
+          "correct": false,
+          "explanation": "No hay tarifa por clúster en Fargate."
+        }
+      ],
+      "source": {
+        "title": "AWS Fargate Pricing",
+        "url": "https://aws.amazon.com/fargate/pricing/"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "fargate-n3",
+      "serviceId": "fargate",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "¿Cuánto almacenamiento efímero tiene por defecto una task de Fargate (plataforma 1.4.0 o posterior)?",
+      "options": [
+        {
+          "text": "1 GiB",
+          "correct": false,
+          "explanation": "Es mucho menos que el valor real."
+        },
+        {
+          "text": "20 GiB",
+          "correct": true,
+          "explanation": "Correcto: al menos 20 GiB por defecto, ampliables hasta 200 GiB."
+        },
+        {
+          "text": "200 GiB",
+          "correct": false,
+          "explanation": "Ese es el máximo configurable, no el valor por defecto."
+        },
+        {
+          "text": "No tiene almacenamiento local",
+          "correct": false,
+          "explanation": "Sí tiene almacenamiento efímero."
+        }
+      ],
+      "source": {
+        "title": "Fargate task ephemeral storage for Amazon ECS",
+        "url": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/fargate-task-storage.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "fargate-n4",
+      "serviceId": "fargate",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "¿Hasta cuánto descuento ofrece Fargate Spot frente al precio normal de Fargate?",
+      "options": [
+        {
+          "text": "Hasta 10%",
+          "correct": false,
+          "explanation": "El descuento es mucho mayor."
+        },
+        {
+          "text": "Hasta 30%",
+          "correct": false,
+          "explanation": "El descuento es mayor."
+        },
+        {
+          "text": "Hasta 99%",
+          "correct": false,
+          "explanation": "No es el valor publicado."
+        },
+        {
+          "text": "Hasta 70%",
+          "correct": true,
+          "explanation": "Correcto: Fargate Spot usa capacidad sobrante con hasta 70% de descuento."
+        }
+      ],
+      "source": {
+        "title": "AWS Fargate Pricing",
+        "url": "https://aws.amazon.com/fargate/pricing/"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "fargate-n5",
+      "serviceId": "fargate",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "Un equipo necesita entrenar un modelo con GPU usando contenedores. ¿Puede usar Fargate?",
+      "options": [
+        {
+          "text": "No: Fargate no ofrece GPU; hay que usar instancias EC2 con GPU",
+          "correct": true,
+          "explanation": "Correcto: las GPU no están disponibles en Fargate."
+        },
+        {
+          "text": "Sí, eligiendo una task de 16 vCPU",
+          "correct": false,
+          "explanation": "Más vCPU no agrega una GPU."
+        },
+        {
+          "text": "Sí, con Fargate Spot",
+          "correct": false,
+          "explanation": "Fargate Spot tampoco ofrece GPU."
+        },
+        {
+          "text": "Sí, activando el modo privilegiado",
+          "correct": false,
+          "explanation": "Fargate no soporta contenedores privilegiados en EKS ni ofrece GPU."
+        }
+      ],
+      "source": {
+        "title": "Simplify compute management with AWS Fargate",
+        "url": "https://docs.aws.amazon.com/eks/latest/userguide/fargate.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "fargate-m1",
+      "serviceId": "fargate",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "¿Cuál es hoy el tamaño máximo de una task de Fargate en Linux?",
+      "options": [
+        {
+          "text": "4 vCPU y 30 GB",
+          "correct": false,
+          "explanation": "Ese es el máximo para Windows."
+        },
+        {
+          "text": "32 vCPU y 244 GB",
+          "correct": true,
+          "explanation": "Correcto: con la plataforma Linux 1.4.0 o posterior, el tamaño máximo es 32 vCPU con hasta 244 GB."
+        },
+        {
+          "text": "16 vCPU y 120 GB",
+          "correct": false,
+          "explanation": "Fue el máximo anterior; hoy existe la opción de 32 vCPU."
+        },
+        {
+          "text": "2 vCPU y 4 GB",
+          "correct": false,
+          "explanation": "Es mucho menos que el máximo."
+        }
+      ],
+      "source": {
+        "title": "Amazon ECS task definition differences for Fargate",
+        "url": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/fargate-tasks-services.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "fargate-m2",
+      "serviceId": "fargate",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Un equipo quiere ejecutar contenedores Windows en Fargate. ¿Qué requisito debe cumplir?",
+      "options": [
+        {
+          "text": "Usar la arquitectura ARM64",
+          "correct": false,
+          "explanation": "Windows en Fargate requiere X86_64."
+        },
+        {
+          "text": "Usar Amazon EKS",
+          "correct": false,
+          "explanation": "Windows en Fargate está disponible solo con Amazon ECS."
+        },
+        {
+          "text": "Usar tasks de 32 vCPU",
+          "correct": false,
+          "explanation": "Windows admite como máximo 4 vCPU por task."
+        },
+        {
+          "text": "Usar la arquitectura X86_64 con Amazon ECS",
+          "correct": true,
+          "explanation": "Correcto: los contenedores Windows en Fargate requieren X86_64 y están disponibles solo para ECS."
+        }
+      ],
+      "source": {
+        "title": "Amazon ECS task definition differences for Fargate",
+        "url": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/fargate-tasks-services.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "fargate-m3",
+      "serviceId": "fargate",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "¿Cómo avisa Fargate Spot que va a interrumpir una task?",
+      "options": [
+        {
+          "text": "Con un aviso de dos minutos: un evento en EventBridge y la señal SIGTERM a la task",
+          "correct": true,
+          "explanation": "Correcto: la task tiene dos minutos para terminar ordenadamente."
+        },
+        {
+          "text": "Con un correo al dueño de la cuenta",
+          "correct": false,
+          "explanation": "No se avisa por correo."
+        },
+        {
+          "text": "Sin aviso",
+          "correct": false,
+          "explanation": "Sí hay aviso de dos minutos."
+        },
+        {
+          "text": "Con 24 horas de anticipación",
+          "correct": false,
+          "explanation": "El aviso es de dos minutos."
+        }
+      ],
+      "source": {
+        "title": "Amazon ECS clusters for Fargate",
+        "url": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/fargate-capacity-providers.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "fargate-m4",
+      "serviceId": "fargate",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Una aplicación en contenedores Linux sobre Fargate es compatible con ARM. ¿Qué cambio puede reducir su costo sin cambiar de servicio?",
+      "options": [
+        {
+          "text": "Pasar a Windows",
+          "correct": false,
+          "explanation": "No reduce costos y Windows tiene un mínimo de facturación mayor."
+        },
+        {
+          "text": "Aumentar la memoria de la task",
+          "correct": false,
+          "explanation": "Aumenta el costo."
+        },
+        {
+          "text": "Usar la arquitectura ARM64 (Graviton) en la task definition",
+          "correct": true,
+          "explanation": "Correcto: Fargate admite ARM64 para contenedores Linux, y la página de precios de Fargate tiene tarifas propias para Arm."
+        },
+        {
+          "text": "Cambiar a Dedicated Hosts",
+          "correct": false,
+          "explanation": "No aplican a Fargate."
+        }
+      ],
+      "source": {
+        "title": "Amazon ECS task definition differences for Fargate",
+        "url": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/fargate-tasks-services.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "fargate-m5",
+      "serviceId": "fargate",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Una empresa ejecuta cargas estables en Fargate todo el año. ¿Qué opción de precio aplica para reducir su costo?",
+      "options": [
+        {
+          "text": "Reserved Instances de EC2",
+          "correct": false,
+          "explanation": "Aplican a EC2, no a Fargate."
+        },
+        {
+          "text": "Un Compute Savings Plan",
+          "correct": true,
+          "explanation": "Correcto: los Compute Savings Plans también aplican al uso de Fargate y Lambda."
+        },
+        {
+          "text": "Dedicated Hosts",
+          "correct": false,
+          "explanation": "No aplican a Fargate."
+        },
+        {
+          "text": "No hay descuentos para Fargate",
+          "correct": false,
+          "explanation": "Sí los hay: Savings Plans y Fargate Spot."
+        }
+      ],
+      "source": {
+        "title": "Compute Savings Plans",
+        "url": "https://aws.amazon.com/savingsplans/compute-pricing/"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "fargate-h1",
+      "serviceId": "fargate",
+      "difficulty": "hard",
+      "type": "single",
+      "prompt": "Un equipo quiere ejecutar pods de Amazon EKS en Spot al menor costo y con la menor operación posible. Alguien propone Fargate Spot. ¿Qué debe hacer?",
+      "options": [
+        {
+          "text": "Usar managed node groups con capacity type Spot, porque EKS no soporta Fargate Spot",
+          "correct": true,
+          "explanation": "Correcto: Fargate Spot solo está disponible para ECS."
+        },
+        {
+          "text": "Crear un perfil de Fargate con Fargate Spot",
+          "correct": false,
+          "explanation": "EKS no soporta Fargate Spot."
+        },
+        {
+          "text": "Usar Fargate On-Demand y pedir descuento",
+          "correct": false,
+          "explanation": "No existe ese mecanismo."
+        },
+        {
+          "text": "Migrar a Windows en Fargate",
+          "correct": false,
+          "explanation": "EKS en Fargate tampoco soporta Windows."
+        }
+      ],
+      "source": {
+        "title": "Simplify compute management with AWS Fargate",
+        "url": "https://docs.aws.amazon.com/eks/latest/userguide/fargate.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "fargate-h2",
+      "serviceId": "fargate",
+      "difficulty": "hard",
+      "type": "single",
+      "prompt": "Una task de Fargate necesita 90 segundos para cerrar su trabajo en curso cuando Fargate Spot la interrumpe, pero hoy se corta antes. ¿Qué debe cambiar?",
+      "options": [
+        {
+          "text": "Nada: Fargate Spot siempre espera 10 minutos",
+          "correct": false,
+          "explanation": "El aviso es de dos minutos."
+        },
+        {
+          "text": "Aumentar la memoria de la task",
+          "correct": false,
+          "explanation": "No cambia el tiempo de apagado."
+        },
+        {
+          "text": "Manejar SIGTERM y subir stopTimeout (por defecto 30 segundos) a un valor de hasta 120 segundos",
+          "correct": true,
+          "explanation": "Correcto: stopTimeout por defecto es 30 s y en Fargate Spot puede llegar a 120 s."
+        },
+        {
+          "text": "Pasar a Windows para tener más tiempo",
+          "correct": false,
+          "explanation": "Fargate Spot no está disponible para Windows."
+        }
+      ],
+      "source": {
+        "title": "Amazon ECS clusters for Fargate",
+        "url": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/fargate-capacity-providers.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "fargate-h3",
+      "serviceId": "fargate",
+      "difficulty": "hard",
+      "type": "single",
+      "prompt": "Una task de Fargate debe procesar un archivo temporal de 180 GiB en disco local. ¿Qué opción es correcta?",
+      "options": [
+        {
+          "text": "No es posible: Fargate solo tiene 20 GiB",
+          "correct": false,
+          "explanation": "20 GiB es el valor por defecto."
+        },
+        {
+          "text": "Usar una task de 32 vCPU, que incluye más disco",
+          "correct": false,
+          "explanation": "El disco no depende de la CPU."
+        },
+        {
+          "text": "Montar el disco del host",
+          "correct": false,
+          "explanation": "No hay acceso al host en Fargate."
+        },
+        {
+          "text": "Configurar ephemeralStorage en 180 GiB (el máximo es 200 GiB)",
+          "correct": true,
+          "explanation": "Correcto: el almacenamiento efímero se amplía con ephemeralStorage hasta 200 GiB."
+        }
+      ],
+      "source": {
+        "title": "Fargate task ephemeral storage for Amazon ECS",
+        "url": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/fargate-task-storage.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "fargate-h4",
+      "serviceId": "fargate",
+      "difficulty": "hard",
+      "type": "multiple",
+      "prompt": "¿Qué dos afirmaciones sobre AWS Fargate con Amazon EKS son correctas? (Elige 2)",
+      "options": [
+        {
+          "text": "Los pods en Fargate solo se soportan en subredes privadas",
+          "correct": true,
+          "explanation": "Correcto: es una limitación documentada de Fargate en EKS."
+        },
+        {
+          "text": "Soporta pods ARM y Windows",
+          "correct": false,
+          "explanation": "En EKS, Fargate no soporta Arm ni Windows."
+        },
+        {
+          "text": "Los balanceadores ALB y NLB solo pueden usar targets de tipo IP",
+          "correct": true,
+          "explanation": "Correcto: con Fargate se usan targets IP, no de tipo instancia."
+        },
+        {
+          "text": "Soporta DaemonSets",
+          "correct": false,
+          "explanation": "No soporta DaemonSets; se usan sidecars."
+        },
+        {
+          "text": "Soporta Fargate Spot",
+          "correct": false,
+          "explanation": "EKS no soporta Fargate Spot."
+        }
+      ],
+      "source": {
+        "title": "Simplify compute management with AWS Fargate",
+        "url": "https://docs.aws.amazon.com/eks/latest/userguide/fargate.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "fargate-h5",
+      "serviceId": "fargate",
+      "difficulty": "hard",
+      "type": "multiple",
+      "prompt": "Una empresa ejecuta en ECS sobre Fargate una API estable 24/7 y trabajos batch que toleran interrupciones. ¿Qué dos acciones reducen el costo? (Elige 2)",
+      "options": [
+        {
+          "text": "Un Compute Savings Plan para la API estable",
+          "correct": true,
+          "explanation": "Correcto: aplica al uso de Fargate."
+        },
+        {
+          "text": "Reserved Instances para las tasks",
+          "correct": false,
+          "explanation": "Las Reserved Instances son de EC2."
+        },
+        {
+          "text": "Fargate Spot para los trabajos batch",
+          "correct": true,
+          "explanation": "Correcto: hasta 70% de descuento para cargas tolerantes a interrupciones."
+        },
+        {
+          "text": "Aumentar el tamaño de todas las tasks",
+          "correct": false,
+          "explanation": "Aumenta el costo."
+        },
+        {
+          "text": "Usar Windows para la API",
+          "correct": false,
+          "explanation": "Windows tiene un mínimo de facturación mayor y no reduce costos."
+        }
+      ],
+      "source": {
+        "title": "AWS Fargate Pricing",
+        "url": "https://aws.amazon.com/fargate/pricing/"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "autoscaling-n1",
+      "serviceId": "autoscaling",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "¿Qué tipo de política de escalado dinámico recomienda AWS para la mayoría de los casos en EC2 Auto Scaling?",
+      "options": [
+        {
+          "text": "Simple scaling",
+          "correct": false,
+          "explanation": "Funciona, pero AWS recomienda otra."
+        },
+        {
+          "text": "Target tracking",
+          "correct": true,
+          "explanation": "Correcto: AWS recomienda target tracking con una métrica que cambie en proporción inversa a la capacidad."
+        },
+        {
+          "text": "Escalado manual",
+          "correct": false,
+          "explanation": "No es dinámico."
+        },
+        {
+          "text": "Step scaling para todo",
+          "correct": false,
+          "explanation": "Es útil en algunos casos, pero no es la recomendación general."
+        }
+      ],
+      "source": {
+        "title": "Dynamic scaling for Amazon EC2 Auto Scaling",
+        "url": "https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-scale-based-on-demand.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "autoscaling-n2",
+      "serviceId": "autoscaling",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "¿Qué tipo de health check usa por defecto un Auto Scaling Group?",
+      "options": [
+        {
+          "text": "Health checks de Elastic Load Balancing",
+          "correct": false,
+          "explanation": "Hay que activarlos; por defecto se ignoran."
+        },
+        {
+          "text": "Health checks de Route 53",
+          "correct": false,
+          "explanation": "No son el tipo por defecto."
+        },
+        {
+          "text": "Los status checks de Amazon EC2",
+          "correct": true,
+          "explanation": "Correcto: es el tipo de health check por defecto de un Auto Scaling Group."
+        },
+        {
+          "text": "Ninguno",
+          "correct": false,
+          "explanation": "Siempre hay al menos los status checks de EC2."
+        }
+      ],
+      "source": {
+        "title": "Health checks for instances in an Auto Scaling group",
+        "url": "https://docs.aws.amazon.com/autoscaling/ec2/userguide/health-checks-overview.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "autoscaling-n3",
+      "serviceId": "autoscaling",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "En un Auto Scaling Group con mínimo 2, deseado 4 y máximo 10, ¿cuántas instancias intenta mantener en este momento?",
+      "options": [
+        {
+          "text": "4, la capacidad deseada",
+          "correct": true,
+          "explanation": "Correcto: el grupo mantiene la capacidad deseada, siempre entre el mínimo y el máximo."
+        },
+        {
+          "text": "2, el mínimo",
+          "correct": false,
+          "explanation": "El mínimo es el piso, no el objetivo actual."
+        },
+        {
+          "text": "10, el máximo",
+          "correct": false,
+          "explanation": "El máximo es el techo."
+        },
+        {
+          "text": "6, el promedio",
+          "correct": false,
+          "explanation": "No se usa un promedio."
+        }
+      ],
+      "source": {
+        "title": "Dynamic scaling for Amazon EC2 Auto Scaling",
+        "url": "https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-scale-based-on-demand.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "autoscaling-n4",
+      "serviceId": "autoscaling",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "Un equipo publicó una nueva AMI y quiere reemplazar de forma gradual las instancias de su Auto Scaling Group. ¿Qué función debe usar?",
+      "options": [
+        {
+          "text": "Lifecycle hooks",
+          "correct": false,
+          "explanation": "Ejecutan acciones al lanzar o terminar instancias, pero no reemplazan el grupo."
+        },
+        {
+          "text": "Warm pools",
+          "correct": false,
+          "explanation": "Mantienen instancias preinicializadas; no actualizan la AMI."
+        },
+        {
+          "text": "Scheduled scaling",
+          "correct": false,
+          "explanation": "Cambia la capacidad por horario."
+        },
+        {
+          "text": "Instance refresh",
+          "correct": true,
+          "explanation": "Correcto: reemplaza las instancias en lotes cuando cambia la configuración, como una AMI nueva."
+        }
+      ],
+      "source": {
+        "title": "Use an instance refresh to update instances in an Auto Scaling group",
+        "url": "https://docs.aws.amazon.com/autoscaling/ec2/userguide/instance-refresh-overview.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "autoscaling-n5",
+      "serviceId": "autoscaling",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "Una aplicación tiene mucho tráfico en horario laboral y poco de noche y los fines de semana, siempre con el mismo patrón. ¿Qué tipo de escalado se anticipa a ese patrón?",
+      "options": [
+        {
+          "text": "Simple scaling",
+          "correct": false,
+          "explanation": "Reacciona después de que sube la carga."
+        },
+        {
+          "text": "Predictive scaling",
+          "correct": true,
+          "explanation": "Correcto: analiza el historial para detectar patrones diarios o semanales y pronosticar la capacidad."
+        },
+        {
+          "text": "Escalado manual",
+          "correct": false,
+          "explanation": "No se anticipa a nada."
+        },
+        {
+          "text": "Health checks de ELB",
+          "correct": false,
+          "explanation": "No escalan la capacidad."
+        }
+      ],
+      "source": {
+        "title": "Predictive scaling for Amazon EC2 Auto Scaling",
+        "url": "https://docs.aws.amazon.com/autoscaling/ec2/userguide/ec2-auto-scaling-predictive-scaling.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "autoscaling-m1",
+      "serviceId": "autoscaling",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Las instancias de un Auto Scaling Group pasan los status checks de EC2, pero la aplicación devuelve errores y el grupo no las reemplaza. ¿Qué se debe hacer?",
+      "options": [
+        {
+          "text": "Activar los health checks de Elastic Load Balancing en el grupo",
+          "correct": true,
+          "explanation": "Correcto: por defecto, Auto Scaling ignora los resultados de los health checks del balanceador."
+        },
+        {
+          "text": "Aumentar el tamaño de las instancias",
+          "correct": false,
+          "explanation": "No arregla la detección de instancias no sanas."
+        },
+        {
+          "text": "Desactivar los health checks",
+          "correct": false,
+          "explanation": "Empeoraría el problema."
+        },
+        {
+          "text": "Usar simple scaling",
+          "correct": false,
+          "explanation": "El tipo de política de escalado no afecta los health checks."
+        }
+      ],
+      "source": {
+        "title": "Health checks for instances in an Auto Scaling group",
+        "url": "https://docs.aws.amazon.com/autoscaling/ec2/userguide/health-checks-overview.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "autoscaling-m2",
+      "serviceId": "autoscaling",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Las instancias nuevas de un Auto Scaling Group se marcan como no sanas y se terminan mientras todavía están arrancando. ¿Qué configuración lo evita?",
+      "options": [
+        {
+          "text": "Un cooldown más corto",
+          "correct": false,
+          "explanation": "No evita que se evalúe la salud durante el arranque."
+        },
+        {
+          "text": "Más capacidad máxima",
+          "correct": false,
+          "explanation": "No cambia la evaluación de salud."
+        },
+        {
+          "text": "Desactivar el escalado",
+          "correct": false,
+          "explanation": "Elimina la elasticidad."
+        },
+        {
+          "text": "Un health check grace period adecuado al tiempo de arranque",
+          "correct": true,
+          "explanation": "Correcto: el grace period da tiempo a la instancia antes de evaluar su salud (en la consola el valor por defecto es 300 s)."
+        }
+      ],
+      "source": {
+        "title": "Set the health check grace period for an Auto Scaling group",
+        "url": "https://docs.aws.amazon.com/autoscaling/ec2/userguide/health-check-grace-period.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "autoscaling-m3",
+      "serviceId": "autoscaling",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Una aplicación tarda 15 minutos en arrancar y escala demasiado lento ante los picos. ¿Qué función de EC2 Auto Scaling reduce esa latencia?",
+      "options": [
+        {
+          "text": "Instance refresh",
+          "correct": false,
+          "explanation": "Reemplaza instancias; no acelera el escalado."
+        },
+        {
+          "text": "Termination policies",
+          "correct": false,
+          "explanation": "Deciden qué instancia terminar."
+        },
+        {
+          "text": "Warm pools de instancias preinicializadas",
+          "correct": true,
+          "explanation": "Correcto: un warm pool mantiene instancias ya inicializadas (detenidas o hibernadas) listas para entrar al grupo."
+        },
+        {
+          "text": "Bajar la capacidad mínima a cero",
+          "correct": false,
+          "explanation": "Haría el escalado todavía más lento."
+        }
+      ],
+      "source": {
+        "title": "Decrease latency for applications with long boot times using warm pools",
+        "url": "https://docs.aws.amazon.com/autoscaling/ec2/userguide/ec2-auto-scaling-warm-pools.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "autoscaling-m4",
+      "serviceId": "autoscaling",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Antes de que una instancia sea terminada por un scale-in, el equipo necesita copiar sus logs a S3. ¿Qué debe usar?",
+      "options": [
+        {
+          "text": "Un warm pool",
+          "correct": false,
+          "explanation": "No ejecuta acciones antes de terminar."
+        },
+        {
+          "text": "Un lifecycle hook de terminación",
+          "correct": true,
+          "explanation": "Correcto: pausa la instancia (por defecto hasta una hora) para ejecutar una acción personalizada."
+        },
+        {
+          "text": "Un health check grace period",
+          "correct": false,
+          "explanation": "Solo aplica al arranque."
+        },
+        {
+          "text": "Predictive scaling",
+          "correct": false,
+          "explanation": "No ejecuta acciones sobre instancias."
+        }
+      ],
+      "source": {
+        "title": "Amazon EC2 Auto Scaling lifecycle hooks",
+        "url": "https://docs.aws.amazon.com/autoscaling/ec2/userguide/lifecycle-hooks.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "autoscaling-m5",
+      "serviceId": "autoscaling",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Con la termination policy por defecto, ¿qué instancia elige primero un Auto Scaling Group para terminar en un scale-in?",
+      "options": [
+        {
+          "text": "Una de la AZ con más instancias, empezando por las que usan una configuración de lanzamiento antigua",
+          "correct": true,
+          "explanation": "Correcto: primero mantiene el balance entre AZ y luego prioriza las configuraciones desactualizadas."
+        },
+        {
+          "text": "Siempre la instancia más nueva",
+          "correct": false,
+          "explanation": "NewestInstance es una política opcional, no la por defecto."
+        },
+        {
+          "text": "Una instancia al azar de cualquier AZ",
+          "correct": false,
+          "explanation": "El azar solo se usa al final para desempatar."
+        },
+        {
+          "text": "La instancia con más CPU",
+          "correct": false,
+          "explanation": "La CPU no forma parte de la política por defecto."
+        }
+      ],
+      "source": {
+        "title": "Configure termination policies for Amazon EC2 Auto Scaling",
+        "url": "https://docs.aws.amazon.com/autoscaling/ec2/userguide/ec2-auto-scaling-termination-policies.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "autoscaling-h1",
+      "serviceId": "autoscaling",
+      "difficulty": "hard",
+      "type": "single",
+      "prompt": "Un Auto Scaling Group tiene dos políticas de escalado y ambas se activan al mismo tiempo: una pide agregar 2 instancias y la otra 5. ¿Qué hace EC2 Auto Scaling?",
+      "options": [
+        {
+          "text": "Aplica la primera política que se creó",
+          "correct": false,
+          "explanation": "No decide por orden de creación."
+        },
+        {
+          "text": "Suma ambas y agrega 7 instancias",
+          "correct": false,
+          "explanation": "No suma las políticas."
+        },
+        {
+          "text": "Elige la política que da la mayor capacidad: agrega 5",
+          "correct": true,
+          "explanation": "Correcto: ante varias políticas, elige la que da la mayor capacidad tanto al escalar hacia afuera como hacia adentro."
+        },
+        {
+          "text": "No hace nada por el conflicto",
+          "correct": false,
+          "explanation": "Siempre resuelve el conflicto."
+        }
+      ],
+      "source": {
+        "title": "Dynamic scaling for Amazon EC2 Auto Scaling",
+        "url": "https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-scale-based-on-demand.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "autoscaling-h2",
+      "serviceId": "autoscaling",
+      "difficulty": "hard",
+      "type": "single",
+      "prompt": "Un Auto Scaling Group usa instancias Spot y el equipo quiere reemplazar de forma proactiva las que tienen riesgo de interrupción, sin perder capacidad. ¿Qué debe activar?",
+      "options": [
+        {
+          "text": "Un lifecycle hook para impedir la interrupción",
+          "correct": false,
+          "explanation": "Un hook no impide la terminación de una instancia Spot."
+        },
+        {
+          "text": "Capacity Rebalancing",
+          "correct": true,
+          "explanation": "Correcto: lanza un reemplazo al recibir una rebalance recommendation; puede superar temporalmente el máximo hasta un 10% de la capacidad deseada."
+        },
+        {
+          "text": "Scheduled scaling",
+          "correct": false,
+          "explanation": "No responde a señales de riesgo de interrupción."
+        },
+        {
+          "text": "Un warm pool con instancias Spot",
+          "correct": false,
+          "explanation": "Los warm pools no soportan Spot en grupos con instancias mixtas."
+        }
+      ],
+      "source": {
+        "title": "Capacity Rebalancing in Auto Scaling to replace at-risk Spot Instances",
+        "url": "https://docs.aws.amazon.com/autoscaling/ec2/userguide/ec2-auto-scaling-capacity-rebalancing.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "autoscaling-h3",
+      "serviceId": "autoscaling",
+      "difficulty": "hard",
+      "type": "single",
+      "prompt": "Un equipo usa un lifecycle hook de terminación para subir los logs de sus instancias Spot, pero a veces los logs se pierden. ¿Cuál es la causa más probable?",
+      "options": [
+        {
+          "text": "Los lifecycle hooks no funcionan con Spot",
+          "correct": false,
+          "explanation": "Funcionan, pero tienen una limitación en este caso."
+        },
+        {
+          "text": "El heartbeat timeout por defecto es demasiado corto",
+          "correct": false,
+          "explanation": "Por defecto es una hora, más que suficiente."
+        },
+        {
+          "text": "Falta el health check de ELB",
+          "correct": false,
+          "explanation": "No influye en la terminación por interrupción Spot."
+        },
+        {
+          "text": "Ante una interrupción Spot el hook no impide la terminación: la instancia termina tras el aviso de dos minutos",
+          "correct": true,
+          "explanation": "Correcto: un lifecycle hook no evita que una instancia Spot termine tras el aviso de dos minutos."
+        }
+      ],
+      "source": {
+        "title": "Amazon EC2 Auto Scaling lifecycle hooks",
+        "url": "https://docs.aws.amazon.com/autoscaling/ec2/userguide/lifecycle-hooks.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "autoscaling-h4",
+      "serviceId": "autoscaling",
+      "difficulty": "hard",
+      "type": "multiple",
+      "prompt": "Una tienda online tiene un pico predecible cada día a las 9:00 y además picos imprevistos por campañas. ¿Qué dos políticas combinar en su Auto Scaling Group? (Elige 2)",
+      "options": [
+        {
+          "text": "Predictive scaling para anticipar el patrón diario",
+          "correct": true,
+          "explanation": "Correcto: pronostica la capacidad a partir del historial diario o semanal."
+        },
+        {
+          "text": "Simple scaling con un cooldown muy largo",
+          "correct": false,
+          "explanation": "Responde lento ante picos imprevistos."
+        },
+        {
+          "text": "Target tracking para reaccionar a los picos imprevistos",
+          "correct": true,
+          "explanation": "Correcto: ajusta la capacidad para mantener la métrica objetivo."
+        },
+        {
+          "text": "Fijar el mínimo igual al máximo",
+          "correct": false,
+          "explanation": "Elimina la elasticidad y aumenta el costo."
+        },
+        {
+          "text": "Escalado manual cada mañana",
+          "correct": false,
+          "explanation": "Es operación manual y propensa a errores."
+        }
+      ],
+      "source": {
+        "title": "Predictive scaling for Amazon EC2 Auto Scaling",
+        "url": "https://docs.aws.amazon.com/autoscaling/ec2/userguide/ec2-auto-scaling-predictive-scaling.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "autoscaling-h5",
+      "serviceId": "autoscaling",
+      "difficulty": "hard",
+      "type": "multiple",
+      "prompt": "Un equipo va a reemplazar todas las instancias de su Auto Scaling Group con una nueva AMI sin perder capacidad y con la opción de volver atrás si algo falla. ¿Qué dos configuraciones del instance refresh usa? (Elige 2)",
+      "options": [
+        {
+          "text": "Porcentaje mínimo de instancias sanas en 100%",
+          "correct": true,
+          "explanation": "Correcto: con 100% lanza las nuevas instancias antes de terminar las anteriores."
+        },
+        {
+          "text": "Borrar el grupo y crearlo de nuevo",
+          "correct": false,
+          "explanation": "Provoca una caída del servicio."
+        },
+        {
+          "text": "Activar el rollback del instance refresh",
+          "correct": true,
+          "explanation": "Correcto: permite volver a la configuración anterior si el refresh falla."
+        },
+        {
+          "text": "Poner la capacidad deseada en 0 durante el cambio",
+          "correct": false,
+          "explanation": "Deja la aplicación sin capacidad."
+        },
+        {
+          "text": "Terminar todas las instancias a la vez",
+          "correct": false,
+          "explanation": "Pierde toda la capacidad."
+        }
+      ],
+      "source": {
+        "title": "Use an instance refresh to update instances in an Auto Scaling group",
+        "url": "https://docs.aws.amazon.com/autoscaling/ec2/userguide/instance-refresh-overview.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "elb-n1",
+      "serviceId": "elb",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "Una aplicación web debe enviar /api a un servicio y /web a otro, detrás de un solo balanceador. ¿Qué tipo de balanceador usar?",
+      "options": [
+        {
+          "text": "Application Load Balancer, con reglas por ruta (path-pattern)",
+          "correct": true,
+          "explanation": "Correcto: el ALB enruta por campos de la solicitud HTTP, como la ruta."
+        },
+        {
+          "text": "Network Load Balancer",
+          "correct": false,
+          "explanation": "Trabaja en capa 4 y no ve rutas HTTP."
+        },
+        {
+          "text": "Gateway Load Balancer",
+          "correct": false,
+          "explanation": "Sirve para insertar appliances de seguridad."
+        },
+        {
+          "text": "Classic Load Balancer",
+          "correct": false,
+          "explanation": "Es legado y no tiene enrutamiento por ruta."
+        }
+      ],
+      "source": {
+        "title": "Condition types for listener rules",
+        "url": "https://docs.aws.amazon.com/elasticloadbalancing/latest/application/rule-condition-types.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "elb-n2",
+      "serviceId": "elb",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "Un socio necesita agregar la IP de tu balanceador a su lista de IP permitidas. ¿Qué balanceador ofrece una IP estática por AZ, con opción de Elastic IP?",
+      "options": [
+        {
+          "text": "Application Load Balancer",
+          "correct": false,
+          "explanation": "Su IP cambia; no ofrece IP estática por sí solo."
+        },
+        {
+          "text": "Classic Load Balancer",
+          "correct": false,
+          "explanation": "Es legado y no ofrece IP estática."
+        },
+        {
+          "text": "Network Load Balancer",
+          "correct": true,
+          "explanation": "Correcto: obtiene una IP estática por AZ y permite asociar una Elastic IP por subred."
+        },
+        {
+          "text": "Ninguno",
+          "correct": false,
+          "explanation": "El NLB sí la ofrece."
+        }
+      ],
+      "source": {
+        "title": "What is a Network Load Balancer?",
+        "url": "https://docs.aws.amazon.com/elasticloadbalancing/latest/network/introduction.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "elb-n3",
+      "serviceId": "elb",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "Una empresa quiere pasar todo el tráfico por firewalls virtuales de terceros que escalen automáticamente. ¿Qué balanceador está diseñado para eso?",
+      "options": [
+        {
+          "text": "Application Load Balancer",
+          "correct": false,
+          "explanation": "Enruta tráfico HTTP hacia aplicaciones, no hacia appliances de red."
+        },
+        {
+          "text": "Gateway Load Balancer",
+          "correct": true,
+          "explanation": "Correcto: despliega, escala y administra appliances virtuales como firewalls e IDS/IPS."
+        },
+        {
+          "text": "Network Load Balancer",
+          "correct": false,
+          "explanation": "Balancea TCP/UDP, pero no está pensado para insertar appliances."
+        },
+        {
+          "text": "Classic Load Balancer",
+          "correct": false,
+          "explanation": "Es legado."
+        }
+      ],
+      "source": {
+        "title": "What is a Gateway Load Balancer?",
+        "url": "https://docs.aws.amazon.com/elasticloadbalancing/latest/gateway/introduction.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "elb-n4",
+      "serviceId": "elb",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "Detrás de un Application Load Balancer, los logs del servidor muestran solo la IP del balanceador. ¿Dónde está la IP original del cliente?",
+      "options": [
+        {
+          "text": "En el header Host",
+          "correct": false,
+          "explanation": "Host trae el nombre del dominio."
+        },
+        {
+          "text": "En el header User-Agent",
+          "correct": false,
+          "explanation": "Trae el navegador o cliente."
+        },
+        {
+          "text": "No se puede conocer",
+          "correct": false,
+          "explanation": "Sí se puede, en un header que agrega el ALB."
+        },
+        {
+          "text": "En el header X-Forwarded-For",
+          "correct": true,
+          "explanation": "Correcto: el ALB agrega X-Forwarded-For con la IP del cliente."
+        }
+      ],
+      "source": {
+        "title": "HTTP headers and Application Load Balancers",
+        "url": "https://docs.aws.amazon.com/elasticloadbalancing/latest/application/x-forwarded-headers.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "elb-n5",
+      "serviceId": "elb",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "¿Puede un Application Load Balancer enviar solicitudes a una función de AWS Lambda?",
+      "options": [
+        {
+          "text": "No, solo a instancias EC2",
+          "correct": false,
+          "explanation": "También admite IP y funciones Lambda."
+        },
+        {
+          "text": "Sí: admite funciones Lambda como targets",
+          "correct": true,
+          "explanation": "Correcto: los target groups del ALB pueden ser de tipo instance, ip o lambda."
+        },
+        {
+          "text": "Solo a través de un NLB",
+          "correct": false,
+          "explanation": "No hace falta un NLB."
+        },
+        {
+          "text": "Solo con API Gateway en el medio",
+          "correct": false,
+          "explanation": "El ALB puede invocar Lambda directamente."
+        }
+      ],
+      "source": {
+        "title": "Target groups for your Application Load Balancers",
+        "url": "https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-target-groups.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "elb-m1",
+      "serviceId": "elb",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Una empresa quiere que los usuarios inicien sesión con su proveedor corporativo (OIDC) antes de llegar a la aplicación, sin programar la autenticación. ¿Qué solución usar?",
+      "options": [
+        {
+          "text": "Una acción authenticate-oidc en un listener HTTPS del ALB",
+          "correct": true,
+          "explanation": "Correcto: el ALB autentica contra un IdP compatible con OIDC (o mediante Cognito) antes de enrutar."
+        },
+        {
+          "text": "Un Network Load Balancer con autenticación",
+          "correct": false,
+          "explanation": "El NLB no autentica usuarios."
+        },
+        {
+          "text": "Un listener HTTP con autenticación",
+          "correct": false,
+          "explanation": "Las acciones de autenticación solo funcionan en listeners HTTPS."
+        },
+        {
+          "text": "Un security group con las IP de los usuarios",
+          "correct": false,
+          "explanation": "No autentica identidades."
+        }
+      ],
+      "source": {
+        "title": "Authenticate users using an Application Load Balancer",
+        "url": "https://docs.aws.amazon.com/elasticloadbalancing/latest/application/listener-authenticate-users.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "elb-m2",
+      "serviceId": "elb",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Una aplicación guarda la sesión del usuario en memoria y los usuarios pierden la sesión cuando el ALB los envía a otra instancia. ¿Qué solución rápida aplica?",
+      "options": [
+        {
+          "text": "Activar cross-zone load balancing",
+          "correct": false,
+          "explanation": "No mantiene al usuario en la misma instancia."
+        },
+        {
+          "text": "Cambiar a un NLB",
+          "correct": false,
+          "explanation": "No resuelve el manejo de la sesión."
+        },
+        {
+          "text": "Subir el deregistration delay",
+          "correct": false,
+          "explanation": "Solo afecta a las instancias que se desregistran."
+        },
+        {
+          "text": "Activar sticky sessions en el target group",
+          "correct": true,
+          "explanation": "Correcto: con cookies del balanceador o de la aplicación, el usuario vuelve al mismo target."
+        }
+      ],
+      "source": {
+        "title": "Target groups for your Application Load Balancers",
+        "url": "https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-target-groups.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "elb-m3",
+      "serviceId": "elb",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Al desregistrar instancias de un target group, algunas solicitudes en curso fallan. ¿Qué configuración controla cuánto espera el ALB antes de cortar esas conexiones?",
+      "options": [
+        {
+          "text": "Slow start",
+          "correct": false,
+          "explanation": "Controla la entrada gradual de targets nuevos."
+        },
+        {
+          "text": "Sticky sessions",
+          "correct": false,
+          "explanation": "Mantienen a un usuario en el mismo target."
+        },
+        {
+          "text": "Deregistration delay (por defecto 300 segundos)",
+          "correct": true,
+          "explanation": "Correcto: es el tiempo que el balanceador espera a que terminen las solicitudes en curso."
+        },
+        {
+          "text": "Idle timeout del health check",
+          "correct": false,
+          "explanation": "No controla el drenado de conexiones."
+        }
+      ],
+      "source": {
+        "title": "Target groups for your Application Load Balancers",
+        "url": "https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-target-groups.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "elb-m4",
+      "serviceId": "elb",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Un Network Load Balancer en dos AZ reparte el tráfico de forma desigual porque una AZ tiene más targets que la otra. ¿Qué explica el comportamiento y cómo se corrige?",
+      "options": [
+        {
+          "text": "El NLB tiene cross-zone desactivado por defecto; activarlo reparte entre todos los targets",
+          "correct": true,
+          "explanation": "Correcto: en NLB y GWLB el cross-zone viene desactivado por defecto y se puede activar en cualquier momento."
+        },
+        {
+          "text": "El NLB no soporta varias AZ",
+          "correct": false,
+          "explanation": "Sí soporta varias AZ."
+        },
+        {
+          "text": "Hay que pasar a un Classic Load Balancer",
+          "correct": false,
+          "explanation": "Es legado y no lo resuelve mejor."
+        },
+        {
+          "text": "Hay que activar sticky sessions",
+          "correct": false,
+          "explanation": "Empeora el reparto."
+        }
+      ],
+      "source": {
+        "title": "How Elastic Load Balancing works",
+        "url": "https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/how-elastic-load-balancing-works.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "elb-m5",
+      "serviceId": "elb",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Una aplicación global detrás de un Application Load Balancer necesita IP estáticas para sus clientes y entrar por la red de AWS más cercana al usuario. ¿Qué servicio usar?",
+      "options": [
+        {
+          "text": "AWS Global Accelerator delante del ALB",
+          "correct": true,
+          "explanation": "Correcto: entrega IP estáticas anycast desde la red de borde de AWS y admite ALB como endpoint."
+        },
+        {
+          "text": "Elastic IP en el ALB",
+          "correct": false,
+          "explanation": "No se pueden asignar Elastic IP a un ALB."
+        },
+        {
+          "text": "Un NAT gateway",
+          "correct": false,
+          "explanation": "Sirve para tráfico saliente, no para recibir clientes."
+        },
+        {
+          "text": "Route 53 con TTL largo",
+          "correct": false,
+          "explanation": "No ofrece IP estáticas de entrada."
+        }
+      ],
+      "source": {
+        "title": "What is AWS Global Accelerator?",
+        "url": "https://docs.aws.amazon.com/global-accelerator/latest/dg/what-is-global-accelerator.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "elb-h1",
+      "serviceId": "elb",
+      "difficulty": "hard",
+      "type": "single",
+      "prompt": "Un equipo creó un Network Load Balancer sin security groups y ahora quiere restringir con security groups quién llega a los listeners. ¿Qué debe hacer?",
+      "options": [
+        {
+          "text": "Asociar un security group al NLB existente",
+          "correct": false,
+          "explanation": "Si un NLB se crea sin security groups, no se pueden asociar después."
+        },
+        {
+          "text": "Usar network ACLs en lugar de security groups",
+          "correct": false,
+          "explanation": "Pueden filtrar, pero no son security groups en el NLB como pide el requisito."
+        },
+        {
+          "text": "Crear un nuevo NLB con security groups y migrar el tráfico",
+          "correct": true,
+          "explanation": "Correcto: los security groups de un NLB solo se pueden asociar al crearlo."
+        },
+        {
+          "text": "Los NLB no soportan security groups",
+          "correct": false,
+          "explanation": "Sí los soportan, si se asignan al crearlos."
+        }
+      ],
+      "source": {
+        "title": "Update the security groups for your Network Load Balancer",
+        "url": "https://docs.aws.amazon.com/elasticloadbalancing/latest/network/load-balancer-security-groups.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "elb-h2",
+      "serviceId": "elb",
+      "difficulty": "hard",
+      "type": "single",
+      "prompt": "Las instancias nuevas de una aplicación necesitan calentar su caché, y se saturan apenas el ALB les envía su parte completa del tráfico. ¿Qué configuración ayuda?",
+      "options": [
+        {
+          "text": "Deregistration delay",
+          "correct": false,
+          "explanation": "Afecta a las instancias que salen, no a las que entran."
+        },
+        {
+          "text": "Slow start en el target group (30 a 900 segundos)",
+          "correct": true,
+          "explanation": "Correcto: aumenta gradualmente la parte del tráfico que reciben los targets nuevos."
+        },
+        {
+          "text": "Cross-zone load balancing",
+          "correct": false,
+          "explanation": "No controla la entrada gradual."
+        },
+        {
+          "text": "Sticky sessions",
+          "correct": false,
+          "explanation": "No dan rampa a los targets nuevos."
+        }
+      ],
+      "source": {
+        "title": "Target groups for your Application Load Balancers",
+        "url": "https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-target-groups.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "elb-h3",
+      "serviceId": "elb",
+      "difficulty": "hard",
+      "type": "single",
+      "prompt": "Un proveedor ofrece un firewall virtual para usar detrás de un Gateway Load Balancer. ¿Qué debe soportar el appliance para intercambiar tráfico con el GWLB?",
+      "options": [
+        {
+          "text": "HTTP/2 en el puerto 443",
+          "correct": false,
+          "explanation": "El GWLB no trabaja en HTTP."
+        },
+        {
+          "text": "TLS en el puerto 8443",
+          "correct": false,
+          "explanation": "No es el protocolo del GWLB."
+        },
+        {
+          "text": "Solo ICMP",
+          "correct": false,
+          "explanation": "No es el protocolo de encapsulación."
+        },
+        {
+          "text": "El protocolo GENEVE en el puerto 6081",
+          "correct": true,
+          "explanation": "Correcto: el GWLB y sus appliances intercambian el tráfico con GENEVE en el puerto 6081."
+        }
+      ],
+      "source": {
+        "title": "What is a Gateway Load Balancer?",
+        "url": "https://docs.aws.amazon.com/elasticloadbalancing/latest/gateway/introduction.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "elb-h4",
+      "serviceId": "elb",
+      "difficulty": "hard",
+      "type": "multiple",
+      "prompt": "Una aplicación HTTPS debe enrutar /admin y /shop a target groups distintos y exigir inicio de sesión corporativo solo en /admin. ¿Qué dos elementos usar? (Elige 2)",
+      "options": [
+        {
+          "text": "Un Application Load Balancer con reglas de listener por path-pattern",
+          "correct": true,
+          "explanation": "Correcto: el ALB enruta por ruta."
+        },
+        {
+          "text": "Un Network Load Balancer con reglas por ruta",
+          "correct": false,
+          "explanation": "El NLB no ve rutas HTTP."
+        },
+        {
+          "text": "Una acción authenticate-oidc (o authenticate-cognito) en la regla de /admin del listener HTTPS",
+          "correct": true,
+          "explanation": "Correcto: la autenticación se configura como acción de la regla en un listener HTTPS."
+        },
+        {
+          "text": "Un Gateway Load Balancer",
+          "correct": false,
+          "explanation": "No sirve para enrutar aplicaciones web."
+        },
+        {
+          "text": "Un Classic Load Balancer",
+          "correct": false,
+          "explanation": "Es legado y no tiene estas funciones."
+        }
+      ],
+      "source": {
+        "title": "Condition types for listener rules",
+        "url": "https://docs.aws.amazon.com/elasticloadbalancing/latest/application/rule-condition-types.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "elb-h5",
+      "serviceId": "elb",
+      "difficulty": "hard",
+      "type": "multiple",
+      "prompt": "Varios socios deben permitir en sus firewalls las IP desde las que reciben tráfico de tu aplicación web, y esas IP no pueden cambiar. ¿Qué dos soluciones cumplen el requisito? (Elige 2)",
+      "options": [
+        {
+          "text": "Un Network Load Balancer con una Elastic IP por subred",
+          "correct": true,
+          "explanation": "Correcto: el NLB tiene IP estáticas por AZ y admite Elastic IP."
+        },
+        {
+          "text": "Elastic IP directamente en un Application Load Balancer",
+          "correct": false,
+          "explanation": "No se pueden asociar Elastic IP a un ALB."
+        },
+        {
+          "text": "AWS Global Accelerator delante del ALB",
+          "correct": true,
+          "explanation": "Correcto: entrega dos IP estáticas anycast que no cambian mientras exista el accelerator."
+        },
+        {
+          "text": "Un Classic Load Balancer",
+          "correct": false,
+          "explanation": "No ofrece IP estáticas."
+        },
+        {
+          "text": "Bajar el TTL del DNS",
+          "correct": false,
+          "explanation": "Las IP seguirían cambiando."
+        }
+      ],
+      "source": {
+        "title": "What is a Network Load Balancer?",
+        "url": "https://docs.aws.amazon.com/elasticloadbalancing/latest/network/introduction.html"
+      },
+      "verifiedOn": "2026-09-30"
     }
   ]
 }

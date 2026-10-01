@@ -67,8 +67,8 @@ description: "Task list for Preguntas de práctica por servicio"
 
 ## Phase 5: Contenido del resto de la sala
 
-- [ ] T017 Extender `tests/content/questions-content.test.ts` a los 7 servicios (SC-001)
-- [ ] T018 Redactar y verificar 15 preguntas para cada uno de: Amazon EC2, Amazon ECS, Amazon EKS, AWS Fargate, Amazon EC2 Auto Scaling y Elastic Load Balancing — hace pasar T017
+- [X] T017 Extender `tests/content/questions-content.test.ts` a los 7 servicios (SC-001)
+- [X] T018 Redactar y verificar 15 preguntas para cada uno de: Amazon EC2, Amazon ECS, Amazon EKS, AWS Fargate, Amazon EC2 Auto Scaling y Elastic Load Balancing — hace pasar T017
 
 ---
 
