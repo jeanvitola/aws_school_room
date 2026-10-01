@@ -126,9 +126,9 @@
           "Spot es lo más barato (hasta 90% de descuento) pero AWS puede interrumpirla con 2 minutos de aviso: no sirve para cargas que no toleran interrupciones",
           "El Instance Store pierde sus datos al detener o terminar la instancia",
           "Un Security Group no tiene reglas de denegar: para bloquear una IP usa una Network ACL o AWS WAF",
-          "Reserved Instances y Savings Plans exigen un compromiso de 1 o 3 años: no convienen para cargas cortas e impredecibles"
+          "Savings Plans y Reserved Instances exigen un compromiso de 1 o 3 años: no convienen para cargas cortas e impredecibles"
         ],
-        "costs": "On-Demand: pago por segundo (en Linux), sin compromiso. Reserved Instances y Savings Plans: hasta ~72% de ahorro con compromiso de 1 o 3 años; los Compute Savings Plans también cubren Fargate y Lambda. Spot: hasta 90% de descuento con posibles interrupciones. Dedicated Hosts: servidor físico exclusivo para licencias. Además pagas los volúmenes EBS y la transferencia de datos de salida."
+        "costs": "On-Demand: por segundo, con mínimo de 60 segundos. Savings Plans: hasta 72% de ahorro con un compromiso de uso de 1 o 3 años (los Compute Savings Plans, hasta 66%, cubren también Fargate y Lambda); las Reserved Instances son el modelo de compromiso anterior y la página de precios hoy destaca los Savings Plans. Spot: hasta 90% de descuento con posibles interrupciones. Dedicated Hosts: servidor físico exclusivo para licencias. Además pagas EBS, la transferencia de salida y cada IPv4 pública (USD 0,005 por hora, en uso o inactiva)."
       }
     },
     {
@@ -153,7 +153,7 @@
           }
         ],
         "examKeyPoints": [
-          "Cada ejecución dura como máximo 15 minutos: si la tarea tarda más, Lambda no sirve.",
+          "Una función estándar dura como máximo 15 minutos por ejecución: si la tarea tarda más, Lambda no sirve.",
           "Escala solo: si llegan muchos eventos a la vez, ejecuta muchas copias de tu código en paralelo."
         ],
         "quickComparison": {
@@ -165,10 +165,11 @@
       "deep": {
         "definition": "AWS Lambda es un servicio de cómputo serverless que ejecuta funciones en respuesta a eventos. Subes el código (o una imagen de contenedor), configuras la memoria y el disparador, y AWS se encarga de aprovisionar, escalar, parchear y dar alta disponibilidad en varias AZ. Cada invocación corre en un entorno aislado; si no hay uno listo se crea uno nuevo (cold start), que luego puede reutilizarse en invocaciones siguientes.",
         "keyConcepts": [
-          "Tiempo máximo de ejecución: 15 minutos.",
+          "Tiempo máximo de una función estándar: 15 minutos por invocación. Existen además Lambda MicroVMs (hasta 8 horas de vida total) y Lambda Managed Instances (invocaciones asíncronas de hasta 90 minutos); las preguntas de examen suelen referirse a funciones estándar.",
           "Memoria de 128 MB a 10 GB; la CPU asignada crece con la memoria.",
+          "Payload de invocación: 6 MB en síncronas y 1 MB en asíncronas (sobre 256 KB se cobran solicitudes adicionales).",
           "Invocación síncrona (API Gateway, ALB), asíncrona (S3, SNS, EventBridge) y por event source mapping, que lee de colas o streams (SQS, Kinesis, DynamoDB Streams).",
-          "Concurrencia reservada (garantiza y limita capacidad) y Provisioned Concurrency (entornos ya iniciados, sin cold starts).",
+          "Concurrencia reservada (garantiza y limita capacidad, sin costo) y Provisioned Concurrency (entornos ya iniciados, sin cold starts, con costo). SnapStart (Java, Python, .NET) restaura un snapshot inicializado y no se combina con Provisioned Concurrency.",
           "Permisos mediante el rol de ejecución de IAM.",
           "Puede conectarse a una VPC para llegar a recursos privados como RDS.",
           "En invocaciones asíncronas, los fallos pueden enviarse a una DLQ o a un destino (Lambda Destinations)."
@@ -262,10 +263,10 @@
         "examTraps": [
           "Una tarea de más de 15 minutos descarta Lambda: usa Fargate, ECS, AWS Batch o divide el trabajo con Step Functions",
           "Muchas funciones conectándose a RDS pueden agotar las conexiones: usa RDS Proxy",
-          "Si la latencia de arranque es crítica, la respuesta es Provisioned Concurrency",
+          "Si la latencia de arranque es crítica: Provisioned Concurrency, o SnapStart en Java, Python y .NET (no se pueden usar juntos)",
           "Una Lambda dentro de una VPC necesita NAT Gateway o VPC endpoints para llegar a internet o a otros servicios de AWS"
         ],
-        "costs": "Pagas por número de solicitudes y por duración en GB-segundo (memoria × tiempo), facturada por milisegundo. La capa gratuita incluye 1 millón de solicitudes al mes. Provisioned Concurrency cobra aunque no haya invocaciones. Más memoria cuesta más por milisegundo, pero la función puede terminar antes."
+        "costs": "Pagas por número de solicitudes y por duración en GB-segundo (memoria × tiempo), facturada por milisegundo. La capa gratuita incluye 1 millón de solicitudes y 400.000 GB-segundo al mes. Arm (Graviton) tiene un precio por GB-segundo menor que x86. Provisioned Concurrency cobra aunque no haya invocaciones. Los Compute Savings Plans también aplican a Lambda."
       }
     },
     {
@@ -401,7 +402,8 @@
         "keyConcepts": [
           "Plano de control administrado por AWS en varias AZ.",
           "Cómputo: managed node groups, nodos autogestionados o perfiles de Fargate.",
-          "Permisos por pod con IAM Roles for Service Accounts (IRSA) o EKS Pod Identity.",
+          "EKS Auto Mode: AWS administra también los nodos, su escalado, la red de pods, el balanceo y el almacenamiento.",
+          "Permisos por pod con EKS Pod Identity (más simple, sin OIDC) o con IRSA; en pods de Fargate solo funciona IRSA.",
           "Escalado de nodos con Cluster Autoscaler o Karpenter; de pods con Horizontal Pod Autoscaler.",
           "Almacenamiento persistente con drivers CSI de EBS y EFS.",
           "EKS Anywhere permite correr el mismo Kubernetes en centros de datos propios."
@@ -457,7 +459,7 @@
           "EKS cobra por clúster por hora: no es la opción más barata para una carga pequeña",
           "Para no gestionar nodos en EKS, usa Fargate como perfil de cómputo"
         ],
-        "costs": "USD 0,10 por clúster por hora con soporte estándar (más en soporte extendido de versiones antiguas de Kubernetes), más el cómputo: instancias EC2 de los nodos o vCPU y memoria de Fargate."
+        "costs": "USD 0,10 por clúster por hora en soporte estándar (14 meses por versión) y USD 0,60 en soporte extendido (12 meses más), además del cómputo: instancias EC2 de los nodos o vCPU y memoria de Fargate. Los managed node groups no tienen costo adicional."
       }
     },
     {
@@ -496,11 +498,13 @@
         "definition": "AWS Fargate es un motor de cómputo serverless para contenedores que funciona con ECS y EKS. Cada task (o pod) corre en su propio entorno aislado con la CPU y memoria que defines, y con su propia interfaz de red en la VPC. AWS gestiona los servidores, el sistema operativo, los parches y la capacidad; no hay instancias visibles ni acceso al host.",
         "keyConcepts": [
           "No es un orquestador: necesita ECS o EKS.",
+          "Tamaño máximo de task: 32 vCPU y 244 GB en Linux; 4 vCPU y 30 GB en Windows (solo x86 y solo con ECS).",
           "Cada task tiene su propia interfaz de red (ENI) e IP privada en la VPC.",
           "Aislamiento por task: no comparte el kernel con otras tasks.",
-          "Fargate Spot: hasta 70% de descuento para tareas tolerantes a interrupciones.",
-          "Almacenamiento efímero por task; persistente y compartido con Amazon EFS.",
-          "Sin GPU, sin acceso SSH al host y sin daemons por nodo."
+          "Fargate Spot solo está disponible con ECS (Linux): hasta 70% de descuento y aviso de dos minutos (SIGTERM).",
+          "Almacenamiento efímero de 20 GiB por defecto, ampliable hasta 200 GiB; para datos persistentes y compartidos, Amazon EFS.",
+          "Sin GPU, sin acceso SSH al host y sin daemons por nodo.",
+          "En EKS, Fargate no soporta Spot, Arm, Windows, DaemonSets, GPU ni volúmenes EBS, y los pods solo corren en subredes privadas."
         ],
         "compareWith": [
           {
@@ -565,7 +569,7 @@
           "Fargate no ofrece GPU: para machine learning con GPU usa instancias EC2",
           "No hay acceso SSH ni daemons en el host"
         ],
-        "costs": "Pagas por vCPU y memoria asignadas, por segundo (mínimo 1 minuto), mientras la task corre. Fargate Spot ofrece hasta 70% de descuento. Los Compute Savings Plans también aplican a Fargate."
+        "costs": "Pagas por la vCPU y la memoria asignadas, por segundo, con mínimo de 1 minuto (5 minutos en Windows), mientras la task corre. Fargate Spot ofrece hasta 70% de descuento. Los Compute Savings Plans ahorran hasta 50% en Fargate."
       }
     },
     {
@@ -703,11 +707,12 @@
         "keyConcepts": [
           "ALB: HTTP/HTTPS con reglas por ruta, host, headers o parámetros; destinos EC2, IP, contenedores y Lambda.",
           "NLB: TCP/UDP/TLS, millones de solicitudes por segundo e IP estática o Elastic IP por AZ.",
-          "GWLB: inserta appliances de seguridad de terceros (firewalls, IDS/IPS).",
+          "GWLB: inserta appliances de seguridad de terceros (firewalls, IDS/IPS) usando GENEVE en el puerto 6081.",
           "Health checks por target group.",
           "Terminación TLS con certificados de AWS Certificate Manager (ACM).",
-          "Sticky sessions mantienen a un usuario en el mismo destino.",
-          "Cross-zone load balancing reparte de forma pareja entre AZ."
+          "Sticky sessions (cookies del balanceador o de la aplicación) y slow start para targets nuevos.",
+          "Cross-zone load balancing: siempre activo en ALB; desactivado por defecto en NLB y GWLB.",
+          "Un NLB acepta security groups solo si se asignan al crearlo."
         ],
         "compareWith": [
           {

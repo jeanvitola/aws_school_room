@@ -104,6 +104,7 @@ description: "Task list for Niveles de profundidad en las fichas"
 
 ## Phase 5: Polish
 
+- [X] T027 Alinear las fichas con los datos verificados en la spec 003 (2026-09-30): Lambda MicroVMs y Managed Instances, payload asíncrono de 1 MB, SnapStart; EC2 con Savings Plans primero y cargo de IPv4 pública; Fargate con task máxima de 32 vCPU / 244 GB, almacenamiento de hasta 200 GiB y límites en EKS; EKS con soporte extendido, Auto Mode y Pod Identity; ELB con cross-zone por tipo y security groups del NLB. Test de regresión en `tests/content/verified-facts.test.ts`; versión del contenido 0.2.0
 - [ ] T024 Revisión editorial de los 14 bloques de contenido contra la guía SAA-C03 (FR-015) — **responsable del contenido**
 - [ ] T025 Sesión de validación SC-001 con al menos 5 personas sin experiencia en AWS — **responsable del producto**
 - [ ] T026 Ejecutar `specs/002-content-depth-levels/quickstart.md` completo y corregir lo que falle
