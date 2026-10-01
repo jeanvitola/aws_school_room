@@ -153,17 +153,17 @@ body[data-view='room'] #game {
   color: var(--color-accent-soft);
 }
 
-/* --- Selector de nivel --- */
+/* --- Pestañas de la ficha / nivel del modo texto --- */
 .service-card__toolbar {
   padding: 0.625rem 1rem 0;
 }
 
-.depth-selector {
+.tab-selector {
   display: inline-flex;
   border: 2px solid var(--color-surface-raised);
 }
 
-.depth-selector__button {
+.tab-selector__button {
   padding: 0.375rem 0.875rem;
   border: 0;
   background: var(--color-bg);
@@ -173,15 +173,15 @@ body[data-view='room'] #game {
   cursor: pointer;
 }
 
-.depth-selector__button + .depth-selector__button {
+.tab-selector__button + .tab-selector__button {
   border-left: 2px solid var(--color-surface-raised);
 }
 
-.depth-selector__button:hover {
+.tab-selector__button:hover {
   color: var(--color-text);
 }
 
-.depth-selector__button[aria-pressed='true'] {
+.tab-selector__button[aria-pressed='true'] {
   background: var(--color-accent-soft);
   color: var(--color-bg);
   font-weight: 700;
@@ -233,6 +233,174 @@ body[data-view='room'] #game {
 
 .service-link:hover {
   border-bottom-style: solid;
+}
+
+/* --- Preguntas de práctica --- */
+.quiz {
+  padding-top: 0.75rem;
+}
+
+.quiz__progress {
+  margin: 0 0 0.375rem;
+  font-family: var(--font-pixel);
+  font-size: 0.5625rem;
+  color: var(--color-accent);
+}
+
+.quiz__bar {
+  height: 6px;
+  margin-bottom: 1rem;
+  background: var(--color-bg);
+  border: 1px solid var(--color-surface-raised);
+}
+
+.quiz__bar-fill {
+  height: 100%;
+  background: var(--color-accent);
+  transition: width 200ms steps(4);
+}
+
+.quiz__question {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.quiz__prompt {
+  padding: 0;
+  margin-bottom: 0.75rem;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.quiz__hint {
+  margin: -0.25rem 0 0.75rem;
+  font-size: 0.875rem;
+  color: var(--color-accent-soft);
+}
+
+.quiz__option {
+  display: flex;
+  gap: 0.625rem;
+  align-items: flex-start;
+  margin-bottom: 0.5rem;
+  padding: 0.625rem 0.75rem;
+  border: 2px solid var(--color-surface-raised);
+  background: var(--color-bg);
+  cursor: pointer;
+}
+
+.quiz__option:hover:not(:has(input:disabled)) {
+  border-color: var(--color-accent-soft);
+}
+
+.quiz__option:has(input:checked) {
+  border-color: var(--color-focus);
+}
+
+.quiz__option input {
+  margin-top: 0.3rem;
+  accent-color: var(--color-accent);
+}
+
+.quiz__letter {
+  color: var(--color-accent-soft);
+}
+
+/* Con :has() la regla de "seleccionada" es más específica: el estado del resultado debe ganarle. */
+.quiz__option.is-correct,
+.quiz__option.is-correct:has(input:checked) {
+  border-color: #2fb37a;
+  background: rgb(47 179 122 / 0.12);
+}
+
+.quiz__option.is-wrong,
+.quiz__option.is-wrong:has(input:checked) {
+  border-color: var(--color-danger);
+  background: rgb(224 82 79 / 0.12);
+}
+
+.quiz__explanation {
+  margin: 0.375rem 0 0 !important;
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+}
+
+.quiz__feedback:empty {
+  display: none;
+}
+
+.quiz__feedback {
+  margin: 0.75rem 0;
+  padding: 0.5rem 0.75rem;
+  border-left: var(--pixel) solid;
+}
+
+.quiz__feedback.is-correct {
+  border-color: #2fb37a;
+}
+
+.quiz__feedback.is-wrong {
+  border-color: var(--color-danger);
+}
+
+.quiz__actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.quiz__submit,
+.quiz__next,
+.quiz__secondary {
+  padding: 0.5rem 1rem;
+  border: 2px solid var(--color-accent);
+  background: var(--color-accent);
+  color: var(--color-bg);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.quiz__secondary {
+  background: transparent;
+  color: var(--color-accent-soft);
+}
+
+.quiz__submit:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.quiz__source {
+  margin-top: 1rem;
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+}
+
+.quiz__source a {
+  color: var(--color-focus);
+}
+
+.quiz__summary-title {
+  display: block;
+  font-family: var(--font-pixel);
+  font-size: 0.875rem;
+  color: var(--color-accent-soft);
+}
+
+.quiz__summary-title:focus {
+  outline: none;
+}
+
+.quiz__score {
+  margin: 0.75rem 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.quiz__breakdown {
+  padding-left: 1.25rem;
 }
 
 /* --- Nivel Normal --- */

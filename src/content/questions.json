@@ -1,0 +1,524 @@
+{
+  "questions": [
+    {
+      "id": "lambda-n1",
+      "serviceId": "lambda",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "¿Cuál es el tiempo máximo que puede durar una invocación de una función de AWS Lambda estándar?",
+      "options": [
+        {
+          "text": "5 minutos",
+          "correct": false,
+          "explanation": "Fue el límite en los primeros años de Lambda; hoy el máximo configurable es mayor."
+        },
+        {
+          "text": "15 minutos",
+          "correct": true,
+          "explanation": "Correcto: el timeout máximo es de 900 segundos (15 minutos). Si una tarea tarda más, Lambda no es la opción."
+        },
+        {
+          "text": "1 hora",
+          "correct": false,
+          "explanation": "Una función estándar no puede durar una hora. Para tareas largas se usan Fargate, ECS o AWS Batch."
+        },
+        {
+          "text": "No tiene límite mientras haya eventos",
+          "correct": false,
+          "explanation": "Toda invocación tiene un timeout; el máximo es de 15 minutos."
+        }
+      ],
+      "source": {
+        "title": "Lambda quotas",
+        "url": "https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "lambda-n2",
+      "serviceId": "lambda",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "¿Qué significa que AWS Lambda sea un servicio serverless?",
+      "options": [
+        {
+          "text": "Que el código se ejecuta en el navegador del usuario",
+          "correct": false,
+          "explanation": "Lambda ejecuta el código en la infraestructura de AWS, no en el navegador."
+        },
+        {
+          "text": "Que no usa servidores en ningún momento",
+          "correct": false,
+          "explanation": "Sí hay servidores, pero los administra AWS; tú no los ves ni los gestionas."
+        },
+        {
+          "text": "Que no necesitas aprovisionar ni administrar servidores: AWS se encarga de la capacidad, el escalado y el mantenimiento",
+          "correct": true,
+          "explanation": "Correcto: subes tu código y AWS aprovisiona, escala y mantiene la infraestructura por ti."
+        },
+        {
+          "text": "Que solo funciona con bases de datos serverless",
+          "correct": false,
+          "explanation": "Lambda puede trabajar con cualquier servicio o base de datos accesible, serverless o no."
+        }
+      ],
+      "source": {
+        "title": "What is AWS Lambda?",
+        "url": "https://docs.aws.amazon.com/lambda/latest/dg/welcome.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "lambda-n3",
+      "serviceId": "lambda",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "¿Cómo se cobra AWS Lambda?",
+      "options": [
+        {
+          "text": "Por número de solicitudes y por la duración de la ejecución en GB-segundo (memoria × tiempo)",
+          "correct": true,
+          "explanation": "Correcto: pagas por solicitudes y por duración, medida en GB-segundo y facturada por milisegundo."
+        },
+        {
+          "text": "Por hora, mientras la función está desplegada",
+          "correct": false,
+          "explanation": "No pagas por tener la función desplegada; solo por las ejecuciones y su duración."
+        },
+        {
+          "text": "Una tarifa mensual fija por función",
+          "correct": false,
+          "explanation": "Lambda no tiene tarifa fija por función; el costo depende del uso."
+        },
+        {
+          "text": "Solo por la cantidad de código subido",
+          "correct": false,
+          "explanation": "El tamaño del código no determina el precio; se paga por solicitudes y duración."
+        }
+      ],
+      "source": {
+        "title": "AWS Lambda Pricing",
+        "url": "https://aws.amazon.com/lambda/pricing/"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "lambda-n4",
+      "serviceId": "lambda",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "Una empresa quiere ejecutar código automáticamente cada vez que se sube una imagen a un bucket de Amazon S3, sin administrar servidores. ¿Qué solución cumple el requisito?",
+      "options": [
+        {
+          "text": "Una instancia EC2 que revisa el bucket cada minuto",
+          "correct": false,
+          "explanation": "Funciona, pero hay que administrar un servidor y pagarlo aunque no lleguen imágenes."
+        },
+        {
+          "text": "Un clúster de Amazon EKS que lista los objetos del bucket",
+          "correct": false,
+          "explanation": "Es mucha infraestructura para reaccionar a un evento y no es serverless en el sentido del enunciado."
+        },
+        {
+          "text": "Una regla de AWS Config",
+          "correct": false,
+          "explanation": "AWS Config evalúa la configuración de recursos, no procesa archivos subidos."
+        },
+        {
+          "text": "Una notificación de eventos de S3 que invoca una función de Lambda",
+          "correct": true,
+          "explanation": "Correcto: S3 invoca la función de forma asíncrona con un evento que describe el objeto subido."
+        }
+      ],
+      "source": {
+        "title": "Process Amazon S3 event notifications with Lambda",
+        "url": "https://docs.aws.amazon.com/lambda/latest/dg/with-s3.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "lambda-n5",
+      "serviceId": "lambda",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "Una función de Lambda que procesa imágenes es lenta porque necesita más CPU. ¿Cómo se le asigna más CPU?",
+      "options": [
+        {
+          "text": "Eligiendo un tipo de instancia más grande",
+          "correct": false,
+          "explanation": "Lambda no tiene tipos de instancia; eso es de EC2."
+        },
+        {
+          "text": "Aumentando la memoria configurada: Lambda asigna CPU en proporción a la memoria",
+          "correct": true,
+          "explanation": "Correcto: más memoria implica más CPU. A 1.769 MB la función tiene el equivalente a una vCPU."
+        },
+        {
+          "text": "Aumentando el timeout",
+          "correct": false,
+          "explanation": "El timeout solo da más tiempo; no hace que la función procese más rápido."
+        },
+        {
+          "text": "Activando concurrencia reservada",
+          "correct": false,
+          "explanation": "La concurrencia reservada controla cuántas copias corren a la vez, no la CPU de cada una."
+        }
+      ],
+      "source": {
+        "title": "Configure Lambda function memory",
+        "url": "https://docs.aws.amazon.com/lambda/latest/dg/configuration-memory.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "lambda-m1",
+      "serviceId": "lambda",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Una función de Lambda conectada a una VPC necesita leer de una base de datos RDS privada y además llamar a una API pública de internet. Hoy la llamada a internet falla. ¿Qué se debe hacer?",
+      "options": [
+        {
+          "text": "Conectar la función a una subred pública",
+          "correct": false,
+          "explanation": "Conectar la función a una subred pública no le da acceso a internet ni una IP pública."
+        },
+        {
+          "text": "Asignar una Elastic IP a la función",
+          "correct": false,
+          "explanation": "No se pueden asignar Elastic IP a funciones de Lambda."
+        },
+        {
+          "text": "Conectar la función a subredes privadas cuya tabla de rutas envía 0.0.0.0/0 a un NAT gateway ubicado en una subred pública",
+          "correct": true,
+          "explanation": "Correcto: las subredes privadas salen a internet a través del NAT gateway, que a su vez usa el internet gateway."
+        },
+        {
+          "text": "Quitar la función de la VPC",
+          "correct": false,
+          "explanation": "Recuperaría internet, pero perdería el acceso a la base de datos privada."
+        }
+      ],
+      "source": {
+        "title": "Enable internet access for VPC-connected Lambda functions",
+        "url": "https://docs.aws.amazon.com/lambda/latest/dg/configuration-vpc-internet.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "lambda-m2",
+      "serviceId": "lambda",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Durante los picos de tráfico, cientos de ejecuciones concurrentes de una función de Lambda abren conexiones a una base de datos Amazon RDS y la base de datos se queda sin conexiones. ¿Qué solución lo resuelve con el menor cambio en el código?",
+      "options": [
+        {
+          "text": "Usar Amazon RDS Proxy para agrupar y reutilizar las conexiones",
+          "correct": true,
+          "explanation": "Correcto: RDS Proxy mantiene un pool de conexiones, las reutiliza y protege a la base de datos de la sobresuscripción."
+        },
+        {
+          "text": "Aumentar la memoria de la función",
+          "correct": false,
+          "explanation": "Más memoria no reduce la cantidad de conexiones abiertas."
+        },
+        {
+          "text": "Cambiar la base de datos a una instancia más grande sin otros cambios",
+          "correct": false,
+          "explanation": "Puede subir el máximo de conexiones, pero el problema vuelve con el siguiente pico."
+        },
+        {
+          "text": "Activar Provisioned Concurrency",
+          "correct": false,
+          "explanation": "Reduce los cold starts, pero no limita ni reutiliza conexiones."
+        }
+      ],
+      "source": {
+        "title": "Amazon RDS Proxy",
+        "url": "https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/rds-proxy.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "lambda-m3",
+      "serviceId": "lambda",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Un proceso de transformación tarda unos 40 minutos por archivo y hoy se ejecuta en una instancia EC2 encendida todo el día. El equipo quiere dejar de administrar servidores. ¿Qué opción es adecuada?",
+      "options": [
+        {
+          "text": "Migrarlo a una función de Lambda estándar con timeout de 60 minutos",
+          "correct": false,
+          "explanation": "Una función estándar no admite más de 15 minutos por invocación."
+        },
+        {
+          "text": "Migrarlo a Lambda y activar Provisioned Concurrency",
+          "correct": false,
+          "explanation": "Provisioned Concurrency reduce los cold starts, pero no amplía el límite de 15 minutos."
+        },
+        {
+          "text": "Migrarlo a Lambda con el máximo de memoria",
+          "correct": false,
+          "explanation": "Más memoria acelera el proceso, pero no hay garantía de que baje de 15 minutos."
+        },
+        {
+          "text": "Ejecutarlo como una task de Amazon ECS sobre AWS Fargate disparada por un evento",
+          "correct": true,
+          "explanation": "Correcto: Fargate ejecuta contenedores sin servidores que administrar y sin el límite de 15 minutos."
+        }
+      ],
+      "source": {
+        "title": "Lambda quotas",
+        "url": "https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "lambda-m4",
+      "serviceId": "lambda",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Una función de Lambda se invoca de forma asíncrona y algunos eventos fallan incluso después de los reintentos. El equipo necesita guardar esos eventos fallidos con detalles del error para analizarlos. ¿Qué debe configurar?",
+      "options": [
+        {
+          "text": "Aumentar el timeout de la función",
+          "correct": false,
+          "explanation": "No guarda los eventos fallidos; solo da más tiempo de ejecución."
+        },
+        {
+          "text": "Un destino on-failure (por ejemplo, una cola de Amazon SQS)",
+          "correct": true,
+          "explanation": "Correcto: el destino on-failure recibe un registro con el evento y los detalles de la respuesta de la función."
+        },
+        {
+          "text": "Concurrencia reservada en 0",
+          "correct": false,
+          "explanation": "Con concurrencia reservada en 0 la función deja de ejecutarse por completo."
+        },
+        {
+          "text": "Un destino on-success",
+          "correct": false,
+          "explanation": "Ese destino recibe las invocaciones exitosas, no las fallidas."
+        }
+      ],
+      "source": {
+        "title": "Capturing records of Lambda asynchronous invocations",
+        "url": "https://docs.aws.amazon.com/lambda/latest/dg/invocation-async-retain-records.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "lambda-m5",
+      "serviceId": "lambda",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Una API escrita en Java sobre Lambda sufre cold starts lentos por su largo tiempo de inicialización. El equipo quiere reducirlos sin pagar por capacidad que esté inactiva. ¿Qué característica debe usar?",
+      "options": [
+        {
+          "text": "Provisioned Concurrency",
+          "correct": false,
+          "explanation": "Elimina los cold starts, pero se cobra todo el tiempo que está configurada, aunque no haya solicitudes."
+        },
+        {
+          "text": "Concurrencia reservada",
+          "correct": false,
+          "explanation": "Garantiza y limita la concurrencia, pero no acelera la inicialización."
+        },
+        {
+          "text": "Lambda SnapStart",
+          "correct": true,
+          "explanation": "Correcto: SnapStart restaura un snapshot del entorno ya inicializado. Para runtimes Java no tiene costo adicional."
+        },
+        {
+          "text": "Aumentar el timeout",
+          "correct": false,
+          "explanation": "El timeout no influye en el tiempo de arranque."
+        }
+      ],
+      "source": {
+        "title": "Improving startup performance with Lambda SnapStart",
+        "url": "https://docs.aws.amazon.com/lambda/latest/dg/snapstart.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "lambda-h1",
+      "serviceId": "lambda",
+      "difficulty": "hard",
+      "type": "single",
+      "prompt": "Una API serverless recibe un pico predecible todos los días a las 9:00 y exige latencias consistentemente bajas, sin cold starts, durante ese pico. Fuera de ese horario el tráfico es bajo y el costo debe mantenerse bajo. ¿Qué solución cumple mejor?",
+      "options": [
+        {
+          "text": "Provisioned Concurrency gestionada con escalado programado de Application Auto Scaling para el horario del pico",
+          "correct": true,
+          "explanation": "Correcto: el escalado programado enciende la capacidad prewarmed solo durante el pico y la reduce después, controlando el costo."
+        },
+        {
+          "text": "Provisioned Concurrency fija las 24 horas",
+          "correct": false,
+          "explanation": "Elimina los cold starts, pero se paga la capacidad aunque esté inactiva el resto del día."
+        },
+        {
+          "text": "SnapStart combinado con Provisioned Concurrency",
+          "correct": false,
+          "explanation": "SnapStart no es compatible con Provisioned Concurrency."
+        },
+        {
+          "text": "Concurrencia reservada igual al pico",
+          "correct": false,
+          "explanation": "Reserva y limita capacidad, pero los entornos no quedan inicializados: los cold starts siguen ocurriendo."
+        }
+      ],
+      "source": {
+        "title": "Configuring provisioned concurrency for a function",
+        "url": "https://docs.aws.amazon.com/lambda/latest/dg/provisioned-concurrency.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "lambda-h2",
+      "serviceId": "lambda",
+      "difficulty": "hard",
+      "type": "single",
+      "prompt": "Una función de Lambda procesa mensajes de una cola de Amazon SQS y escribe en un sistema heredado que soporta como máximo 50 conexiones simultáneas. En los picos, el sistema heredado colapsa. ¿Qué cambio protege al sistema heredado sin costo adicional?",
+      "options": [
+        {
+          "text": "Activar Provisioned Concurrency en 50",
+          "correct": false,
+          "explanation": "Mantiene 50 entornos listos, pero no impide que la función escale por encima de 50, y tiene costo."
+        },
+        {
+          "text": "Aumentar el tamaño de lote del event source mapping",
+          "correct": false,
+          "explanation": "Procesa más mensajes por invocación, pero no limita cuántas invocaciones corren a la vez."
+        },
+        {
+          "text": "Cambiar la cola a FIFO",
+          "correct": false,
+          "explanation": "FIFO cambia el orden de entrega, pero no limita la concurrencia al valor requerido."
+        },
+        {
+          "text": "Configurar concurrencia reservada en 50 para la función",
+          "correct": true,
+          "explanation": "Correcto: la concurrencia reservada es un tope máximo (y mínimo) de instancias concurrentes y no tiene costo adicional."
+        }
+      ],
+      "source": {
+        "title": "Configuring reserved concurrency for a function",
+        "url": "https://docs.aws.amazon.com/lambda/latest/dg/configuration-concurrency.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "lambda-h3",
+      "serviceId": "lambda",
+      "difficulty": "hard",
+      "type": "single",
+      "prompt": "Una función de Lambda detrás de una API debe devolver informes que a veces pesan 12 MB. Las respuestas grandes fallan. ¿Qué solución es la más adecuada?",
+      "options": [
+        {
+          "text": "Aumentar la memoria de la función a 10 GB",
+          "correct": false,
+          "explanation": "La memoria no cambia el límite de 6 MB para respuestas síncronas."
+        },
+        {
+          "text": "Guardar el informe en Amazon S3 y devolver una URL prefirmada para descargarlo",
+          "correct": true,
+          "explanation": "Correcto: las respuestas síncronas tienen un límite de 6 MB; S3 desacopla el tamaño del archivo de la respuesta."
+        },
+        {
+          "text": "Comprimir el informe hasta que quepa en 256 KB",
+          "correct": false,
+          "explanation": "No es un límite aplicable a este caso y no es una solución confiable para archivos variables."
+        },
+        {
+          "text": "Invocar la función de forma asíncrona para devolver más datos",
+          "correct": false,
+          "explanation": "Las invocaciones asíncronas no devuelven el resultado a quien las llama."
+        }
+      ],
+      "source": {
+        "title": "Lambda quotas",
+        "url": "https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "lambda-h4",
+      "serviceId": "lambda",
+      "difficulty": "hard",
+      "type": "multiple",
+      "prompt": "Una empresa ejecuta funciones de Lambda con uso alto y constante todo el año. Quiere reducir el costo de cómputo sin cambiar la lógica de negocio. ¿Qué dos acciones ayudan? (Elige 2)",
+      "options": [
+        {
+          "text": "Comprar Reserved Instances de EC2",
+          "correct": false,
+          "explanation": "Las Reserved Instances aplican a EC2, no a Lambda."
+        },
+        {
+          "text": "Contratar un Compute Savings Plan de 1 o 3 años",
+          "correct": true,
+          "explanation": "Correcto: los Compute Savings Plans también aplican al uso de Lambda (y Fargate)."
+        },
+        {
+          "text": "Activar Provisioned Concurrency en todas las funciones",
+          "correct": false,
+          "explanation": "Agrega un costo por capacidad configurada, incluso cuando está inactiva."
+        },
+        {
+          "text": "Migrar las funciones a la arquitectura Arm (Graviton) cuando las dependencias lo permiten",
+          "correct": true,
+          "explanation": "Correcto: el precio por GB-segundo en Arm es menor que en x86."
+        },
+        {
+          "text": "Aumentar el timeout de todas las funciones",
+          "correct": false,
+          "explanation": "No reduce el costo; solo permite ejecuciones más largas."
+        }
+      ],
+      "source": {
+        "title": "Compute Savings Plans",
+        "url": "https://aws.amazon.com/savingsplans/compute-pricing/"
+      },
+      "verifiedOn": "2026-09-30"
+    },
+    {
+      "id": "lambda-h5",
+      "serviceId": "lambda",
+      "difficulty": "hard",
+      "type": "multiple",
+      "prompt": "Una función de Lambda debe conectarse a una base de datos Amazon RDS en subredes privadas usando credenciales que no pueden quedar en el código ni en texto plano. ¿Qué dos acciones cumplen los requisitos? (Elige 2)",
+      "options": [
+        {
+          "text": "Guardar las credenciales en variables de entorno sin cifrar",
+          "correct": false,
+          "explanation": "Quedarían visibles en texto plano para cualquiera con acceso a la configuración."
+        },
+        {
+          "text": "Conectar la función a subredes privadas de la VPC con un security group que la base de datos permita",
+          "correct": true,
+          "explanation": "Correcto: es la forma de llegar a recursos privados de una VPC."
+        },
+        {
+          "text": "Guardar las credenciales en AWS Secrets Manager y permitir leerlas con el rol de ejecución de la función",
+          "correct": true,
+          "explanation": "Correcto: el secreto se lee en tiempo de ejecución con permisos de IAM, sin guardarlo en el código."
+        },
+        {
+          "text": "Crear un usuario de IAM y guardar sus access keys en el código",
+          "correct": false,
+          "explanation": "Las access keys en el código son un riesgo; la función ya tiene credenciales temporales por su rol."
+        },
+        {
+          "text": "Hacer pública la base de datos para que la función la alcance",
+          "correct": false,
+          "explanation": "Expone la base de datos a internet sin necesidad."
+        }
+      ],
+      "source": {
+        "title": "Use AWS Secrets Manager secrets in AWS Lambda functions",
+        "url": "https://docs.aws.amazon.com/secretsmanager/latest/userguide/retrieving-secrets_lambda.html"
+      },
+      "verifiedOn": "2026-09-30"
+    }
+  ]
+}

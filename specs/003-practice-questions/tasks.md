@@ -36,16 +36,16 @@ description: "Task list for Preguntas de práctica por servicio"
 
 ### Tests ⚠️
 
-- [ ] T006 [P] [US1] E2E en `tests/e2e/quiz.spec.ts`: la pestaña "Preguntas" muestra "Pregunta 1 de 15 · Normal"; Responder deshabilitado sin elección; respuesta incorrecta → "Incorrecto", correcta resaltada, explicación de cada opción y enlace a la fuente; respuesta correcta → "Correcto"; Siguiente avanza; cambiar a Normal y volver conserva la pregunta; cerrar la ficha reinicia; recorrido solo con teclado
-- [ ] T007 [P] [US1] Tests de contenido en `tests/content/questions-content.test.ts`: AWS Lambda tiene 15 preguntas válidas con fuente oficial y `verifiedOn`
+- [X] T006 [P] [US1] E2E en `tests/e2e/quiz.spec.ts`: la pestaña "Preguntas" muestra "Pregunta 1 de 15 · Normal"; Responder deshabilitado sin elección; respuesta incorrecta → "Incorrecto", correcta resaltada, explicación de cada opción y enlace a la fuente; respuesta correcta → "Correcto"; Siguiente avanza; cambiar a Normal y volver conserva la pregunta; cerrar la ficha reinicia; recorrido solo con teclado
+- [X] T007 [P] [US1] Tests de contenido en `tests/content/questions-content.test.ts`: AWS Lambda tiene 15 preguntas válidas con fuente oficial y `verifiedOn`
 
 ### Implementation
 
-- [ ] T008 [US1] Redactar las 15 preguntas de **AWS Lambda** en `src/content/questions.json`, verificando límites y precios contra la documentación oficial vigente — hace pasar T007
-- [ ] T009 [US1] Generalizar `src/ui/depthSelector.ts` a pestañas de la ficha ("Contenido de la ficha": Normal / Profundo / Preguntas) y actualizar `tests/e2e/helpers.ts`
-- [ ] T010 [US1] Vista de preguntas en `src/ui/quizView.ts`: avance, enunciado, opciones como radios (`single`), botón Responder, región `aria-live` con el resultado, explicaciones y fuente, botón Siguiente
-- [ ] T011 [US1] Integrar en `src/ui/serviceCard.ts` (intento por ficha, se conserva entre pestañas) y en `src/main.ts` (carga de preguntas, pestaña activa durante la visita); la pestaña Preguntas solo aparece si el servicio tiene preguntas
-- [ ] T012 [P] [US1] Estilos en `src/styles/room.css`: opciones, estados correcto/incorrecto, explicaciones, barra de avance — hace pasar T006
+- [X] T008 [US1] Redactar las 15 preguntas de **AWS Lambda** en `src/content/questions.json`, verificando límites y precios contra la documentación oficial vigente — hace pasar T007
+- [X] T009 [US1] Generalizar `src/ui/depthSelector.ts` a pestañas de la ficha ("Contenido de la ficha": Normal / Profundo / Preguntas) y actualizar `tests/e2e/helpers.ts`
+- [X] T010 [US1] Vista de preguntas en `src/ui/quizView.ts`: avance, enunciado, opciones como radios (`single`), botón Responder, región `aria-live` con el resultado, explicaciones y fuente, botón Siguiente
+- [X] T011 [US1] Integrar en `src/ui/serviceCard.ts` (intento por ficha, se conserva entre pestañas) y en `src/main.ts` (carga de preguntas, pestaña activa durante la visita); la pestaña Preguntas solo aparece si el servicio tiene preguntas
+- [X] T012 [P] [US1] Estilos en `src/styles/room.css`: opciones, estados correcto/incorrecto, explicaciones, barra de avance — hace pasar T006
 
 **Checkpoint (usuario)**: revisar estilo y dificultad de las 15 preguntas de Lambda antes de redactar el resto
 
@@ -53,15 +53,15 @@ description: "Task list for Preguntas de práctica por servicio"
 
 ## Phase 3: User Story 2 - Preguntas "Elige 2" (Priority: P1)
 
-- [ ] T013 [P] [US2] E2E en `tests/e2e/quiz.spec.ts`: en una "Elige 2" no se puede responder con 1, no se marca una tercera, y una respuesta con 1 correcta + 1 incorrecta cuenta como incorrecta mostrando las 2 correctas
-- [ ] T014 [US2] Opciones como casillas para `multiple` en `src/ui/quizView.ts` con indicación "Elige 2" — hace pasar T013
+- [X] T013 [P] [US2] E2E en `tests/e2e/quiz.spec.ts`: en una "Elige 2" no se puede responder con 1, no se marca una tercera, y una respuesta con 1 correcta + 1 incorrecta cuenta como incorrecta mostrando las 2 correctas
+- [X] T014 [US2] Opciones como casillas para `multiple` en `src/ui/quizView.ts` con indicación "Elige 2" — hace pasar T013
 
 ---
 
 ## Phase 4: User Story 3 - Resultado final (Priority: P2)
 
-- [ ] T015 [P] [US3] E2E en `tests/e2e/quiz.spec.ts`: tras la 15, "Ver resultado" muestra total sobre 15 y cada dificultad sobre 5; "Reintentar" vuelve a la 1; "Repasar el servicio" abre Profundo
-- [ ] T016 [US3] Resumen final en `src/ui/quizView.ts` — hace pasar T015
+- [X] T015 [P] [US3] E2E en `tests/e2e/quiz.spec.ts`: tras la 15, "Ver resultado" muestra total sobre 15 y cada dificultad sobre 5; "Reintentar" vuelve a la 1; "Repasar el servicio" abre Profundo
+- [X] T016 [US3] Resumen final en `src/ui/quizView.ts` — hace pasar T015
 
 ---
 

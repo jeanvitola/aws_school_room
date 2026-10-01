@@ -3,6 +3,8 @@ import './styles/lobby.css';
 import './styles/room.css';
 import roomsFile from './content/rooms.json';
 import servicesFile from './content/services.json';
+import questionsFile from './content/questions.json';
+import { loadQuestions } from './content/questionSchema';
 import { ContentValidationError, loadCatalog } from './content/schema';
 import {
   getRoom,
@@ -12,7 +14,13 @@ import {
   resolveTarget,
 } from './domain/catalog';
 import { createNavigation, type NavigationState } from './domain/navigation';
-import { DEFAULT_DEPTH_LEVEL, type ContentCatalog, type DepthLevel, type Service } from './domain/types';
+import {
+  DEFAULT_CARD_VIEW,
+  type CardView,
+  type ContentCatalog,
+  type Question,
+  type Service,
+} from './domain/types';
 import { createGame } from './scene/game';
 import { computeLayout, type ServicePlacement } from './scene/layouts/compute';
 import {
@@ -92,8 +100,10 @@ function start(): void {
   const gameContainer = getElement('game');
 
   let catalog: ContentCatalog;
+  let questionsByService: Map<string, Question[]>;
   try {
     catalog = loadCatalog(roomsFile, servicesFile);
+    questionsByService = loadQuestions(questionsFile, catalog);
   } catch (error) {
     renderContentError(ui, error);
     return;
@@ -105,8 +115,9 @@ function start(): void {
   const resolveServiceComparisons = (serviceId: string) => resolveComparisons(catalog, serviceId);
   const resolveServiceTarget = (target: string, fromServiceId: string) =>
     resolveTarget(catalog, target, fromServiceId);
-  // Nivel de lectura de las fichas: se mantiene durante la visita y vuelve a Normal al recargar.
-  let depthLevel: DepthLevel = DEFAULT_DEPTH_LEVEL;
+  // Pestaña de las fichas (Normal / Profundo / Preguntas): se mantiene durante la visita y
+  // vuelve a Normal al recargar.
+  let cardView: CardView = DEFAULT_CARD_VIEW;
   let roomView: RoomView | null = null;
   let textMode = false;
 
@@ -130,8 +141,8 @@ function start(): void {
       const textFallback = renderTextFallback(
         catalog,
         { resolveComparisons: resolveServiceComparisons, resolveTarget: resolveServiceTarget },
-        depthLevel,
-        (depth) => (depthLevel = depth),
+        cardView === 'deep' ? 'deep' : 'normal',
+        (depth) => (cardView = depth),
       );
       setGameVisible(false);
       ui.replaceChildren(view.navBar.element, textFallback);
@@ -192,8 +203,9 @@ function start(): void {
       view.card = renderServiceCard(service, {
         resolveComparisons: resolveServiceComparisons,
         resolveTarget: resolveServiceTarget,
-        depth: depthLevel,
-        onDepthChange: (depth) => (depthLevel = depth),
+        view: cardView,
+        onViewChange: (view) => (cardView = view),
+        questions: questionsByService.get(service.id) ?? [],
         onSelectService: (id) => navigation.selectService(id),
         onClose: () => navigation.closeCard(),
       });

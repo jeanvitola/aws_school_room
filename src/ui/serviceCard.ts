@@ -1,6 +1,8 @@
 import type { ResolvedComparison, ResolvedTarget } from '../domain/catalog';
-import type { ArchitecturePattern, DepthLevel, Service } from '../domain/types';
-import { renderDepthSelector } from './depthSelector';
+import { createQuizAttempt, type QuizAttempt } from '../domain/quiz';
+import type { ArchitecturePattern, CardView, DepthLevel, Question, Service } from '../domain/types';
+import { renderQuizView } from './quizView';
+import { renderTabSelector } from './tabSelector';
 
 export type HeadingLevel = 2 | 3 | 4;
 
@@ -248,14 +250,26 @@ export function renderCardSections(
 }
 
 export interface ServiceCardHandlers extends Omit<CardOptions, 'idPrefix'> {
-  depth: DepthLevel;
-  onDepthChange: (depth: DepthLevel) => void;
+  view: CardView;
+  onViewChange: (view: CardView) => void;
+  /** Preguntas de práctica del servicio; sin preguntas no se muestra la pestaña. */
+  questions: Question[];
   onClose: () => void;
 }
 
-/** Ficha de estudio de un servicio, como panel de diálogo no modal con selector de nivel. */
+const CARD_TABS: [CardView, string][] = [
+  ['normal', 'Normal'],
+  ['deep', 'Profundo'],
+  ['quiz', 'Preguntas'],
+];
+
+/** Ficha de estudio de un servicio: diálogo no modal con pestañas Normal / Profundo / Preguntas. */
 export function renderServiceCard(service: Service, handlers: ServiceCardHandlers): HTMLElement {
   const options: CardOptions = { ...handlers, idPrefix: 'card' };
+  const hasQuestions = handlers.questions.length > 0;
+  // El intento vive mientras la ficha está abierta: se conserva al cambiar de pestaña.
+  let attempt: QuizAttempt | null = null;
+
   const card = document.createElement('article');
   card.className = 'service-card';
   card.setAttribute('role', 'dialog');
@@ -277,22 +291,35 @@ export function renderServiceCard(service: Service, handlers: ServiceCardHandler
   const body = document.createElement('div');
   body.className = 'service-card__body';
 
-  function showDepth(depth: DepthLevel): void {
-    body.dataset.depth = depth;
-    body.replaceChildren(...renderCardSections(service, depth, 3, options));
+  function showView(view: CardView): void {
+    body.dataset.view = view;
+    if (view === 'quiz') {
+      attempt ??= createQuizAttempt(handlers.questions);
+      body.replaceChildren(renderQuizView(attempt, { onReview: () => changeView('deep') }));
+    } else {
+      body.replaceChildren(...renderCardSections(service, view, 3, options));
+    }
   }
 
-  const selector = renderDepthSelector(handlers.depth, (depth) => {
-    selector.setLevel(depth);
-    showDepth(depth);
+  function changeView(view: CardView): void {
+    tabs.setActive(view);
+    showView(view);
     body.scrollTop = 0;
-    handlers.onDepthChange(depth);
-  });
+    handlers.onViewChange(view);
+  }
+
+  const initialView = handlers.view === 'quiz' && !hasQuestions ? 'normal' : handlers.view;
+  const tabs = renderTabSelector(
+    'Contenido de la ficha',
+    CARD_TABS.filter(([view]) => view !== 'quiz' || hasQuestions),
+    initialView,
+    changeView,
+  );
   const toolbar = document.createElement('div');
   toolbar.className = 'service-card__toolbar';
-  toolbar.append(selector.element);
+  toolbar.append(tabs.element);
 
-  showDepth(handlers.depth);
+  showView(initialView);
   card.append(header, toolbar, body);
   return card;
 }

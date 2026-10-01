@@ -1,6 +1,6 @@
 import { getServicesByRoom, listRooms } from '../domain/catalog';
 import type { ContentCatalog, DepthLevel } from '../domain/types';
-import { renderDepthSelector } from './depthSelector';
+import { renderTabSelector } from './tabSelector';
 import { renderCardSections, type CardOptions } from './serviceCard';
 
 function renderRooms(
@@ -52,11 +52,19 @@ export function renderTextFallback(
   region.setAttribute('aria-label', 'Torre AWS en modo texto');
 
   const content = document.createElement('div');
-  const selector = renderDepthSelector(depth, (next) => {
-    selector.setLevel(next);
-    content.replaceChildren(...renderRooms(catalog, options, next));
-    onDepthChange(next);
-  });
+  const selector = renderTabSelector<DepthLevel>(
+    'Nivel de profundidad',
+    [
+      ['normal', 'Normal'],
+      ['deep', 'Profundo'],
+    ],
+    depth,
+    (next) => {
+      selector.setActive(next);
+      content.replaceChildren(...renderRooms(catalog, options, next));
+      onDepthChange(next);
+    },
+  );
   const toolbar = document.createElement('div');
   toolbar.className = 'text-fallback__toolbar';
   toolbar.append(selector.element);

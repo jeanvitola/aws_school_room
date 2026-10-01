@@ -20,10 +20,15 @@ export const DEEP_SECTIONS = [
   'Costos',
 ];
 
-export function depthButton(page: Page, level: 'Normal' | 'Profundo'): Locator {
+/** Pestaña de la ficha: Normal, Profundo o Preguntas (spec 003). */
+export function cardTab(page: Page, tab: 'Normal' | 'Profundo' | 'Preguntas'): Locator {
   return serviceCard(page)
-    .getByRole('group', { name: 'Nivel de profundidad' })
-    .getByRole('button', { name: level });
+    .getByRole('group', { name: 'Contenido de la ficha' })
+    .getByRole('button', { name: tab });
+}
+
+export function depthButton(page: Page, level: 'Normal' | 'Profundo'): Locator {
+  return cardTab(page, level);
 }
 
 export async function enterComputeRoom(page: Page): Promise<void> {
