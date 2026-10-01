@@ -2,6 +2,7 @@ import type {
   ArchitecturePattern,
   DeepContent,
   NormalContent,
+  Question,
   Room,
   Service,
 } from '../src/domain/types';
@@ -82,4 +83,50 @@ export function makeServicesFile(services: Service[] = [makeService()]) {
 
 export function words(count: number): string {
   return Array.from({ length: count }, (_, index) => `palabra${index}`).join(' ');
+}
+
+// --- Preguntas (spec 003) ---
+
+export function makeQuestion(overrides: Partial<Question> = {}): Question {
+  const type = overrides.type ?? 'single';
+  const optionCount = type === 'single' ? 4 : 5;
+  const correctIndexes = type === 'single' ? [0] : [0, 1];
+  return {
+    id: 'ec2-q',
+    serviceId: 'ec2',
+    difficulty: 'normal',
+    type,
+    prompt: type === 'single' ? '¿Qué servicio…?' : '¿Qué dos acciones…? (Elige 2)',
+    options: Array.from({ length: optionCount }, (_, index) => ({
+      text: `Opción ${index + 1}`,
+      correct: correctIndexes.includes(index),
+      explanation: `Explicación ${index + 1}`,
+    })),
+    source: { title: 'Amazon EC2', url: 'https://docs.aws.amazon.com/ec2/' },
+    verifiedOn: '2026-09-30',
+    ...overrides,
+  };
+}
+
+/** Respuesta única con la opción correcta en la posición indicada. */
+export function makeSingleQuestion(correctIndex: number, overrides: Partial<Question> = {}) {
+  const base = makeQuestion({ type: 'single', ...overrides });
+  return {
+    ...base,
+    options: base.options.map((option, index) => ({ ...option, correct: index === correctIndex })),
+  };
+}
+
+/** Set válido de 15 preguntas (5/5/5, 2 "Elige 2" difíciles, correctas en posiciones variadas). */
+export function makeQuestionSet(serviceId = 'ec2'): Question[] {
+  const difficulties = ['normal', 'medium', 'hard'] as const;
+  return difficulties.flatMap((difficulty) =>
+    Array.from({ length: 5 }, (_, index) => {
+      const id = `${serviceId}-${difficulty}-${index + 1}`;
+      if (difficulty === 'hard' && index >= 3) {
+        return makeQuestion({ id, serviceId, difficulty, type: 'multiple' });
+      }
+      return makeSingleQuestion(index % 4, { id, serviceId, difficulty });
+    }),
+  );
 }

@@ -87,3 +87,33 @@ export interface ContentCatalog {
   version: string;
   lastReviewed: string;
 }
+
+// --- Preguntas de práctica (spec 003) ---
+
+export type Difficulty = 'normal' | 'medium' | 'hard';
+export const DIFFICULTY_ORDER: Difficulty[] = ['normal', 'medium', 'hard'];
+
+/** single: 4 opciones y 1 correcta. multiple: "Elige 2", 5 opciones y 2 correctas. */
+export type QuestionType = 'single' | 'multiple';
+
+export interface QuestionOption {
+  text: string;
+  correct: boolean;
+  explanation: string;
+}
+
+export interface Question {
+  id: string;
+  serviceId: string;
+  difficulty: Difficulty;
+  type: QuestionType;
+  prompt: string;
+  options: QuestionOption[];
+  source: { title: string; url: string };
+  /** Fecha (ISO) en que se verificó contra la fuente oficial. */
+  verifiedOn: string;
+}
+
+/** Pestaña activa de la ficha. Se mantiene entre servicios durante la visita. */
+export type CardView = DepthLevel | 'quiz';
+export const DEFAULT_CARD_VIEW: CardView = 'normal';

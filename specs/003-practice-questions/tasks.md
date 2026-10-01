@@ -19,14 +19,14 @@ description: "Task list for Preguntas de práctica por servicio"
 
 ### Tests (primero, deben fallar)
 
-- [ ] T001 [P] Tests del esquema en `tests/content/questions-schema.test.ts`: acepta un set válido de 15 preguntas; rechaza ids duplicados; `serviceId` inexistente; `single` sin 4 opciones o sin exactamente 1 correcta; `multiple` sin 5 opciones, sin exactamente 2 correctas o sin "(Elige 2)" en el enunciado; opción sin explicación; `source.url` que no es https o no es de un dominio oficial de AWS; `verifiedOn` no ISO; servicio con distinto de 5/5/5; menos de 2 `multiple` entre las `hard`; la correcta de las `single` en menos de 3 posiciones distintas
-- [ ] T002 [P] Tests de la máquina de estados en `tests/unit/quiz.test.ts`: ordena normal → medium → hard; `select` reemplaza en `single` y alterna sin superar 2 en `multiple`; `canSubmit` según el tipo; `submit` evalúa (en `multiple` solo correcta si son las 2) y devuelve los índices correctos; no se puede seleccionar ni responder dos veces; `next` avanza y termina tras la 15; `summary` cuenta total y por dificultad; `restart` vuelve al inicio
+- [X] T001 [P] Tests del esquema en `tests/content/questions-schema.test.ts`: acepta un set válido de 15 preguntas; rechaza ids duplicados; `serviceId` inexistente; `single` sin 4 opciones o sin exactamente 1 correcta; `multiple` sin 5 opciones, sin exactamente 2 correctas o sin "(Elige 2)" en el enunciado; opción sin explicación; `source.url` que no es https o no es de un dominio oficial de AWS; `verifiedOn` no ISO; servicio con distinto de 5/5/5; menos de 2 `multiple` entre las `hard`; la correcta de las `single` en menos de 3 posiciones distintas
+- [X] T002 [P] Tests de la máquina de estados en `tests/unit/quiz.test.ts`: ordena normal → medium → hard; `select` reemplaza en `single` y alterna sin superar 2 en `multiple`; `canSubmit` según el tipo; `submit` evalúa (en `multiple` solo correcta si son las 2) y devuelve los índices correctos; no se puede seleccionar ni responder dos veces; `next` avanza y termina tras la 15; `summary` cuenta total y por dificultad; `restart` vuelve al inicio
 
 ### Implementation
 
-- [ ] T003 Tipos en `src/domain/types.ts`: `Difficulty`, `QuestionType`, `QuestionOption`, `Question`, `CardView` (`'normal' | 'deep' | 'quiz'`) y `DEFAULT_CARD_VIEW`
-- [ ] T004 Esquema y reglas en `src/content/questionSchema.ts` (`loadQuestions(file, catalog)` → preguntas agrupadas por servicio) — hace pasar T001
-- [ ] T005 Máquina de estados `createQuizAttempt` en `src/domain/quiz.ts` — hace pasar T002
+- [X] T003 Tipos en `src/domain/types.ts`: `Difficulty`, `QuestionType`, `QuestionOption`, `Question`, `CardView` (`'normal' | 'deep' | 'quiz'`) y `DEFAULT_CARD_VIEW`
+- [X] T004 Esquema y reglas en `src/content/questionSchema.ts` (`loadQuestions(file, catalog)` → preguntas agrupadas por servicio) — hace pasar T001
+- [X] T005 Máquina de estados `createQuizAttempt` en `src/domain/quiz.ts` — hace pasar T002
 
 **Checkpoint**: `npm run test` en verde
 
