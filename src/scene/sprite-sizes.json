@@ -1,8 +1,10 @@
 {
   "floor-tile": { "width": 64, "height": 32 },
   "wall-left": { "width": 32, "height": 80 },
-  "wall-right": { "width": 32, "height": 80 },
-  "workstation": { "width": 64, "height": 64 },
+  "wall-right": { "width": 32, "height": 80, "frames": 4, "frameRate": 3 },
+  "workstation": { "width": 64, "height": 64, "frames": 2, "frameRate": 4 },
+  "rack": { "width": 48, "height": 96 },
+  "cable-tray": { "width": 64, "height": 36 },
   "service-ec2": { "width": 48, "height": 48 },
   "service-lambda": { "width": 48, "height": 48 },
   "service-ecs": { "width": 48, "height": 48 },

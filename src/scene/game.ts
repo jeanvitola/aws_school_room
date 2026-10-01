@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import { GAME_HEIGHT, GAME_WIDTH } from './iso';
-import { SPRITE_KEYS } from './sprites';
+import { SPRITE_KEYS, SPRITE_SIZES, frameCount } from './sprites';
 
 class PreloadScene extends Phaser.Scene {
   constructor(private readonly onReady: () => void) {
@@ -9,11 +9,27 @@ class PreloadScene extends Phaser.Scene {
 
   preload(): void {
     for (const key of SPRITE_KEYS) {
-      this.load.image(key, `assets/sprites/${key}.png`);
+      const url = `assets/sprites/${key}.png`;
+      if (frameCount(key) > 1) {
+        const { width, height } = SPRITE_SIZES[key];
+        this.load.spritesheet(key, url, { frameWidth: width, frameHeight: height });
+      } else {
+        this.load.image(key, url);
+      }
     }
   }
 
   create(): void {
+    // Cada sprite animado tiene una animación en bucle con su mismo nombre.
+    for (const key of SPRITE_KEYS) {
+      if (frameCount(key) === 1) continue;
+      this.anims.create({
+        key,
+        frames: this.anims.generateFrameNumbers(key),
+        frameRate: SPRITE_SIZES[key].frameRate ?? 4,
+        repeat: -1,
+      });
+    }
     this.onReady();
   }
 }

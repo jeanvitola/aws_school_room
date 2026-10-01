@@ -77,6 +77,37 @@ def enhance(image: Image.Image, saturation: float, contrast: float) -> Image.Ima
     return result
 
 
+def first_opaque_row(image: Image.Image, x: int) -> int:
+    alpha = image.getchannel("A")
+    for y in range(image.height):
+        if alpha.getpixel((x, y)) > 0:
+            return y
+    return image.height
+
+
+def shear_wall(image: Image.Image, side: str, target: dict) -> Image.Image:
+    """Inclina una pared para que su arista caiga con la pendiente isométrica del juego.
+
+    En el sprite final la caída de la arista superior es la mitad del ancho (2:1). La pared del
+    autor cae menos, así que se desplaza cada columna hacia abajo de forma proporcional.
+    """
+    w, h = image.size
+    margin = max(1, w // 20)
+    left, right = first_opaque_row(image, margin), first_opaque_row(image, w - 1 - margin)
+    drop = abs(right - left)
+    face = h - drop
+    # Proporción final: caída / cara = (ancho / 2) / (alto - ancho / 2).
+    final_drop = target["width"] / 2
+    wanted = face * final_drop / (target["height"] - final_drop)
+    extra = max(0.0, wanted - drop)
+    sheared = Image.new("RGBA", (w, h + round(extra) + 1), (0, 0, 0, 0))
+    for x in range(w):
+        t = x / (w - 1) if side == "left" else (w - 1 - x) / (w - 1)
+        column = image.crop((x, 0, x + 1, h))
+        sheared.paste(column, (x, round(extra * t)))
+    return sheared
+
+
 def binarize_alpha(image: Image.Image) -> Image.Image:
     alpha = image.getchannel("A").point(lambda a: 255 if a >= ALPHA_THRESHOLD else 0)
     image.putalpha(alpha)
@@ -86,20 +117,21 @@ def binarize_alpha(image: Image.Image) -> Image.Image:
 COLORS_PER_SPRITE = 16
 
 
-def sprite_colors(sprite: Image.Image) -> list[tuple[int, tuple[int, int, int]]]:
-    """Colores representativos de un sprite (con su cantidad de píxeles)."""
+def sprite_colors(sprite: Image.Image, weight: float = 1) -> list[tuple[float, tuple[int, int, int]]]:
+    """Colores representativos de un sprite, con su peso: píxeles × cuántas veces se ve en pantalla."""
     opaque = [p[:3] for p in sprite.getdata() if p[3] > 0]
     sample = Image.new("RGB", (len(opaque), 1))
     sample.putdata(opaque)
     quantized = sample.quantize(colors=COLORS_PER_SPRITE, method=Image.Quantize.MEDIANCUT)
     raw = quantized.getpalette()
-    return [(count, tuple(raw[i * 3 : i * 3 + 3])) for count, i in quantized.getcolors()]
+    return [(count * weight, tuple(raw[i * 3 : i * 3 + 3])) for count, i in quantized.getcolors()]
 
 
-def build_palette(sprites: list[Image.Image], colors: int) -> Image.Image:
+def build_palette(sprites: list[tuple[Image.Image, float]], colors: int) -> Image.Image:
     """Paleta común: cada sprite aporta sus colores (así no se pierden los acentos, que ocupan
-    pocos píxeles) y luego se fusionan los pares más parecidos hasta dejar `colors`."""
-    entries = [list(entry) for sprite in sprites for entry in sprite_colors(sprite)]
+    pocos píxeles) y luego se fusionan los pares más parecidos hasta dejar `colors`. Al fusionar,
+    el color resultante se acerca al de mayor peso (p. ej. el piso, que se repite en toda la sala)."""
+    entries = [list(entry) for sprite, weight in sprites for entry in sprite_colors(sprite, weight)]
     while len(entries) > colors:
         best = None
         for i in range(len(entries)):
@@ -158,26 +190,40 @@ def preview(pieces: list[tuple[str, Image.Image, Image.Image]], path: Path) -> N
     sheet.save(path)
 
 
+def convert_frame(original: Image.Image, piece: dict, size: dict) -> Image.Image:
+    sprite = remove_background(original)
+    if piece.get("mask") == "diamond":
+        sprite = apply_diamond_mask(sprite)
+    bbox = sprite.getchannel("A").getbbox()
+    if bbox:
+        sprite = sprite.crop(bbox) if piece["anchor"] != "fill" or "wall" in piece else sprite
+    if "wall" in piece:
+        sprite = shear_wall(sprite, piece["wall"], size)
+        sprite = sprite.crop(sprite.getchannel("A").getbbox())
+    sprite = binarize_alpha(fit(sprite, size["width"], size["height"], piece["anchor"]))
+    if "enhance" in piece:
+        sprite = enhance(sprite, piece["enhance"]["saturation"], piece["enhance"]["contrast"])
+    return sprite
+
+
 def main() -> None:
     converted = []
     for piece in MANIFEST["pieces"]:
         name = piece["sprite"]
         size = SIZES[name]
-        original = Image.open(ART_DIR / piece["source"]).crop(tuple(piece["crop"]))
-        sprite = remove_background(original)
-        if piece.get("mask") == "diamond":
-            sprite = apply_diamond_mask(sprite)
-        bbox = sprite.getchannel("A").getbbox()
-        if bbox and piece["anchor"] != "fill":
-            sprite = sprite.crop(bbox)
-        sprite = binarize_alpha(fit(sprite, size["width"], size["height"], piece["anchor"]))
-        if "enhance" in piece:
-            sprite = enhance(sprite, piece["enhance"]["saturation"], piece["enhance"]["contrast"])
-        converted.append((name, original, sprite))
+        source = Image.open(ART_DIR / piece["source"])
+        crops = piece.get("frames") or [piece["crop"]]
+        if len(crops) != size.get("frames", 1):
+            raise SystemExit(f"{name}: el manifiesto tiene {len(crops)} cuadros y sprite-sizes.json pide {size.get('frames', 1)}")
+        frames = [convert_frame(source.crop(tuple(crop)), piece, size) for crop in crops]
+        strip = Image.new("RGBA", (size["width"] * len(frames), size["height"]), (0, 0, 0, 0))
+        for i, frame in enumerate(frames):
+            strip.paste(frame, (i * size["width"], 0))
+        converted.append((name, source.crop(tuple(crops[0])), strip, piece.get("weight", 1)))
 
-    palette = build_palette([sprite for _, _, sprite in converted], MANIFEST["paletteColors"])
+    palette = build_palette([(sprite, weight) for _, _, sprite, weight in converted], MANIFEST["paletteColors"])
     final = []
-    for name, original, sprite in converted:
+    for name, original, sprite, _ in converted:
         sprite = apply_palette(sprite, palette)
         sprite.save(OUT_DIR / f"{name}.png")
         final.append((name, original, sprite))

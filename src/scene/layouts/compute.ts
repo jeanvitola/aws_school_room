@@ -19,3 +19,19 @@ export const computeLayout = {
   autoscaling: { col: 6, row: 7, sprite: 'service-autoscaling' },
   elb: { col: 9, row: 7, sprite: 'service-elb' },
 } as const satisfies Record<string, ServicePlacement>;
+
+export interface DecorPlacement {
+  col: number;
+  row: number;
+  sprite: SpriteKey;
+}
+
+/** Decoración de la sala (spec 004): racks contra las paredes y bandejas de cables en el piso. */
+export const computeDecor: DecorPlacement[] = [
+  { col: 0, row: 0, sprite: 'rack' },
+  { col: 5, row: 0, sprite: 'rack' },
+  { col: 9, row: 0, sprite: 'rack' },
+  { col: 0, row: 5, sprite: 'rack' },
+  { col: 6, row: 5, sprite: 'cable-tray' },
+  { col: 1, row: 9, sprite: 'cable-tray' },
+];

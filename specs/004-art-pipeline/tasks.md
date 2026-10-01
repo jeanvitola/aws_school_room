@@ -21,5 +21,5 @@
 
 ## Phase 3: Resto del arte (tras aprobación)
 
-- [ ] T010 Agregar al manifiesto los otros 6 íconos, las paredes y el rack
-- [ ] T011 Animaciones con los cuadros de la CAPA 5 (US3)
+- [X] T010 Agregar al manifiesto los otros 6 íconos, las paredes (inclinadas a la pendiente 2:1), el rack y la bandeja de cables; decoración en `computeDecor`; paleta ponderada por uso en pantalla
+- [X] T011 Animaciones con los cuadros de la CAPA 5 (US3): pantalla del escritorio al activar la estación y luces de la pared del fondo izquierdo. Los cuadros del contenedor que brilla quedan sin usar hasta definir a qué ícono pertenecen

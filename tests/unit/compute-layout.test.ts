@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import servicesFile from '../../src/content/services.json';
 import { GRID_COLS, GRID_ROWS } from '../../src/scene/iso';
-import { computeLayout } from '../../src/scene/layouts/compute';
+import { computeDecor, computeLayout } from '../../src/scene/layouts/compute';
 import { SPRITE_KEYS } from '../../src/scene/sprites';
 
 const computeServiceIds = servicesFile.services
@@ -46,4 +46,29 @@ describe('compute room layout', () => {
       }
     }
   });
+
+  describe('decoration (spec 004)', () => {
+    it('uses existing sprites and stays inside the grid', () => {
+      for (const { col, row, sprite } of computeDecor) {
+        expect(SPRITE_KEYS).toContain(sprite);
+        expect(col).toBeGreaterThanOrEqual(0);
+        expect(row).toBeGreaterThanOrEqual(0);
+        expect(col).toBeLessThan(GRID_COLS);
+        expect(row).toBeLessThan(GRID_ROWS);
+      }
+    });
+
+    it('keeps a free tile around every station', () => {
+      for (const decor of computeDecor) {
+        for (const station of placements) {
+          const distance = Math.max(
+            Math.abs(decor.col - station.col),
+            Math.abs(decor.row - station.row),
+          );
+          expect(distance).toBeGreaterThanOrEqual(2);
+        }
+      }
+    });
+  });
 });
+

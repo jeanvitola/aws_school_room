@@ -1,6 +1,6 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { SPRITE_KEYS, SPRITE_SIZES } from '../../src/scene/sprites';
+import { SPRITE_KEYS, SPRITE_SIZES, frameCount } from '../../src/scene/sprites';
 
 const SPRITES_DIR = new URL('../../public/assets/sprites/', import.meta.url);
 const PNG_SIGNATURE = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
@@ -24,6 +24,11 @@ describe('sprite contract (spec 004, FR-007)', () => {
     const header = readPngHeader(file);
     expect(header.isPng).toBe(true);
     expect(header.colorType).toBe(COLOR_TYPE_RGBA);
-    expect({ width: header.width, height: header.height }).toEqual(SPRITE_SIZES[key]);
+    // Un sprite animado es una tira horizontal: su ancho es el de un cuadro por la cantidad de cuadros.
+    const { width, height } = SPRITE_SIZES[key];
+    expect({ width: header.width, height: header.height }).toEqual({
+      width: width * frameCount(key),
+      height,
+    });
   });
 });

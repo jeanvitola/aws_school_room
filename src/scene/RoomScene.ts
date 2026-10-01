@@ -13,7 +13,7 @@ import {
   cameraCenterFor,
   isoToScreen,
 } from './iso';
-import type { SpriteKey } from './sprites';
+import { frameCount, type SpriteKey } from './sprites';
 
 export const ROOM_SCENE_KEY = 'room';
 
@@ -30,6 +30,8 @@ export interface Hotspot {
 
 export interface RoomSceneData {
   hotspots: Hotspot[];
+  /** Objetos decorativos, sin interacción (spec 004). */
+  decor: { col: number; row: number; sprite: SpriteKey }[];
   onSelect: (serviceId: string) => void;
 }
 
@@ -41,7 +43,7 @@ export interface ViewFraction {
 
 interface StationView {
   focusPoint: { x: number; y: number };
-  desk: Phaser.GameObjects.Image;
+  desk: Phaser.GameObjects.Sprite;
   icon: Phaser.GameObjects.Image;
   marker: Phaser.GameObjects.Graphics;
   label: Phaser.GameObjects.Text;
@@ -64,8 +66,15 @@ export class RoomScene extends Phaser.Scene {
 
     this.drawWalls();
     this.drawFloor();
-    const byDepth = [...data.hotspots].sort((a, b) => a.col + a.row - (b.col + b.row));
-    byDepth.forEach((hotspot, index) => this.addStation(hotspot, index, data.onSelect));
+    // Estaciones y decoración se dibujan de atrás hacia adelante para que se tapen correctamente.
+    const objects = [
+      ...data.decor.map((decor) => ({ ...decor, draw: () => this.addDecor(decor) })),
+      ...data.hotspots.map((hotspot, index) => ({
+        ...hotspot,
+        draw: () => this.addStation(hotspot, index, data.onSelect),
+      })),
+    ];
+    objects.sort((a, b) => a.col + a.row - (b.col + b.row)).forEach((object) => object.draw());
 
     const camera = this.cameras.main;
     camera.setZoom(ROOM_ZOOM);
@@ -102,9 +111,13 @@ export class RoomScene extends Phaser.Scene {
   private refreshStations(): void {
     for (const [id, station] of this.stations) {
       const active = id === this.highlightedId || id === this.selectedId;
-      for (const image of [station.desk, station.icon]) {
-        if (active) image.setTint(HOVER_TINT);
-        else image.clearTint();
+      // Estación activa: el ícono se ilumina y la pantalla del monitor se enciende (animación del autor).
+      if (active) {
+        station.icon.setTint(HOVER_TINT);
+        station.desk.play('workstation', true);
+      } else {
+        station.icon.clearTint();
+        station.desk.stop().setFrame(0);
       }
       // La etiqueta solo en hover y en la vista general: con una estación seleccionada la cámara
       // está en zoom (la etiqueta se vería enorme) y la ficha ya muestra el nombre.
@@ -125,15 +138,24 @@ export class RoomScene extends Phaser.Scene {
 
   private drawWalls(): void {
     // Pared del fondo izquierdo: sobre el borde superior-izquierdo de las baldosas col = 0.
+    // Tiene luces animadas; cada segmento empieza en otro cuadro para que no parpadeen al unísono.
     for (let row = 0; row < GRID_ROWS; row++) {
       const { x, y } = isoToScreen(0, row);
-      this.add.image(x - TILE_WIDTH / 2, y, 'wall-right').setOrigin(0, 1);
+      this.add
+        .sprite(x - TILE_WIDTH / 2, y, 'wall-right')
+        .setOrigin(0, 1)
+        .play({ key: 'wall-right', startFrame: row % frameCount('wall-right') });
     }
     // Pared del fondo derecho: sobre el borde superior-derecho de las baldosas row = 0.
     for (let col = 0; col < GRID_COLS; col++) {
       const { x, y } = isoToScreen(col, 0);
       this.add.image(x + TILE_WIDTH / 2, y, 'wall-left').setOrigin(1, 1);
     }
+  }
+
+  private addDecor({ col, row, sprite }: RoomSceneData['decor'][number]): void {
+    const { x, y } = isoToScreen(col, row);
+    this.add.image(x, y + TILE_HEIGHT / 2, sprite).setOrigin(0.5, 1);
   }
 
   private addStation(hotspot: Hotspot, index: number, onSelect: (id: string) => void): void {
@@ -154,27 +176,7 @@ export class RoomScene extends Phaser.Scene {
     this.tweens.add({ targets: marker, alpha: 0.35, duration: 500, yoyo: true, repeat: -1 });
 
     // Escritorio con monitor: su base se apoya en el vértice inferior de la baldosa.
-    const desk = this.add.image(x, y + TILE_HEIGHT / 2, 'workstation').setOrigin(0.5, 1);
-
-    // Brillo de la pantalla
-    const glow = this.add.rectangle(
-      x - 2 * PIXEL_SCALE,
-      y - 14 * PIXEL_SCALE,
-      6 * PIXEL_SCALE,
-      9 * PIXEL_SCALE,
-      0x7fd1e8,
-      0.15,
-    );
-    glow.setBlendMode(Phaser.BlendModes.ADD);
-    this.tweens.add({
-      targets: glow,
-      alpha: 0.45,
-      duration: 900 + index * 70,
-      ease: 'Stepped',
-      easeParams: [3],
-      yoyo: true,
-      repeat: -1,
-    });
+    const desk = this.add.sprite(x, y + TILE_HEIGHT / 2, 'workstation', 0).setOrigin(0.5, 1);
 
     // Ícono del servicio flotando sobre el monitor
     const icon = this.add

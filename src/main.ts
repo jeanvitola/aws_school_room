@@ -22,7 +22,7 @@ import {
   type Service,
 } from './domain/types';
 import { createGame } from './scene/game';
-import { computeLayout, type ServicePlacement } from './scene/layouts/compute';
+import { computeDecor, computeLayout, type ServicePlacement } from './scene/layouts/compute';
 import {
   ROOM_SCENE_KEY,
   RoomScene,
@@ -132,6 +132,7 @@ function start(): void {
     textMode = false;
     document.body.dataset.view = 'lobby';
     game.scene.stop(ROOM_SCENE_KEY);
+    delete gameContainer.dataset.roomReady;
     setGameVisible(false);
     ui.replaceChildren(lobby);
   }
@@ -184,8 +185,12 @@ function start(): void {
     game.scale.refresh();
     const data: RoomSceneData = {
       hotspots: toHotspots(services, ROOM_LAYOUTS[roomId] ?? {}),
+      decor: roomId === 'compute' ? computeDecor : [],
       onSelect: (serviceId) => navigation.selectService(serviceId),
     };
+    // `data-room-ready` indica que las estaciones ya existen y responden a clics.
+    gameContainer.dataset.roomReady = 'false';
+    roomScene().events.once('create', () => (gameContainer.dataset.roomReady = 'true'));
     game.scene.start(ROOM_SCENE_KEY, data);
     return view;
   }

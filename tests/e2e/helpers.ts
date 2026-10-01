@@ -59,6 +59,8 @@ export async function waitForCameraTravel(page: Page): Promise<void> {
 /** Hace clic sobre el sprite de un servicio en el canvas, a partir del layout y la escala del juego. */
 export async function clickHotspot(page: Page, serviceId: keyof typeof computeLayout): Promise<void> {
   const placement = computeLayout[serviceId];
+  // Las estaciones existen recién cuando la escena terminó de crearse.
+  await expect(page.locator('#game')).toHaveAttribute('data-room-ready', 'true');
   const canvas = page.locator('#game canvas');
   await expect(canvas).toBeVisible();
   const box = await canvas.boundingBox();
