@@ -1,10 +1,14 @@
+import type { ResolvedComparison } from '../domain/catalog';
 import type { Service } from '../domain/types';
 
 export type HeadingLevel = 2 | 3 | 4;
 
 export interface CardOptions {
-  /** Nombre a mostrar para el destino de una comparación (id del catálogo o nombre de AWS). */
-  resolveTargetName: (target: string) => string;
+  resolveComparisons: (serviceId: string) => ResolvedComparison[];
+  /** Si se define, las comparaciones con servicios de la misma sala se muestran como enlaces. */
+  onSelectService?: (serviceId: string) => void;
+  /** Prefijo para ids únicos cuando la misma ficha aparece en otra vista. */
+  idPrefix: string;
 }
 
 function heading(level: HeadingLevel, text: string): HTMLHeadingElement {
@@ -29,19 +33,32 @@ function bulletList(items: string[]): HTMLUListElement {
   return list;
 }
 
-function section(className: string, level: HeadingLevel, title: string, ...content: HTMLElement[]) {
-  const element = document.createElement('section');
-  element.className = `card-section card-section--${className}`;
-  element.append(heading(level, title), ...content);
-  return element;
+function alertIcon(): HTMLSpanElement {
+  const icon = document.createElement('span');
+  icon.className = 'card-section__icon';
+  icon.dataset.icon = 'alert';
+  icon.setAttribute('aria-hidden', 'true');
+  icon.textContent = '!';
+  return icon;
 }
 
 function comparisonList(service: Service, options: CardOptions): HTMLDListElement {
   const list = document.createElement('dl');
   list.className = 'comparison-list';
-  for (const comparison of service.compareWith) {
+  for (const comparison of options.resolveComparisons(service.id)) {
     const term = document.createElement('dt');
-    term.textContent = `vs. ${options.resolveTargetName(comparison.target)}`;
+    term.append('vs. ');
+    const compared = comparison.service;
+    if (compared && compared.roomId === service.roomId && options.onSelectService) {
+      const link = document.createElement('button');
+      link.type = 'button';
+      link.className = 'comparison-list__link';
+      link.textContent = compared.name;
+      link.addEventListener('click', () => options.onSelectService?.(compared.id));
+      term.append(link);
+    } else {
+      term.append(compared?.name ?? comparison.target);
+    }
     const description = document.createElement('dd');
     description.textContent = comparison.difference;
     list.append(term, description);
@@ -55,17 +72,30 @@ export function renderCardSections(
   level: HeadingLevel,
   options: CardOptions,
 ): HTMLElement[] {
+  function section(key: string, title: string, ...content: HTMLElement[]): HTMLElement {
+    const element = document.createElement('section');
+    element.className = `card-section card-section--${key}`;
+    const sectionHeading = heading(level, title);
+    sectionHeading.id = `${options.idPrefix}-${service.id}-${key}`;
+    element.setAttribute('aria-labelledby', sectionHeading.id);
+    element.append(sectionHeading, ...content);
+    return element;
+  }
+
+  const traps = section('traps', 'Trampas del examen', bulletList(service.examTraps));
+  traps.prepend(alertIcon());
+
   return [
-    section('summary', level, 'Qué es', paragraph(service.summary)),
-    section('use-cases', level, 'Casos de uso', bulletList(service.useCases)),
-    section('concepts', level, 'Conceptos clave del examen', bulletList(service.examConcepts)),
-    section('comparison', level, 'Comparación', comparisonList(service, options)),
-    section('traps', level, 'Trampas del examen', bulletList(service.examTraps)),
-    section('cost', level, 'Costos', paragraph(service.costNote)),
+    section('summary', 'Qué es', paragraph(service.summary)),
+    section('use-cases', 'Casos de uso', bulletList(service.useCases)),
+    section('concepts', 'Conceptos clave del examen', bulletList(service.examConcepts)),
+    section('comparison', 'Comparación', comparisonList(service, options)),
+    traps,
+    section('cost', 'Costos', paragraph(service.costNote)),
   ];
 }
 
-export interface ServiceCardHandlers extends CardOptions {
+export interface ServiceCardHandlers extends Omit<CardOptions, 'idPrefix'> {
   onClose: () => void;
 }
 
@@ -91,7 +121,7 @@ export function renderServiceCard(service: Service, handlers: ServiceCardHandler
 
   const body = document.createElement('div');
   body.className = 'service-card__body';
-  body.append(...renderCardSections(service, 3, handlers));
+  body.append(...renderCardSections(service, 3, { ...handlers, idPrefix: 'card' }));
 
   card.append(header, body);
   return card;

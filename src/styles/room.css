@@ -187,6 +187,61 @@ body[data-view='room'] #game {
   color: var(--color-accent-soft);
 }
 
+.comparison-list__link {
+  padding: 0 0 2px;
+  border: 0;
+  border-bottom: 2px dashed currentColor;
+  background: none;
+  color: var(--color-focus);
+  font: inherit;
+  cursor: pointer;
+}
+
+.comparison-list__link:hover {
+  border-bottom-style: solid;
+}
+
+/* Trampas del examen: sección destacada */
+.card-section--traps {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 0.5rem;
+  align-items: center;
+  margin-top: 1.25rem;
+  padding: 0.25rem 0.75rem 0.75rem;
+  border-left: var(--pixel) solid var(--color-accent-soft);
+  background: rgb(255 209 102 / 0.08);
+}
+
+.card-section--traps h3,
+.card-section--traps h4 {
+  margin-top: 0.75rem;
+  color: var(--color-accent-soft);
+}
+
+.card-section--traps > :not(.card-section__icon, h3, h4) {
+  grid-column: 1 / -1;
+}
+
+.card-section__icon {
+  margin-top: 0.75rem;
+  display: inline-grid;
+  place-items: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  background: var(--color-accent-soft);
+  color: var(--color-bg);
+  font-family: var(--font-pixel);
+  font-size: 0.625rem;
+  animation: icon-blink 1.2s steps(2) infinite;
+}
+
+@keyframes icon-blink {
+  50% {
+    background: var(--color-accent);
+  }
+}
+
 .comparison-list dd {
   margin: 0.25rem 0 0.75rem;
 }

@@ -24,4 +24,18 @@ describe('compute room content', () => {
       'Elastic Load Balancing',
     ]);
   });
+
+  it.each([
+    ['ec2', 'lambda'],
+    ['ecs', 'eks'],
+    ['ecs', 'fargate'],
+    ['eks', 'fargate'],
+    ['autoscaling', 'elb'],
+  ])('compares %s and %s in both directions', (first, second) => {
+    const targetsOf = (id: string) =>
+      computeServices.find((service) => service.id === id)?.compareWith.map((c) => c.target);
+
+    expect(targetsOf(first)).toContain(second);
+    expect(targetsOf(second)).toContain(first);
+  });
 });

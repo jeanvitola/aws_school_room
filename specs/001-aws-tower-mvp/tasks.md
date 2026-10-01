@@ -123,15 +123,15 @@ description: "Task list for Torre AWS MVP"
 
 ### Tests for User Story 3 ⚠️
 
-- [ ] T039 [P] [US3] Test unitario en `tests/unit/catalog.test.ts`: `resolveComparisons(serviceId)` devuelve cada `compareWith` con `service` resuelto cuando `target` es un id del catálogo y `service: undefined` cuando es solo un nombre de AWS
-- [ ] T040 [P] [US3] Test E2E en `tests/e2e/compare.spec.ts`: en la ficha de EC2, la comparación con Lambda es un enlace que abre la ficha de Lambda (clic y teclado); una comparación sin servicio en el catálogo se muestra como texto sin enlace; la sección "Trampas del examen" tiene un estilo destacado identificable
+- [X] T039 [P] [US3] Test unitario en `tests/unit/catalog.test.ts`: `resolveComparisons(serviceId)` devuelve cada `compareWith` con `service` resuelto cuando `target` es un id del catálogo y `service: undefined` cuando es solo un nombre de AWS
+- [X] T040 [P] [US3] Test E2E en `tests/e2e/compare.spec.ts`: en la ficha de EC2, la comparación con Lambda es un enlace que abre la ficha de Lambda (clic y teclado); una comparación sin servicio en el catálogo se muestra como texto sin enlace; la sección "Trampas del examen" tiene un estilo destacado identificable
 
 ### Implementation for User Story 3
 
-- [ ] T041 [US3] Implementar `resolveComparisons(serviceId)` en `src/domain/catalog.ts` — hace pasar T039
-- [ ] T042 [US3] Actualizar `src/ui/serviceCard.ts` para renderizar la sección "Comparación" con `resolveComparisons`: enlace (`<button>`) a `navigation.selectService(target)` si existe en el catálogo, texto plano si no; siempre muestra `difference`
-- [ ] T043 [P] [US3] Destacar visualmente la sección "Trampas del examen" (ícono pixel de alerta + color de advertencia con contraste AA) en `src/styles/room.css` — junto con T042 hace pasar T040
-- [ ] T044 [US3] Revisar `src/content/services.json` para que cada par de servicios relacionados (EC2↔Lambda, ECS↔EKS, ECS/EKS↔Fargate, Auto Scaling↔ELB) tenga comparaciones recíprocas con `difference` orientada a "cuándo elegir cada uno"
+- [X] T041 [US3] Implementar `resolveComparisons(serviceId)` en `src/domain/catalog.ts` — hace pasar T039
+- [X] T042 [US3] Actualizar `src/ui/serviceCard.ts` para renderizar la sección "Comparación" con `resolveComparisons`: enlace (`<button>`) a `navigation.selectService(target)` si existe en el catálogo, texto plano si no; siempre muestra `difference`
+- [X] T043 [P] [US3] Destacar visualmente la sección "Trampas del examen" (ícono pixel de alerta + color de advertencia con contraste AA) en `src/styles/room.css` — junto con T042 hace pasar T040
+- [X] T044 [US3] Revisar `src/content/services.json` para que cada par de servicios relacionados (EC2↔Lambda, ECS↔EKS, ECS/EKS↔Fargate, Auto Scaling↔ELB) tenga comparaciones recíprocas con `difference` orientada a "cuándo elegir cada uno"
 
 **Checkpoint**: Las 3 user stories funcionan de forma independiente
 

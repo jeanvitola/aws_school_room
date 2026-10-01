@@ -3,7 +3,10 @@ import type { ContentCatalog } from '../domain/types';
 import { renderCardSections, type CardOptions } from './serviceCard';
 
 /** Vista alternativa en texto: todas las salas y, para las disponibles, sus fichas completas. */
-export function renderTextFallback(catalog: ContentCatalog, options: CardOptions): HTMLElement {
+export function renderTextFallback(
+  catalog: ContentCatalog,
+  options: Pick<CardOptions, 'resolveComparisons'>,
+): HTMLElement {
   const region = document.createElement('section');
   region.className = 'text-fallback';
   region.setAttribute('aria-label', 'Torre AWS en modo texto');
@@ -30,7 +33,7 @@ export function renderTextFallback(catalog: ContentCatalog, options: CardOptions
       article.className = 'text-fallback__service';
       const serviceTitle = document.createElement('h3');
       serviceTitle.textContent = service.name;
-      article.append(serviceTitle, ...renderCardSections(service, 4, options));
+      article.append(serviceTitle, ...renderCardSections(service, 4, { ...options, idPrefix: 'text' }));
       roomSection.append(article);
     }
 

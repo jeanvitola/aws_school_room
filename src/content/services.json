@@ -130,6 +130,10 @@
         {
           "target": "ecs",
           "difference": "ECS es más simple si no hay requisito de Kubernetes; EKS cuando el enunciado pide Kubernetes, portabilidad o herramientas de su ecosistema."
+        },
+        {
+          "target": "fargate",
+          "difference": "Fargate como perfil de cómputo de EKS evita gestionar nodos; usa nodos EC2 cuando necesitas GPU, DaemonSets o control del host."
         }
       ],
       "examTraps": [
@@ -157,6 +161,14 @@
         "Almacenamiento persistente compartido con Amazon EFS"
       ],
       "compareWith": [
+        {
+          "target": "ecs",
+          "difference": "ECS decide qué contenedores correr y cuántos (orquestación); Fargate es dónde corren sin servidores que administrar. Se usan juntos."
+        },
+        {
+          "target": "eks",
+          "difference": "EKS orquesta pods con Kubernetes; Fargate puede ejecutarlos sin nodos que gestionar, a costa de no tener GPU ni DaemonSets."
+        },
         {
           "target": "lambda",
           "difference": "Lambda para funciones cortas (hasta 15 minutos) por eventos; Fargate para contenedores de larga duración o con dependencias empaquetadas en una imagen."

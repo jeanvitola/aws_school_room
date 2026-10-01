@@ -4,7 +4,7 @@ import './styles/room.css';
 import roomsFile from './content/rooms.json';
 import servicesFile from './content/services.json';
 import { ContentValidationError, loadCatalog } from './content/schema';
-import { getRoom, getService, getServicesByRoom } from './domain/catalog';
+import { getRoom, getService, getServicesByRoom, resolveComparisons } from './domain/catalog';
 import { createNavigation, type NavigationState } from './domain/navigation';
 import type { ContentCatalog, Service } from './domain/types';
 import { createGame } from './scene/game';
@@ -73,7 +73,7 @@ function start(): void {
   const navigation = createNavigation(catalog);
   const { game, ready } = createGame(gameContainer, [RoomScene]);
   const lobby = renderLobby(catalog, navigation);
-  const resolveTargetName = (target: string) => getService(catalog, target)?.name ?? target;
+  const resolveServiceComparisons = (serviceId: string) => resolveComparisons(catalog, serviceId);
   let textFallback: HTMLElement | null = null;
   let roomView: RoomView | null = null;
   let textMode = false;
@@ -95,7 +95,9 @@ function start(): void {
 
   function renderRoomContent(view: RoomView): void {
     if (textMode) {
-      textFallback ??= renderTextFallback(catalog, { resolveTargetName });
+      textFallback ??= renderTextFallback(catalog, {
+        resolveComparisons: resolveServiceComparisons,
+      });
       setGameVisible(false);
       ui.replaceChildren(view.navBar.element, textFallback);
     } else {
@@ -153,7 +155,8 @@ function start(): void {
       const service = getService(catalog, serviceId);
       if (!service) return;
       view.card = renderServiceCard(service, {
-        resolveTargetName,
+        resolveComparisons: resolveServiceComparisons,
+        onSelectService: (id) => navigation.selectService(id),
         onClose: () => navigation.closeCard(),
       });
       ui.append(view.card);

@@ -5,6 +5,7 @@ import {
   getServicesByRoom,
   isRoomAvailable,
   listRooms,
+  resolveComparisons,
 } from '../../src/domain/catalog';
 import type { ContentCatalog } from '../../src/domain/types';
 import { makeRoom, makeService } from '../fixtures';
@@ -19,6 +20,15 @@ const catalog: ContentCatalog = {
   services: [
     makeService({ id: 'ec2', roomId: 'compute' }),
     makeService({ id: 'lambda', name: 'Lambda', roomId: 'compute' }),
+    makeService({
+      id: 'elb',
+      name: 'ELB',
+      roomId: 'compute',
+      compareWith: [
+        { target: 'ec2', difference: 'Reparte tráfico entre instancias.' },
+        { target: 'Amazon Route 53', difference: 'Balanceo por DNS.' },
+      ],
+    }),
   ],
 };
 
@@ -42,6 +52,7 @@ describe('catalog', () => {
     expect(getServicesByRoom(catalog, 'compute').map((service) => service.id)).toEqual([
       'ec2',
       'lambda',
+      'elb',
     ]);
     expect(getServicesByRoom(catalog, 'storage')).toEqual([]);
   });
@@ -49,5 +60,27 @@ describe('catalog', () => {
   it('gets a service by id', () => {
     expect(getService(catalog, 'lambda')?.name).toBe('Lambda');
     expect(getService(catalog, 'missing')).toBeUndefined();
+  });
+
+  describe('resolveComparisons', () => {
+    it('resolves catalog targets to services and keeps external names unresolved', () => {
+      const comparisons = resolveComparisons(catalog, 'elb');
+
+      expect(comparisons).toHaveLength(2);
+      expect(comparisons[0]).toMatchObject({
+        target: 'ec2',
+        difference: 'Reparte tráfico entre instancias.',
+      });
+      expect(comparisons[0]?.service?.id).toBe('ec2');
+      expect(comparisons[1]).toEqual({
+        target: 'Amazon Route 53',
+        difference: 'Balanceo por DNS.',
+        service: undefined,
+      });
+    });
+
+    it('returns an empty list for an unknown service', () => {
+      expect(resolveComparisons(catalog, 'missing')).toEqual([]);
+    });
   });
 });
