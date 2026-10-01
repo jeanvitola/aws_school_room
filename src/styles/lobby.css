@@ -40,6 +40,11 @@
 }
 
 /* --- Puerta --- */
+/* Cada puerta ocupa toda la altura de su fila para alinear los badges al fondo. */
+.lobby__doors li {
+  display: flex;
+}
+
 .door {
   display: flex;
   flex-direction: column;
@@ -106,6 +111,7 @@
 }
 
 .door__badge {
+  margin-top: auto;
   font-family: var(--font-pixel);
   font-size: 0.5rem;
   padding: 0.375rem 0.5rem;

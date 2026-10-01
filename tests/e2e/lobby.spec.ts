@@ -45,6 +45,22 @@ test.describe('US1 - Lobby', () => {
     }
   });
 
+  test('"Próximamente" badges of the same row are aligned', async ({ page }) => {
+    const badges = await page.locator('.door__badge').evaluateAll((elements) =>
+      elements.map((element) => {
+        const badge = element.getBoundingClientRect();
+        const door = element.closest('li')!.getBoundingClientRect();
+        return { doorTop: Math.round(door.top), badgeTop: Math.round(badge.top) };
+      }),
+    );
+    const rows = new Map<number, number[]>();
+    for (const { doorTop, badgeTop } of badges) rows.set(doorTop, [...(rows.get(doorTop) ?? []), badgeTop]);
+
+    for (const tops of rows.values()) {
+      expect(Math.max(...tops) - Math.min(...tops)).toBeLessThanOrEqual(1);
+    }
+  });
+
   test('selecting an upcoming room shows a notice and stays in the lobby', async ({ page }) => {
     // aria-disabled mantiene la puerta enfocable y clicable (muestra el aviso); Playwright la trata
     // como deshabilitada, por eso se fuerza el clic.
