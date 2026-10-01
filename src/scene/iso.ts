@@ -1,18 +1,24 @@
 // Geometría isométrica de las salas. Sin dependencias de Phaser para poder probarla.
 
-export const GAME_WIDTH = 480;
-export const GAME_HEIGHT = 270;
+/**
+ * Píxeles del juego por "píxel de arte" de referencia. Con 2 la resolución interna se duplica
+ * (spec 004): la sala se ve del mismo tamaño en pantalla, pero los sprites tienen el doble de detalle.
+ */
+export const PIXEL_SCALE = 2;
 
-export const TILE_WIDTH = 32;
-export const TILE_HEIGHT = 16;
+export const GAME_WIDTH = 480 * PIXEL_SCALE;
+export const GAME_HEIGHT = 270 * PIXEL_SCALE;
+
+export const TILE_WIDTH = 32 * PIXEL_SCALE;
+export const TILE_HEIGHT = 16 * PIXEL_SCALE;
 export const GRID_COLS = 12;
 export const GRID_ROWS = 10;
-/** Alto visible de la pared sobre el borde de la baldosa (sprite de 40 px menos 8 px de caída). */
-export const WALL_HEIGHT = 32;
+/** Alto visible de la pared sobre el borde de la baldosa (sprite de 80 px menos 16 px de caída). */
+export const WALL_HEIGHT = 32 * PIXEL_SCALE;
 
 const ROOM_WIDTH = (GRID_COLS + GRID_ROWS) * (TILE_WIDTH / 2);
 const ROOM_HEIGHT = (GRID_COLS + GRID_ROWS) * (TILE_HEIGHT / 2) + WALL_HEIGHT;
-const VIEW_MARGIN = 8;
+const VIEW_MARGIN = 8 * PIXEL_SCALE;
 
 /** Centro de la baldosa (0, 0), calculado para que la sala completa quede centrada en el juego. */
 export const ROOM_ORIGIN = {

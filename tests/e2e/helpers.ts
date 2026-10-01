@@ -1,5 +1,11 @@
 import { expect, type Locator, type Page } from '@playwright/test';
-import { CAMERA_TRAVEL_MS, GAME_WIDTH, isoToScreen, worldToView } from '../../src/scene/iso';
+import {
+  CAMERA_TRAVEL_MS,
+  GAME_WIDTH,
+  PIXEL_SCALE,
+  isoToScreen,
+  worldToView,
+} from '../../src/scene/iso';
 import { computeLayout } from '../../src/scene/layouts/compute';
 
 export const NORMAL_SECTIONS = [
@@ -61,7 +67,7 @@ export async function clickHotspot(page: Page, serviceId: keyof typeof computeLa
   const scale = box.width / GAME_WIDTH;
   const tile = isoToScreen(placement.col, placement.row);
   // Se hace clic sobre el escritorio de la estación.
-  const target = worldToView({ x: tile.x, y: tile.y - 8 });
+  const target = worldToView({ x: tile.x, y: tile.y - 8 * PIXEL_SCALE });
   await page.mouse.click(box.x + target.x * scale, box.y + target.y * scale);
 }
 

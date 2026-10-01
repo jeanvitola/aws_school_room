@@ -2,10 +2,12 @@
 // Uso: node scripts/generate-placeholder-sprites.mjs
 // Los sprites son propios del proyecto (sin licencias de terceros). Reemplázalos por el arte final
 // manteniendo el mismo nombre de archivo y tamaño.
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { deflateSync } from 'node:zlib';
 
 const OUT_DIR = new URL('../public/assets/sprites/', import.meta.url);
+const SIZES_FILE = new URL('../src/scene/sprite-sizes.json', import.meta.url);
+const MANIFEST_FILE = new URL('../art/manifest.json', import.meta.url);
 
 // --- Codificador PNG mínimo (RGBA 8 bits) ---
 const CRC_TABLE = Array.from({ length: 256 }, (_, n) => {
@@ -325,6 +327,23 @@ function workstation() {
   return canvas;
 }
 
+/** Amplía un sprite por un factor entero (vecino más cercano: no deforma los píxeles). */
+function upscale({ width, height, pixels }, factor) {
+  const out = [];
+  for (let y = 0; y < height * factor; y++) {
+    for (let x = 0; x < width * factor; x++) {
+      out.push(pixels[Math.floor(y / factor) * width + Math.floor(x / factor)]);
+    }
+  }
+  return { width: width * factor, height: height * factor, pixels: out };
+}
+
+const targetSizes = JSON.parse(readFileSync(SIZES_FILE, 'utf8'));
+// Los sprites que vienen del arte del autor (spec 004) no se sobrescriben con placeholders.
+const authorArt = existsSync(MANIFEST_FILE)
+  ? new Set(JSON.parse(readFileSync(MANIFEST_FILE, 'utf8')).pieces.map((piece) => piece.sprite))
+  : new Set();
+
 mkdirSync(OUT_DIR, { recursive: true });
 const sprites = {
   'floor-tile': isoFloorTile(),
@@ -335,7 +354,17 @@ const sprites = {
     Object.entries(SERVICES).map(([id, rows]) => [`service-${id}`, fromCharMap(rows)]),
   ),
 };
-for (const [name, { width, height, pixels }] of Object.entries(sprites)) {
+for (const [name, sprite] of Object.entries(sprites)) {
+  if (authorArt.has(name)) {
+    console.log(`- ${name}.png (arte del autor, se omite)`);
+    continue;
+  }
+  const target = targetSizes[name];
+  const factor = target.width / sprite.width;
+  if (!Number.isInteger(factor) || sprite.height * factor !== target.height) {
+    throw new Error(`${name}: ${sprite.width}x${sprite.height} no escala a ${target.width}x${target.height}`);
+  }
+  const { width, height, pixels } = upscale(sprite, factor);
   writeFileSync(new URL(`${name}.png`, OUT_DIR), encodePng(width, height, pixels));
   console.log(`✓ ${name}.png (${width}×${height})`);
 }

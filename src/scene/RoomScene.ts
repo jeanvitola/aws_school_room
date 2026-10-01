@@ -6,6 +6,7 @@ import {
   GAME_WIDTH,
   GRID_COLS,
   GRID_ROWS,
+  PIXEL_SCALE,
   ROOM_ZOOM,
   TILE_HEIGHT,
   TILE_WIDTH,
@@ -16,7 +17,6 @@ import type { SpriteKey } from './sprites';
 
 export const ROOM_SCENE_KEY = 'room';
 
-const ICON_SCALE = 1.5;
 const HOVER_TINT = 0xffe9a8;
 const MARKER_COLOR = 0xff9900;
 
@@ -140,7 +140,7 @@ export class RoomScene extends Phaser.Scene {
     const { x, y } = isoToScreen(hotspot.col, hotspot.row);
 
     const marker = this.add.graphics();
-    marker.lineStyle(2, MARKER_COLOR, 1);
+    marker.lineStyle(2 * PIXEL_SCALE, MARKER_COLOR, 1);
     marker.strokePoints(
       [
         new Phaser.Math.Vector2(x, y - TILE_HEIGHT),
@@ -157,7 +157,14 @@ export class RoomScene extends Phaser.Scene {
     const desk = this.add.image(x, y + TILE_HEIGHT / 2, 'workstation').setOrigin(0.5, 1);
 
     // Brillo de la pantalla
-    const glow = this.add.rectangle(x - 2, y - 14, 6, 9, 0x7fd1e8, 0.15);
+    const glow = this.add.rectangle(
+      x - 2 * PIXEL_SCALE,
+      y - 14 * PIXEL_SCALE,
+      6 * PIXEL_SCALE,
+      9 * PIXEL_SCALE,
+      0x7fd1e8,
+      0.15,
+    );
     glow.setBlendMode(Phaser.BlendModes.ADD);
     this.tweens.add({
       targets: glow,
@@ -171,12 +178,11 @@ export class RoomScene extends Phaser.Scene {
 
     // Ícono del servicio flotando sobre el monitor
     const icon = this.add
-      .image(x + 2, y - 21, hotspot.sprite)
-      .setOrigin(0.5, 1)
-      .setScale(ICON_SCALE);
+      .image(x + 2 * PIXEL_SCALE, y - 21 * PIXEL_SCALE, hotspot.sprite)
+      .setOrigin(0.5, 1);
     this.tweens.add({
       targets: icon,
-      y: icon.y - 3,
+      y: icon.y - 3 * PIXEL_SCALE,
       duration: 700,
       delay: index * 120,
       ease: 'Stepped',
@@ -186,12 +192,12 @@ export class RoomScene extends Phaser.Scene {
     });
 
     const label = this.add
-      .text(x + 2, icon.y - 16 * ICON_SCALE - 3, hotspot.name, {
+      .text(x + 2 * PIXEL_SCALE, icon.y - icon.height - 3 * PIXEL_SCALE, hotspot.name, {
         fontFamily: '"Press Start 2P", monospace',
-        fontSize: '8px',
+        fontSize: `${8 * PIXEL_SCALE}px`,
         color: '#ffd166',
         backgroundColor: '#1b1626',
-        padding: { x: 4, y: 3 },
+        padding: { x: 4 * PIXEL_SCALE, y: 3 * PIXEL_SCALE },
       })
       .setOrigin(0.5, 1)
       .setResolution(3)
@@ -200,7 +206,7 @@ export class RoomScene extends Phaser.Scene {
 
     // Área de clic que cubre escritorio e ícono.
     const hitArea = this.add
-      .zone(x, y - 20, TILE_WIDTH + 4, 60)
+      .zone(x, y - 20 * PIXEL_SCALE, TILE_WIDTH + 4 * PIXEL_SCALE, 60 * PIXEL_SCALE)
       .setInteractive({ useHandCursor: true });
     hitArea.on('pointerover', () => this.setHighlighted(hotspot.id));
     hitArea.on('pointerout', () => {
@@ -209,7 +215,7 @@ export class RoomScene extends Phaser.Scene {
     hitArea.on('pointerup', () => onSelect(hotspot.id));
 
     this.stations.set(hotspot.id, {
-      focusPoint: { x, y: y - 16 },
+      focusPoint: { x, y: y - 16 * PIXEL_SCALE },
       desk,
       icon,
       marker,

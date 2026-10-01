@@ -1,16 +1,12 @@
-/** Sprites en public/assets/sprites/<key>.png */
-export const SPRITE_KEYS = [
-  'floor-tile',
-  'wall-left',
-  'wall-right',
-  'workstation',
-  'service-ec2',
-  'service-lambda',
-  'service-ecs',
-  'service-eks',
-  'service-fargate',
-  'service-autoscaling',
-  'service-elb',
-] as const;
+import spriteSizes from './sprite-sizes.json';
 
-export type SpriteKey = (typeof SPRITE_KEYS)[number];
+/**
+ * Sprites en public/assets/sprites/<key>.png y su tamaño en píxeles (a la resolución interna del
+ * juego). `sprite-sizes.json` es la fuente de verdad para la escena, los scripts de arte
+ * (scripts/convert-art.py, scripts/generate-placeholder-sprites.mjs) y el test de contrato.
+ */
+export const SPRITE_SIZES = spriteSizes;
+
+export type SpriteKey = keyof typeof SPRITE_SIZES;
+
+export const SPRITE_KEYS = Object.keys(SPRITE_SIZES) as SpriteKey[];
