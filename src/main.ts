@@ -21,15 +21,9 @@ import {
   type Question,
   type Service,
 } from './domain/types';
-import { createGame } from './scene/game';
 import { computeDecor, computeLayout, type ServicePlacement } from './scene/layouts/compute';
-import {
-  ROOM_SCENE_KEY,
-  RoomScene,
-  type Hotspot,
-  type RoomSceneData,
-  type ViewFraction,
-} from './scene/RoomScene';
+import type { Hotspot, RoomSceneData, ViewFraction } from './scene/RoomScene';
+import type { RoomEngine } from './scene/roomEngine';
 import { renderLobby } from './ui/lobby';
 import { renderNavBar, type NavBar } from './ui/navBar';
 import { renderRoomServiceList, type RoomServiceList } from './ui/roomServiceList';
@@ -112,7 +106,14 @@ function start(): void {
   const navigation = createNavigation(catalog);
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   gameContainer.dataset.motion = reducedMotion ? 'reduced' : 'full';
-  const { game, ready } = createGame(gameContainer, [RoomScene]);
+  // El motor (Phaser) se descarga recién al entrar a la primera sala (T047).
+  let engine: RoomEngine | null = null;
+  let enginePromise: Promise<RoomEngine> | null = null;
+  const loadEngine = () =>
+    (enginePromise ??= import('./scene/roomEngine').then(({ createRoomEngine }) => {
+      engine = createRoomEngine(gameContainer);
+      return engine;
+    }));
   const lobby = renderLobby(catalog, navigation);
   const resolveServiceComparisons = (serviceId: string) => resolveComparisons(catalog, serviceId);
   const resolveServiceTarget = (target: string, fromServiceId: string) =>
@@ -123,8 +124,6 @@ function start(): void {
   let roomView: RoomView | null = null;
   let textMode = false;
 
-  const roomScene = () => game.scene.getScene(ROOM_SCENE_KEY) as RoomScene;
-
   function setGameVisible(visible: boolean): void {
     gameContainer.hidden = !visible;
   }
@@ -133,7 +132,7 @@ function start(): void {
     roomView = null;
     textMode = false;
     document.body.dataset.view = 'lobby';
-    game.scene.stop(ROOM_SCENE_KEY);
+    engine?.stop();
     delete gameContainer.dataset.roomReady;
     setGameVisible(false);
     ui.replaceChildren(lobby);
@@ -176,15 +175,17 @@ function start(): void {
       }),
       serviceList: renderRoomServiceList(services, {
         onSelect: (serviceId) => navigation.selectService(serviceId),
-        onHighlight: (serviceId) => roomScene().setHighlighted(serviceId),
+        onHighlight: (serviceId) => {
+          if (engine?.isActive()) engine.scene().setHighlighted(serviceId);
+        },
       }),
     };
     roomView = view;
     document.body.dataset.view = 'room';
     renderRoomContent(view);
 
-    await ready;
-    game.scale.refresh();
+    const roomEngine = await loadEngine();
+    await roomEngine.ready;
     const data: RoomSceneData = {
       hotspots: toHotspots(services, ROOM_LAYOUTS[roomId] ?? {}),
       decor: roomId === 'compute' ? computeDecor : [],
@@ -193,8 +194,7 @@ function start(): void {
     };
     // `data-room-ready` indica que las estaciones ya existen y responden a clics.
     gameContainer.dataset.roomReady = 'false';
-    roomScene().events.once('create', () => (gameContainer.dataset.roomReady = 'true'));
-    game.scene.start(ROOM_SCENE_KEY, data);
+    roomEngine.start(data, () => (gameContainer.dataset.roomReady = 'true'));
     return view;
   }
 
@@ -222,8 +222,8 @@ function start(): void {
     } else if (previousServiceId) {
       view.serviceList.focusService(previousServiceId);
     }
-    if (game.scene.isActive(ROOM_SCENE_KEY)) {
-      roomScene().setSelected(serviceId, focusFractionBeside(view.card));
+    if (engine?.isActive()) {
+      engine.scene().setSelected(serviceId, focusFractionBeside(view.card));
     }
   }
 

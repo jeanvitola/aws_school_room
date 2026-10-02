@@ -152,9 +152,9 @@ description: "Task list for Torre AWS MVP"
 
 **Purpose**: Accesibilidad, rendimiento, revisión editorial y despliegue
 
-- [ ] T045 [P] Test E2E de accesibilidad automática con axe en lobby, sala, ficha y modo texto (sin violaciones serias/críticas) en `tests/e2e/a11y.spec.ts`
-- [ ] T046 [P] Respetar `prefers-reduced-motion`: desactivar animaciones no esenciales en `src/styles/main.css` y en `src/scene/RoomScene.ts`
-- [ ] T047 Verificar metas de rendimiento del plan (carga inicial < 3 s, 60 fps en desktop): cargar Phaser de forma diferida solo al entrar a una sala (import dinámico en `src/main.ts`) y revisar el tamaño del bundle con `npm run build`
+- [X] T045 [P] Test E2E de accesibilidad automática con axe en lobby, sala, ficha y modo texto (sin violaciones serias/críticas) en `tests/e2e/a11y.spec.ts`
+- [X] T046 [P] Respetar `prefers-reduced-motion`: desactivar animaciones no esenciales en `src/styles/main.css` y en `src/scene/RoomScene.ts`
+- [X] T047 Verificar metas de rendimiento del plan (carga inicial < 3 s, 60 fps en desktop): cargar Phaser de forma diferida solo al entrar a una sala (import dinámico en `src/main.ts`) y revisar el tamaño del bundle con `npm run build`
 - [ ] T048 Revisión editorial del contenido contra la guía oficial SAA-C03: checklist por servicio en `specs/001-aws-tower-mvp/checklists/content-review.md`; actualizar `version` y `lastReviewed` en `src/content/rooms.json`
 - [ ] T049 [P] Configurar despliegue estático (GitHub Pages o Netlify): `base` en `vite.config.ts` y workflow/config de despliegue correspondiente
 - [ ] T050 [P] Crear `README.md` con descripción, scripts, cómo agregar una sala nueva (contenido en `src/content/`, layout en `src/scene/layouts/`, sprites en `public/assets/sprites/`) y créditos de assets
