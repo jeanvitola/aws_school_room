@@ -2,7 +2,7 @@
 
 Web en pixel art para estudiar la certificación **AWS Certified Solutions Architect – Associate (SAA-C03)**. Exploras una torre de salas; cada sala agrupa una familia de servicios y cada estación es un servicio con:
 
-- **Ficha en dos niveles:** *Normal* (lenguaje simple, analogías y palabras clave) y *Profundo* (definición, límites, comparaciones, casos de uso, patrones de arquitectura, trampas del examen y costos).
+- **Ficha en dos niveles:** _Normal_ (lenguaje simple, analogías y palabras clave) y _Profundo_ (definición, límites, comparaciones, casos de uso, patrones de arquitectura, trampas del examen y costos).
 - **15 preguntas de práctica** (5 normales, 5 medias y 5 difíciles) con explicación de cada opción y la fuente oficial de AWS en que se basan.
 
 Hoy está disponible la **Sala de Máquinas** (EC2, Lambda, ECS, EKS, Fargate, Auto Scaling y Elastic Load Balancing).
@@ -14,18 +14,18 @@ Hoy está disponible la **Sala de Máquinas** (EC2, Lambda, ECS, EKS, Fargate, A
 
 ## Comandos
 
-| Comando | Qué hace |
-|---|---|
-| `npm install` | Instala las dependencias |
-| `npx playwright install chromium` | Instala el navegador de los tests E2E (una sola vez) |
-| `npm run dev` | Servidor de desarrollo en http://localhost:5173 |
-| `npm run build` | Compila el sitio estático en `dist/` |
-| `npm run preview` | Sirve `dist/` en http://localhost:4173 |
-| `npm test` | Tests unitarios y de contenido (Vitest) |
-| `npm run test:e2e` | Tests de punta a punta, accesibilidad y rendimiento (Playwright) |
-| `npm run lint` | ESLint |
-| `npm run art` | Convierte las ilustraciones de `art/` en sprites del juego |
-| `npm run art:placeholders` | Genera dibujos provisionales para los sprites que aún no tienen arte |
+| Comando                           | Qué hace                                                             |
+| --------------------------------- | -------------------------------------------------------------------- |
+| `npm install`                     | Instala las dependencias                                             |
+| `npx playwright install chromium` | Instala el navegador de los tests E2E (una sola vez)                 |
+| `npm run dev`                     | Servidor de desarrollo en http://localhost:5173                      |
+| `npm run build`                   | Compila el sitio estático en `dist/`                                 |
+| `npm run preview`                 | Sirve `dist/` en http://localhost:4173                               |
+| `npm test`                        | Tests unitarios y de contenido (Vitest)                              |
+| `npm run test:e2e`                | Tests de punta a punta, accesibilidad y rendimiento (Playwright)     |
+| `npm run lint`                    | ESLint                                                               |
+| `npm run art`                     | Convierte las ilustraciones de `art/` en sprites del juego           |
+| `npm run art:placeholders`        | Genera dibujos provisionales para los sprites que aún no tienen arte |
 
 ## Cómo está organizado
 
@@ -48,12 +48,12 @@ El dominio no puede importar Phaser ni tocar el DOM: ESLint lo impide (constituc
 
 El proyecto se desarrolla con **Spec-Driven Development** ([spec-kit](https://github.com/github/spec-kit)). Las reglas generales están en la [constitución](.specify/memory/constitution.md): calidad antes que velocidad, tests obligatorios (primero el test que falla), lógica separada de la interfaz, simplicidad y cambios pequeños.
 
-| Spec | Qué agrega |
-|---|---|
-| [001 · MVP](specs/001-aws-tower-mvp/spec.md) | Lobby, Sala de Máquinas, fichas, modo texto |
-| [002 · Niveles de profundidad](specs/002-content-depth-levels/spec.md) | Normal / Profundo y patrones de arquitectura |
-| [003 · Preguntas de práctica](specs/003-practice-questions/spec.md) | 15 preguntas por servicio, verificadas contra la documentación |
-| [004 · Pipeline de arte](specs/004-art-pipeline/spec.md) | Conversión del arte propio, resolución ×2 y animaciones |
+| Spec                                                                   | Qué agrega                                                     |
+| ---------------------------------------------------------------------- | -------------------------------------------------------------- |
+| [001 · MVP](specs/001-aws-tower-mvp/spec.md)                           | Lobby, Sala de Máquinas, fichas, modo texto                    |
+| [002 · Niveles de profundidad](specs/002-content-depth-levels/spec.md) | Normal / Profundo y patrones de arquitectura                   |
+| [003 · Preguntas de práctica](specs/003-practice-questions/spec.md)    | 15 preguntas por servicio, verificadas contra la documentación |
+| [004 · Pipeline de arte](specs/004-art-pipeline/spec.md)               | Conversión del arte propio, resolución ×2 y animaciones        |
 
 ## Contenido y vigencia
 
