@@ -110,6 +110,8 @@ function start(): void {
   }
 
   const navigation = createNavigation(catalog);
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  gameContainer.dataset.motion = reducedMotion ? 'reduced' : 'full';
   const { game, ready } = createGame(gameContainer, [RoomScene]);
   const lobby = renderLobby(catalog, navigation);
   const resolveServiceComparisons = (serviceId: string) => resolveComparisons(catalog, serviceId);
@@ -186,6 +188,7 @@ function start(): void {
     const data: RoomSceneData = {
       hotspots: toHotspots(services, ROOM_LAYOUTS[roomId] ?? {}),
       decor: roomId === 'compute' ? computeDecor : [],
+      reducedMotion,
       onSelect: (serviceId) => navigation.selectService(serviceId),
     };
     // `data-room-ready` indica que las estaciones ya existen y responden a clics.

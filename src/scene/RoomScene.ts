@@ -32,6 +32,8 @@ export interface RoomSceneData {
   hotspots: Hotspot[];
   /** Objetos decorativos, sin interacción (spec 004). */
   decor: { col: number; row: number; sprite: SpriteKey }[];
+  /** Preferencia del sistema "reducir movimiento": sin animaciones ni viajes de cámara. */
+  reducedMotion: boolean;
   onSelect: (serviceId: string) => void;
 }
 
@@ -54,6 +56,7 @@ export class RoomScene extends Phaser.Scene {
   private stations = new Map<string, StationView>();
   private highlightedId: string | null = null;
   private selectedId: string | null = null;
+  private reducedMotion = false;
 
   constructor() {
     super(ROOM_SCENE_KEY);
@@ -63,6 +66,7 @@ export class RoomScene extends Phaser.Scene {
     this.stations = new Map();
     this.highlightedId = null;
     this.selectedId = null;
+    this.reducedMotion = data.reducedMotion;
 
     this.drawWalls();
     this.drawFloor();
@@ -79,7 +83,7 @@ export class RoomScene extends Phaser.Scene {
     const camera = this.cameras.main;
     camera.setZoom(ROOM_ZOOM);
     camera.centerOn(GAME_WIDTH / 2, GAME_HEIGHT / 2);
-    camera.fadeIn(250, 27, 22, 38);
+    if (!this.reducedMotion) camera.fadeIn(250, 27, 22, 38);
   }
 
   /** Resalta una estación (hover o foco en la lista accesible). */
@@ -97,15 +101,17 @@ export class RoomScene extends Phaser.Scene {
     this.refreshStations();
 
     const station = serviceId ? this.stations.get(serviceId) : undefined;
+    const target = station
+      ? { center: cameraCenterFor(station.focusPoint, viewFraction), zoom: FOCUS_ZOOM }
+      : { center: { x: GAME_WIDTH / 2, y: GAME_HEIGHT / 2 }, zoom: ROOM_ZOOM };
     const camera = this.cameras.main;
-    if (station) {
-      const center = cameraCenterFor(station.focusPoint, viewFraction);
-      camera.pan(center.x, center.y, CAMERA_TRAVEL_MS, 'Sine.easeInOut', true);
-      camera.zoomTo(FOCUS_ZOOM, CAMERA_TRAVEL_MS, 'Sine.easeInOut', true);
-    } else {
-      camera.pan(GAME_WIDTH / 2, GAME_HEIGHT / 2, CAMERA_TRAVEL_MS, 'Sine.easeInOut', true);
-      camera.zoomTo(ROOM_ZOOM, CAMERA_TRAVEL_MS, 'Sine.easeInOut', true);
+    if (this.reducedMotion) {
+      // Sin viaje: la cámara salta directamente a su destino.
+      camera.setZoom(target.zoom).centerOn(target.center.x, target.center.y);
+      return;
     }
+    camera.pan(target.center.x, target.center.y, CAMERA_TRAVEL_MS, 'Sine.easeInOut', true);
+    camera.zoomTo(target.zoom, CAMERA_TRAVEL_MS, 'Sine.easeInOut', true);
   }
 
   private refreshStations(): void {
@@ -114,7 +120,9 @@ export class RoomScene extends Phaser.Scene {
       // Estación activa: el ícono se ilumina y la pantalla del monitor se enciende (animación del autor).
       if (active) {
         station.icon.setTint(HOVER_TINT);
-        station.desk.play('workstation', true);
+        // Con movimiento reducido, la pantalla queda encendida sin parpadear.
+        if (this.reducedMotion) station.desk.setFrame(1);
+        else station.desk.play('workstation', true);
       } else {
         station.icon.clearTint();
         station.desk.stop().setFrame(0);
@@ -141,10 +149,10 @@ export class RoomScene extends Phaser.Scene {
     // Tiene luces animadas; cada segmento empieza en otro cuadro para que no parpadeen al unísono.
     for (let row = 0; row < GRID_ROWS; row++) {
       const { x, y } = isoToScreen(0, row);
-      this.add
-        .sprite(x - TILE_WIDTH / 2, y, 'wall-right')
-        .setOrigin(0, 1)
-        .play({ key: 'wall-right', startFrame: row % frameCount('wall-right') });
+      const wall = this.add.sprite(x - TILE_WIDTH / 2, y, 'wall-right', 0).setOrigin(0, 1);
+      if (!this.reducedMotion) {
+        wall.play({ key: 'wall-right', startFrame: row % frameCount('wall-right') });
+      }
     }
     // Pared del fondo derecho: sobre el borde superior-derecho de las baldosas row = 0.
     for (let col = 0; col < GRID_COLS; col++) {
@@ -173,7 +181,9 @@ export class RoomScene extends Phaser.Scene {
       true,
     );
     marker.setVisible(false);
-    this.tweens.add({ targets: marker, alpha: 0.35, duration: 500, yoyo: true, repeat: -1 });
+    if (!this.reducedMotion) {
+      this.tweens.add({ targets: marker, alpha: 0.35, duration: 500, yoyo: true, repeat: -1 });
+    }
 
     // Escritorio con monitor: su base se apoya en el vértice inferior de la baldosa.
     const desk = this.add.sprite(x, y + TILE_HEIGHT / 2, 'workstation', 0).setOrigin(0.5, 1);
@@ -182,16 +192,18 @@ export class RoomScene extends Phaser.Scene {
     const icon = this.add
       .image(x + 2 * PIXEL_SCALE, y - 21 * PIXEL_SCALE, hotspot.sprite)
       .setOrigin(0.5, 1);
-    this.tweens.add({
-      targets: icon,
-      y: icon.y - 3 * PIXEL_SCALE,
-      duration: 700,
-      delay: index * 120,
-      ease: 'Stepped',
-      easeParams: [3],
-      yoyo: true,
-      repeat: -1,
-    });
+    if (!this.reducedMotion) {
+      this.tweens.add({
+        targets: icon,
+        y: icon.y - 3 * PIXEL_SCALE,
+        duration: 700,
+        delay: index * 120,
+        ease: 'Stepped',
+        easeParams: [3],
+        yoyo: true,
+        repeat: -1,
+      });
+    }
 
     const label = this.add
       .text(x + 2 * PIXEL_SCALE, icon.y - icon.height - 3 * PIXEL_SCALE, hotspot.name, {

@@ -84,3 +84,13 @@ h3 {
   clip-path: inset(50%);
   white-space: nowrap;
 }
+
+/* Preferencia del sistema "reducir movimiento": sin animaciones ni transiciones. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
