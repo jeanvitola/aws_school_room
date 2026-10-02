@@ -159,7 +159,7 @@ description: "Task list for Torre AWS MVP"
 - [X] T049 [P] Configurar despliegue estático (GitHub Pages o Netlify): `base` en `vite.config.ts` y workflow/config de despliegue correspondiente
 - [X] T050 [P] Crear `README.md` con descripción, scripts, cómo agregar una sala nueva (contenido en `src/content/`, layout en `src/scene/layouts/`, sprites en `public/assets/sprites/`) y créditos de assets
 - [ ] T051 Sesión de validación con al menos 5 estudiantes de SAA-C03 (SC-003): cada uno revisa las fichas de 2 pares de servicios relacionados (p. ej. EC2/Lambda, ECS/EKS) y responde una pregunta de escenario por par; registrar guion y resultados (meta ≥ 80% de aciertos) en `specs/001-aws-tower-mvp/checklists/usability-sc003.md`
-- [ ] T052 Ejecutar la validación completa de `specs/001-aws-tower-mvp/quickstart.md` (`npm run test`, `npm run test:e2e`, chequeos manuales de accesibilidad) y corregir lo que falle
+- [X] T052 Ejecutar la validación completa de `specs/001-aws-tower-mvp/quickstart.md` (`npm run test`, `npm run test:e2e`, chequeos manuales de accesibilidad) y corregir lo que falle
 
 ---
 
