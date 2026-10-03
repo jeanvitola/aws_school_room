@@ -3,8 +3,7 @@ import './styles/lobby.css';
 import './styles/room.css';
 import roomsFile from './content/rooms.json';
 import servicesFile from './content/services.json';
-import questionsFile from './content/questions.json';
-import { loadQuestions } from './content/questionSchema';
+import { loadRoomQuestions } from './content/questionSchema';
 import { ContentValidationError, loadCatalog } from './content/schema';
 import {
   getRoom,
@@ -21,7 +20,8 @@ import {
   type Question,
   type Service,
 } from './domain/types';
-import { computeDecor, computeLayout, type ServicePlacement } from './scene/layouts/compute';
+import { ROOM_LAYOUTS } from './scene/layouts';
+import type { ServicePlacement } from './scene/layouts/compute';
 import type { Hotspot, RoomSceneData, ViewFraction } from './scene/RoomScene';
 import type { RoomEngine } from './scene/roomEngine';
 import { renderLobby } from './ui/lobby';
@@ -29,10 +29,6 @@ import { renderNavBar, type NavBar } from './ui/navBar';
 import { renderRoomServiceList, type RoomServiceList } from './ui/roomServiceList';
 import { renderServiceCard } from './ui/serviceCard';
 import { renderTextFallback } from './ui/textFallback';
-
-const ROOM_LAYOUTS: Record<string, Record<string, ServicePlacement>> = {
-  compute: computeLayout,
-};
 
 function getElement(id: string): HTMLElement {
   const element = document.getElementById(id);
@@ -94,14 +90,28 @@ function start(): void {
   const gameContainer = getElement('game');
 
   let catalog: ContentCatalog;
-  let questionsByService: Map<string, Question[]>;
   try {
     catalog = loadCatalog(roomsFile, servicesFile);
-    questionsByService = loadQuestions(questionsFile, catalog);
   } catch (error) {
     renderContentError(ui, error);
     return;
   }
+
+  // Las preguntas de cada sala se descargan y validan al entrar a ella (spec 005).
+  const questionsByService = new Map<string, Question[]>();
+  const questionLoads = new Map<string, Promise<void>>();
+  const loadQuestionsOf = (roomId: string): Promise<void> => {
+    let load = questionLoads.get(roomId);
+    if (!load) {
+      load = import(`./content/questions/${roomId}.json`).then((file: { default: unknown }) => {
+        for (const [serviceId, questions] of loadRoomQuestions(file.default, catalog, roomId)) {
+          questionsByService.set(serviceId, questions);
+        }
+      });
+      questionLoads.set(roomId, load);
+    }
+    return load;
+  };
 
   const navigation = createNavigation(catalog);
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -186,9 +196,10 @@ function start(): void {
 
     const roomEngine = await loadEngine();
     await roomEngine.ready;
+    const layout = ROOM_LAYOUTS[roomId];
     const data: RoomSceneData = {
-      hotspots: toHotspots(services, ROOM_LAYOUTS[roomId] ?? {}),
-      decor: roomId === 'compute' ? computeDecor : [],
+      hotspots: toHotspots(services, layout?.stations ?? {}),
+      decor: layout?.decor ?? [],
       reducedMotion,
       onSelect: (serviceId) => navigation.selectService(serviceId),
     };
@@ -231,6 +242,16 @@ function start(): void {
     if (state.view === 'lobby') {
       showLobby();
       return;
+    }
+    if (roomView?.roomId !== state.roomId) {
+      try {
+        await loadQuestionsOf(state.roomId);
+      } catch (error) {
+        renderContentError(ui, error);
+        return;
+      }
+      // Si el usuario navegó mientras llegaban las preguntas, el render más nuevo se encarga.
+      if (navigation.getState() !== state) return;
     }
     const view = roomView?.roomId === state.roomId ? roomView : await enterRoom(state.roomId);
     // Mientras se esperaba la carga de la sala, el usuario pudo navegar (p. ej. abrir una ficha):

@@ -1,11 +1,13 @@
 import { describe, expect, it } from 'vitest';
 import { ContentValidationError, loadCatalog } from '../../src/content/schema';
-import { loadQuestions } from '../../src/content/questionSchema';
+import { loadQuestions, loadRoomQuestions } from '../../src/content/questionSchema';
 import type { Question } from '../../src/domain/types';
 import {
   makeQuestion,
   makeQuestionSet,
+  makeRoom,
   makeRoomsFile,
+  makeService,
   makeServicesFile,
   makeSingleQuestion,
 } from '../fixtures';
@@ -94,10 +96,7 @@ describe('loadQuestions', () => {
     'https://aws.amazon.com.evil.io/x',
   ])('rejects a non official source: %s', (url) => {
     const set = makeQuestionSet();
-    expectInvalid(
-      replaceAt(set, 0, { ...set[0]!, source: { title: 'X', url } }),
-      'fuente oficial',
-    );
+    expectInvalid(replaceAt(set, 0, { ...set[0]!, source: { title: 'X', url } }), 'fuente oficial');
   });
 
   it('rejects a verifiedOn that is not an ISO date', () => {
@@ -130,5 +129,27 @@ describe('loadQuestions', () => {
 
   it('builds valid questions from the fixture helpers', () => {
     expect(makeQuestion().options).toHaveLength(4);
+  });
+});
+
+describe('loadRoomQuestions', () => {
+  const twoRooms = loadCatalog(
+    makeRoomsFile([
+      makeRoom(),
+      makeRoom({ id: 'storage', slug: 'storage', name: 'Bodega', order: 2 }),
+    ]),
+    makeServicesFile([makeService(), makeService({ id: 's3', name: 'S3', roomId: 'storage' })]),
+  );
+
+  it('loads the questions of the services of the room', () => {
+    const byService = loadRoomQuestions({ questions: makeQuestionSet('s3') }, twoRooms, 'storage');
+    expect(byService.get('s3')).toHaveLength(15);
+  });
+
+  it('rejects a question of a service of another room', () => {
+    const load = () =>
+      loadRoomQuestions({ questions: makeQuestionSet('ec2') }, twoRooms, 'storage');
+    expect(load).toThrow(ContentValidationError);
+    expect(load).toThrow('no pertenece a la sala "storage"');
   });
 });

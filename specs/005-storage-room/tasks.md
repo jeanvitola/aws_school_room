@@ -18,15 +18,15 @@ description: 'Task list for Bodega (sala de almacenamiento)'
 
 ### Tests (primero, deben fallar)
 
-- [ ] T001 [P] Generalizar `tests/unit/compute-layout.test.ts` a `tests/unit/room-layouts.test.ts`: para cada sala de `ROOM_LAYOUTS`, ubica exactamente los servicios de esa sala, usa sprites existentes, queda dentro de la grilla y lejos de las paredes, respeta la cantidad de filas declarada, distancia mínima 3 entre estaciones y 2 entre decoración y estación
-- [ ] T002 [P] Tests de preguntas por sala en `tests/content/questions-schema.test.ts`: `loadRoomQuestions(file, catalog, roomId)` rechaza una pregunta de un servicio de otra sala; `tests/content/questions-content.test.ts` valida el archivo de cada sala disponible
-- [ ] T003 [P] E2E en `tests/e2e/performance.spec.ts`: el lobby no descarga preguntas; al entrar a la Sala de Máquinas se descargan las suyas
+- [x] T001 [P] Generalizar `tests/unit/compute-layout.test.ts` a `tests/unit/room-layouts.test.ts`: para cada sala de `ROOM_LAYOUTS`, ubica exactamente los servicios de esa sala, usa sprites existentes, queda dentro de la grilla y lejos de las paredes, respeta la cantidad de filas declarada, distancia mínima 3 entre estaciones y 2 entre decoración y estación
+- [x] T002 [P] Tests de preguntas por sala en `tests/content/questions-schema.test.ts`: `loadRoomQuestions(file, catalog, roomId)` rechaza una pregunta de un servicio de otra sala; `tests/content/questions-content.test.ts` valida el archivo de cada sala disponible
+- [x] T003 [P] E2E en `tests/e2e/performance.spec.ts`: el lobby no descarga preguntas; al entrar a la Sala de Máquinas se descargan las suyas
 
 ### Implementation
 
-- [ ] T004 Registro `ROOM_LAYOUTS` en `src/scene/layouts/index.ts` (`{ stations, decor, rows }`); `src/main.ts` lo usa en lugar de `roomId === 'compute'` — hace pasar T001
-- [ ] T005 Mover `src/content/questions.json` a `src/content/questions/compute.json`; `loadRoomQuestions` en `src/content/questionSchema.ts` — hace pasar T002
-- [ ] T006 `src/main.ts`: importar de forma diferida las preguntas de la sala al entrar y dibujar la sala cuando estén validadas; error de contenido si no lo están — hace pasar T003
+- [x] T004 Registro `ROOM_LAYOUTS` en `src/scene/layouts/index.ts` (`{ stations, decor, rows }`); `src/main.ts` lo usa en lugar de `roomId === 'compute'` — hace pasar T001
+- [x] T005 Mover `src/content/questions.json` a `src/content/questions/compute.json`; `loadRoomQuestions` en `src/content/questionSchema.ts` — hace pasar T002
+- [x] T006 `src/main.ts`: importar de forma diferida las preguntas de la sala al entrar y dibujar la sala cuando estén validadas; error de contenido si no lo están — hace pasar T003
 
 **Checkpoint**: `npm test` y `npm run test:e2e` en verde sin cambios visibles (FR-013)
 

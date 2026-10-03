@@ -1,5 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
-import questionsFile from '../../src/content/questions.json' with { type: 'json' };
+import questionsFile from '../../src/content/questions/compute.json' with { type: 'json' };
 import {
   cardTab,
   enterComputeRoom,

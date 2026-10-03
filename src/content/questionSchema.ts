@@ -130,3 +130,23 @@ export function loadQuestions(file: unknown, catalog: ContentCatalog): Map<strin
   }
   return byService;
 }
+
+/**
+ * Valida el archivo de preguntas de una sala (src/content/questions/<roomId>.json): además de las
+ * reglas de loadQuestions, cada pregunta debe ser de un servicio de esa sala.
+ */
+export function loadRoomQuestions(
+  file: unknown,
+  catalog: ContentCatalog,
+  roomId: string,
+): Map<string, Question[]> {
+  const byService = loadQuestions(file, catalog);
+  const roomServiceIds = new Set(
+    catalog.services.filter((service) => service.roomId === roomId).map((service) => service.id),
+  );
+  const issues = [...byService.keys()]
+    .filter((serviceId) => !roomServiceIds.has(serviceId))
+    .map((serviceId) => `Service "${serviceId}": no pertenece a la sala "${roomId}"`);
+  if (issues.length > 0) throw new ContentValidationError(issues);
+  return byService;
+}

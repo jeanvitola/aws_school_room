@@ -9,8 +9,8 @@
 
 ## Decision 2: Ids y sprites
 
-- **Decision**: Los ids siguen el patrón de la Sala de Máquinas (minúsculas, sin prefijo de proveedor). Cada estación usa `service-<id>`; esos 9 sprites ya existen como provisionales desde 001 y ya están declarados en `sprite-sizes.json`.
-- **Rationale**: No hay que tocar el contrato de sprites para las estaciones.
+- **Decision**: Los ids siguen el patrón de la Sala de Máquinas (minúsculas, sin prefijo de proveedor). Cada estación usa `service-<id>`.
+- **Rationale**: Jean ya dibujó los 9 íconos (`art/public/assets/sprites/CAPA 6. íconos de servicios 2.png`) y están declarados en `art/manifest.json` y `sprite-sizes.json`; entran por el pipeline de 004 sin cambios de código.
 
 ## Decision 3: Distribución por sala
 
