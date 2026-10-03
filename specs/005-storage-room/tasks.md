@@ -36,15 +36,15 @@ description: 'Task list for Bodega (sala de almacenamiento)'
 
 ### Tests ⚠️
 
-- [ ] T007 [P] [US1] Tests de contenido en `tests/content/storage-services.test.ts`: los 9 ids en orden y sus nombres en inglés; cada uno con al menos un patrón; comparación rápida a un servicio del catálogo; comparaciones obligatorias en ambos sentidos (ver data-model) — se marcan `todo` los servicios aún no redactados
-- [ ] T008 [P] [US1] E2E en `tests/e2e/storage.spec.ts`: la Bodega aparece disponible y se entra con clic y teclado; la lista muestra las 9 estaciones en orden; abrir S3 con Normal y Profundo; modo texto muestra la Bodega; volver y entrar a la Sala de Máquinas muestra sus 7 estaciones
+- [x] T007 [P] [US1] Tests de contenido en `tests/content/storage-services.test.ts`: los 9 ids en orden y sus nombres en inglés; cada uno con al menos un patrón; comparación rápida a un servicio del catálogo; comparaciones obligatorias en ambos sentidos (ver data-model) — se marcan `todo` los servicios aún no redactados
+- [x] T008 [P] [US1] E2E en `tests/e2e/storage.spec.ts`: la Bodega aparece disponible y se entra con clic y teclado; la lista muestra las 9 estaciones en orden; abrir S3 con Normal y Profundo; modo texto muestra la Bodega; volver y entrar a la Sala de Máquinas muestra sus 7 estaciones
 
 ### Implementation
 
-- [ ] T009 [US1] Verificar contra la documentación oficial los datos de S3 (clases, duraciones mínimas, límites, consistencia, cifrado por defecto, Requester Pays) y anotarlos en `research.md`
-- [ ] T010 [US1] Redactar la ficha Normal y Profunda de **Amazon S3** en `src/content/services.json` y sus 15 preguntas en `src/content/questions/storage.json`
-- [ ] T011 [US1] Distribución `src/scene/layouts/storage.ts` (3 filas: S3 y Glacier; EBS, EFS y FSx; Storage Gateway, Backup, DataSync y Transfer Family) y registro en `ROOM_LAYOUTS`
-- [ ] T012 [US1] `src/content/rooms.json`: Bodega disponible, versión `0.3.0`
+- [x] T009 [US1] Verificar contra la documentación oficial los datos de S3 (clases, duraciones mínimas, límites, consistencia, cifrado por defecto, Requester Pays) y anotarlos en `research.md`
+- [x] T010 [US1] Redactar la ficha Normal y Profunda de **Amazon S3** en `src/content/services.json` y sus 15 preguntas en `src/content/questions/storage.json`
+- [x] T011 [US1] Distribución `src/scene/layouts/storage.ts` (3 filas: S3 y Glacier; EBS, EFS y FSx; Storage Gateway, Backup, DataSync y Transfer Family) y registro en `ROOM_LAYOUTS`
+- [x] T012 [US1] `src/content/rooms.json`: Bodega disponible, versión `0.3.0`
 
 **Checkpoint (usuario)**: revisar la ficha y las 15 preguntas de S3 antes de redactar el resto
 

@@ -768,6 +768,147 @@
         ],
         "costs": "Cargo por hora por balanceador más unidades de capacidad según conexiones nuevas, conexiones activas, bytes procesados y reglas evaluadas (LCU en ALB, NLCU en NLB)."
       }
+    },
+    {
+      "id": "s3",
+      "name": "Amazon S3",
+      "roomId": "storage",
+      "normal": {
+        "whatIs": "Amazon S3 guarda archivos de cualquier tipo (fotos, videos, respaldos, logs) como objetos dentro de contenedores llamados buckets. No tiene límite de espacio: subes lo que necesites y pagas solo por lo que guardas. Cada objeto se pide por su nombre a través de internet o de la red de AWS; no se conecta como un disco.",
+        "analogy": "Es como el guardarropa de un teatro: entregas tu abrigo, te dan un ticket con su nombre y lo recuperas mostrando el ticket. No puedes entrar a coserle un botón: si quieres cambiarlo, entregas el abrigo nuevo completo.",
+        "glossary": [
+          {
+            "term": "Bucket",
+            "definition": "Contenedor donde guardas los objetos; su nombre es único."
+          },
+          {
+            "term": "Objeto",
+            "definition": "Un archivo más sus datos descriptivos (metadatos); puede pesar hasta 50 TB."
+          },
+          {
+            "term": "Clase de almacenamiento",
+            "definition": "Nivel de precio y de velocidad de acceso de un objeto: Standard, Standard-IA, Glacier y otras."
+          },
+          {
+            "term": "Ciclo de vida",
+            "definition": "Reglas que mueven objetos a clases más baratas o los borran según su antigüedad."
+          }
+        ],
+        "examKeyPoints": [
+          "Guardar y leer archivos completos desde cualquier lugar, sin límite de espacio → S3.",
+          "Datos que se leen poco → reglas de ciclo de vida hacia clases más baratas.",
+          "Todo bucket nuevo es privado y todo objeto nuevo se cifra automáticamente (SSE-S3)."
+        ],
+        "quickComparison": {
+          "target": "ebs",
+          "rule": "Disco para el sistema operativo o la base de datos de una instancia EC2 → EBS. Archivos que se guardan y se leen completos desde cualquier lugar → S3."
+        },
+        "costInOneLine": "Pagas por GB guardado al mes, por solicitudes y por los datos que salen a internet; subir datos es gratis."
+      },
+      "deep": {
+        "definition": "Amazon S3 (Simple Storage Service) es almacenamiento de objetos regional, administrado y prácticamente ilimitado. Cada objeto (datos, metadatos y una key única) vive en un bucket y se diseña para una durabilidad de 99,999999999% (11 nueves), guardado en al menos 3 zonas de disponibilidad salvo en las clases de una sola zona. Se usa por API HTTPS: no es un disco ni un sistema de archivos montable.",
+        "keyConcepts": [
+          "Objetos de hasta 50 TB. Un solo PUT sube hasta 5 GB; más grande requiere carga multiparte, que sube partes en paralelo.",
+          "Consistencia fuerte: tras un PUT o DELETE exitoso, la siguiente lectura ya ve el cambio.",
+          "Clases: Standard (99,99% de disponibilidad), Intelligent-Tiering (mueve objetos solo y sin cargo por recuperación), Standard-IA y One Zone-IA (mínimo 30 días y 128 KB por objeto, con cargo por recuperación), Express One Zone (milisegundos de un dígito en una sola zona) y las tres clases S3 Glacier.",
+          "Ciclo de vida (Lifecycle): reglas por prefijo o etiqueta que pasan objetos a clases más baratas o los expiran.",
+          "Versionado: guarda cada versión para recuperar lo borrado o sobrescrito; lo exigen la replicación y Object Lock.",
+          "Replicación entre Regiones (CRR) o en la misma Región (SRR): asíncrona y solo para objetos nuevos; los existentes se copian con S3 Batch Replication. S3 Replication Time Control replica 99,99% de los objetos nuevos en 15 minutos, con SLA.",
+          "Seguridad por defecto: Block Public Access activado, ACL deshabilitadas y cifrado SSE-S3 en todo objeto nuevo desde enero de 2023. También existen SSE-KMS, DSSE-KMS y SSE-C.",
+          "Object Lock (WORM): en modo Governance solo quien tiene un permiso especial puede saltarlo; en modo Compliance nadie, ni la cuenta root, hasta que vence la retención.",
+          "URL prefirmadas: acceso temporal a un objeto privado; hasta 7 días con credenciales de un usuario IAM y nunca más que la credencial temporal que las firmó.",
+          "Rendimiento: al menos 3.500 escrituras y 5.500 lecturas por segundo por prefijo; para más, se reparten las keys en varios prefijos.",
+          "Requester Pays: quien descarga paga la solicitud y la transferencia; el dueño paga el almacenamiento.",
+          "Notificaciones de eventos hacia Lambda, SQS, SNS o EventBridge."
+        ],
+        "compareWith": [
+          {
+            "target": "glacier",
+            "difference": "Las clases S3 Glacier son parte de S3 para archivar: cuestan menos por GB, tienen mínimo de 90 o 180 días, y Flexible Retrieval y Deep Archive exigen restaurar antes de leer. S3 Standard para datos que se leen seguido."
+          },
+          {
+            "target": "ebs",
+            "difference": "EBS es un disco de bloques conectado a una instancia en una zona, para sistemas operativos y bases de datos; S3 guarda objetos completos accesibles por API desde cualquier lugar, sin aprovisionar capacidad."
+          },
+          {
+            "target": "efs",
+            "difference": "EFS es un sistema de archivos compartido que se monta por NFS y permite modificar parte de un archivo; S3 no se monta, se lee y escribe el objeto completo, a menor costo por GB."
+          },
+          {
+            "target": "storage-gateway",
+            "difference": "Storage Gateway da a servidores locales acceso a S3 por protocolos de archivo, volumen o cinta; S3 directo si la aplicación usa su API."
+          }
+        ],
+        "useCases": [
+          {
+            "scenario": "Data lake y analítica",
+            "example": "Logs y eventos de toda la empresa en S3, consultados con Amazon Athena sin cargarlos a una base de datos."
+          },
+          {
+            "scenario": "Sitio web estático",
+            "example": "Archivos de un sitio en un bucket privado, entregados por Amazon CloudFront."
+          },
+          {
+            "scenario": "Respaldo y archivo",
+            "example": "Copias de bases de datos que pasan a Standard-IA a los 30 días y a Glacier Deep Archive al año."
+          },
+          {
+            "scenario": "Compartir datos grandes",
+            "example": "Un instituto publica datos geográficos en un bucket Requester Pays para que cada usuario pague su descarga."
+          }
+        ],
+        "patterns": [
+          {
+            "name": "Ciclo de vida para bajar costos",
+            "problem": "Datos que se leen mucho al principio y casi nada después se siguen pagando a precio de S3 Standard.",
+            "whenToUse": "El acceso depende de la antigüedad y es predecible: logs, respaldos, documentos.",
+            "whenNotToUse": "El acceso es impredecible (usa S3 Intelligent-Tiering) o los objetos pesan menos de 128 KB o viven menos de 30 días.",
+            "steps": [
+              {
+                "target": "s3",
+                "role": "Recibe los objetos nuevos en S3 Standard"
+              },
+              {
+                "target": "S3 Lifecycle",
+                "role": "Los pasa a S3 Standard-IA a los 30 días"
+              },
+              {
+                "target": "glacier",
+                "role": "Los archiva en S3 Glacier Deep Archive al año y los expira a los 7 años"
+              }
+            ]
+          },
+          {
+            "name": "Procesar archivos al subirlos",
+            "problem": "Generar miniaturas o validar archivos apenas llegan, sin servidores esperando.",
+            "whenToUse": "Cada archivo se procesa por separado y en pocos minutos.",
+            "whenNotToUse": "El proceso de un archivo supera los 15 minutos: usa una cola y contenedores en ECS con Fargate.",
+            "steps": [
+              {
+                "target": "s3",
+                "role": "Recibe la imagen original y emite el evento de objeto creado"
+              },
+              {
+                "target": "lambda",
+                "role": "Genera la miniatura"
+              },
+              {
+                "target": "Otro bucket de S3",
+                "role": "Guarda la miniatura (escribir en el mismo bucket dispararía el evento otra vez)"
+              }
+            ]
+          }
+        ],
+        "examTraps": [
+          "S3 no es un disco: no se monta ni se modifica una parte de un archivo; para eso están EBS y EFS",
+          "Standard-IA y One Zone-IA cobran mínimo 30 días y 128 KB por objeto: con objetos pequeños o de vida corta salen más caros",
+          "One Zone-IA pierde los datos si falla su zona: solo para datos que puedes volver a generar",
+          "La replicación no copia los objetos que ya existían: para ellos se usa S3 Batch Replication",
+          "Al modo Compliance de Object Lock no lo salta nadie, ni la cuenta root; al Governance sí, con un permiso especial",
+          "Un solo PUT llega a 5 GB: los archivos más grandes requieren carga multiparte"
+        ],
+        "costs": "Pagas por GB-mes según la clase (S3 Standard: USD 0,023 por GB los primeros 50 TB en us-east-1; Glacier Deep Archive: USD 0,00099), por solicitudes, por recuperación en las clases IA y Glacier, y por los datos que salen a internet. Subir datos y enviarlos a CloudFront no cuesta."
+      }
     }
   ]
 }

@@ -39,3 +39,15 @@
 
 - **Decision**: Sin cambios. `resolveTarget` ya marca como no abribles los servicios de otra sala (se muestran como texto).
 - **Rationale**: Navegar entre salas desde una ficha está fuera de alcance (FR-014).
+
+## Datos verificados: Amazon S3 (2026-10-02)
+
+- Objeto máximo **50 TB** con carga multiparte; un solo PUT hasta **5 GB** ([Uploading objects](https://docs.aws.amazon.com/AmazonS3/latest/userguide/upload-objects.html)).
+- Clases, durabilidad (11 nueves), disponibilidad, mínimos de 30/90/180 días y 128 KB ([Storage classes](https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro.html)).
+- Recuperación Glacier: Flexible 1–5 min / 3–5 h / 5–12 h; Deep Archive 12 h / 48 h ([Retrieval options](https://docs.aws.amazon.com/AmazonS3/latest/userguide/restoring-objects-retrieval-options.html)).
+- SSE-S3 por defecto desde el 5 de enero de 2023; Block Public Access y ACL deshabilitadas por defecto ([Default encryption FAQ](https://docs.aws.amazon.com/AmazonS3/latest/userguide/default-encryption-faq.html), [Creating a bucket](https://docs.aws.amazon.com/AmazonS3/latest/userguide/create-bucket-overview.html)).
+- Consistencia fuerte de lectura después de escritura ([What is Amazon S3?](https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html)).
+- 3.500 escrituras / 5.500 lecturas por segundo por prefijo ([Performance](https://docs.aws.amazon.com/AmazonS3/latest/userguide/optimizing-performance.html)).
+- Replicación: versionado en ambos buckets, solo objetos nuevos, Batch Replication para existentes, RTC 99,99% en 15 min ([Replication](https://docs.aws.amazon.com/AmazonS3/latest/userguide/replication.html), [Requirements](https://docs.aws.amazon.com/AmazonS3/latest/userguide/replication-requirements.html)).
+- Object Lock Governance/Compliance, legal hold ([Object Lock](https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock.html)); Requester Pays ([Requester Pays](https://docs.aws.amazon.com/AmazonS3/latest/userguide/RequesterPaysBuckets.html)); URL prefirmadas hasta 7 días ([Presigned URLs](https://docs.aws.amazon.com/AmazonS3/latest/userguide/using-presigned-url.html)); Transfer Acceleration ([Transfer Acceleration](https://docs.aws.amazon.com/AmazonS3/latest/userguide/transfer-acceleration.html)).
+- Precios us-east-1: Standard USD 0,023/GB (primeros 50 TB), Standard-IA USD 0,0125, Deep Archive USD 0,00099; entrada desde internet y salida a CloudFront sin costo ([S3 pricing](https://aws.amazon.com/s3/pricing/)).

@@ -1,0 +1,524 @@
+{
+  "questions": [
+    {
+      "id": "s3-n1",
+      "serviceId": "s3",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "¿Qué tipo de almacenamiento ofrece Amazon S3?",
+      "options": [
+        {
+          "text": "Almacenamiento de objetos",
+          "correct": true,
+          "explanation": "Correcto: S3 guarda objetos (datos, metadatos y una key) dentro de buckets."
+        },
+        {
+          "text": "Almacenamiento de bloques para una instancia EC2",
+          "correct": false,
+          "explanation": "Ese es Amazon EBS."
+        },
+        {
+          "text": "Un sistema de archivos compartido que se monta por NFS",
+          "correct": false,
+          "explanation": "Ese es Amazon EFS."
+        },
+        {
+          "text": "Una base de datos relacional administrada",
+          "correct": false,
+          "explanation": "Esa es Amazon RDS."
+        }
+      ],
+      "source": {
+        "title": "What is Amazon S3?",
+        "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "s3-n2",
+      "serviceId": "s3",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "¿Cuál es el tamaño máximo de un objeto individual en Amazon S3?",
+      "options": [
+        {
+          "text": "5 GB",
+          "correct": false,
+          "explanation": "Es el máximo de un solo PUT; los objetos más grandes se suben con carga multiparte."
+        },
+        {
+          "text": "5 TB",
+          "correct": false,
+          "explanation": "Era el máximo anterior; hoy la carga multiparte admite objetos más grandes."
+        },
+        {
+          "text": "50 TB",
+          "correct": true,
+          "explanation": "Correcto: con la carga multiparte se sube un objeto de hasta 50 TB."
+        },
+        {
+          "text": "No tiene límite",
+          "correct": false,
+          "explanation": "Lo ilimitado es la cantidad de objetos de un bucket, no el tamaño de cada objeto."
+        }
+      ],
+      "source": {
+        "title": "Uploading objects",
+        "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/upload-objects.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "s3-n3",
+      "serviceId": "s3",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "Una empresa crea un bucket de S3 nuevo y sube archivos sin cambiar ninguna configuración de seguridad. ¿Qué ocurre?",
+      "options": [
+        {
+          "text": "Los objetos quedan públicos hasta que se configure una bucket policy",
+          "correct": false,
+          "explanation": "Los buckets y objetos nuevos son privados y Block Public Access viene activado."
+        },
+        {
+          "text": "Los objetos quedan cifrados con SSE-S3 y el bucket bloquea el acceso público",
+          "correct": true,
+          "explanation": "Correcto: desde enero de 2023 todo objeto nuevo se cifra con SSE-S3 y los buckets nuevos traen Block Public Access activado."
+        },
+        {
+          "text": "Los objetos quedan sin cifrar hasta que se active AWS KMS",
+          "correct": false,
+          "explanation": "El cifrado SSE-S3 se aplica siempre y no se puede desactivar; KMS es una opción adicional."
+        },
+        {
+          "text": "Cualquier usuario de la misma Región puede leerlos",
+          "correct": false,
+          "explanation": "Solo acceden las identidades a las que se les da permiso explícito."
+        }
+      ],
+      "source": {
+        "title": "Default encryption FAQ",
+        "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/default-encryption-faq.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "s3-n4",
+      "serviceId": "s3",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "¿Qué función de Amazon S3 permite recuperar un objeto que se borró o sobrescribió por error?",
+      "options": [
+        {
+          "text": "S3 Transfer Acceleration",
+          "correct": false,
+          "explanation": "Acelera las cargas a larga distancia; no guarda copias."
+        },
+        {
+          "text": "Requester Pays",
+          "correct": false,
+          "explanation": "Cambia quién paga las descargas; no protege datos."
+        },
+        {
+          "text": "Notificaciones de eventos",
+          "correct": false,
+          "explanation": "Avisan de cambios, pero no guardan la versión anterior."
+        },
+        {
+          "text": "S3 Versioning",
+          "correct": true,
+          "explanation": "Correcto: guarda cada versión del objeto; un borrado solo agrega un marcador de borrado."
+        }
+      ],
+      "source": {
+        "title": "Retaining multiple versions of objects with S3 Versioning",
+        "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/Versioning.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "s3-n5",
+      "serviceId": "s3",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "¿Qué clase de almacenamiento asigna Amazon S3 a un objeto si no se indica ninguna al subirlo?",
+      "options": [
+        {
+          "text": "S3 Intelligent-Tiering",
+          "correct": false,
+          "explanation": "Se puede elegir como clase por defecto, pero no lo es si no se configura."
+        },
+        {
+          "text": "S3 Standard",
+          "correct": true,
+          "explanation": "Correcto: S3 Standard es la clase por defecto."
+        },
+        {
+          "text": "S3 Standard-IA",
+          "correct": false,
+          "explanation": "Hay que elegirla explícitamente o llegar a ella con una regla de ciclo de vida."
+        },
+        {
+          "text": "S3 One Zone-IA",
+          "correct": false,
+          "explanation": "Hay que elegirla explícitamente."
+        }
+      ],
+      "source": {
+        "title": "Understanding and managing Amazon S3 storage classes",
+        "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "s3-m1",
+      "serviceId": "s3",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Una aplicación guarda logs en S3. Se consultan mucho la primera semana, casi nunca después del primer mes, y deben conservarse 7 años por auditoría sin necesidad de leerlos al instante. ¿Cuál es la solución MÁS económica?",
+      "options": [
+        {
+          "text": "Dejar todos los logs en S3 Standard",
+          "correct": false,
+          "explanation": "Funciona, pero se paga el precio más alto durante 7 años."
+        },
+        {
+          "text": "S3 Intelligent-Tiering solo con sus niveles automáticos",
+          "correct": false,
+          "explanation": "Ahorra, pero sin activar los niveles de archivo no llega al precio de Deep Archive, y el patrón ya es predecible."
+        },
+        {
+          "text": "Reglas de ciclo de vida: Standard, luego Standard-IA a los 30 días, Glacier Deep Archive después y expiración a los 7 años",
+          "correct": true,
+          "explanation": "Correcto: el acceso depende de la antigüedad, así que las transiciones por ciclo de vida dan el menor costo."
+        },
+        {
+          "text": "Volúmenes EBS Cold HDD (sc1)",
+          "correct": false,
+          "explanation": "EBS es un disco atado a una instancia y cuesta más por GB que archivar en S3."
+        }
+      ],
+      "source": {
+        "title": "Understanding and managing Amazon S3 storage classes",
+        "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "s3-m2",
+      "serviceId": "s3",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Un cliente externo debe descargar un informe privado de S3 durante las próximas 24 horas, sin crearle un usuario IAM ni hacer público el bucket. ¿Qué se debe usar?",
+      "options": [
+        {
+          "text": "Una URL prefirmada con expiración de 24 horas",
+          "correct": true,
+          "explanation": "Correcto: da acceso temporal al objeto con los permisos de quien la genera."
+        },
+        {
+          "text": "Desactivar Block Public Access en el bucket",
+          "correct": false,
+          "explanation": "Expondría el bucket y no limita el acceso a 24 horas."
+        },
+        {
+          "text": "Una ACL pública en el objeto",
+          "correct": false,
+          "explanation": "Las ACL vienen deshabilitadas y el objeto quedaría público sin límite de tiempo."
+        },
+        {
+          "text": "Activar Requester Pays",
+          "correct": false,
+          "explanation": "Solo cambia quién paga y exige que el cliente tenga credenciales de AWS."
+        }
+      ],
+      "source": {
+        "title": "Download and upload objects with presigned URLs",
+        "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/using-presigned-url.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "s3-m3",
+      "serviceId": "s3",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Una empresa comparte un dataset de 20 TB en S3 con investigadores de otras cuentas de AWS y quiere dejar de pagar las descargas que ellos hacen. ¿Qué debe configurar?",
+      "options": [
+        {
+          "text": "S3 Transfer Acceleration",
+          "correct": false,
+          "explanation": "Acelera transferencias, pero las sigue pagando el dueño y además cobra un extra."
+        },
+        {
+          "text": "Cross-Region Replication hacia la Región de los investigadores",
+          "correct": false,
+          "explanation": "Duplica el almacenamiento y la transferencia la paga el dueño."
+        },
+        {
+          "text": "Una distribución de Amazon CloudFront",
+          "correct": false,
+          "explanation": "Reduce latencia, pero el dueño paga la entrega."
+        },
+        {
+          "text": "Requester Pays en el bucket",
+          "correct": true,
+          "explanation": "Correcto: quien descarga paga la solicitud y la transferencia; el dueño solo paga el almacenamiento."
+        }
+      ],
+      "source": {
+        "title": "Using Requester Pays general purpose buckets",
+        "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/RequesterPaysBuckets.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "s3-m4",
+      "serviceId": "s3",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Una aplicación guarda miniaturas que se pueden volver a generar a partir de las imágenes originales. Se leen una vez al mes y deben estar disponibles en milisegundos. ¿Qué clase es la MÁS económica?",
+      "options": [
+        {
+          "text": "S3 Standard",
+          "correct": false,
+          "explanation": "Es más cara para datos que se leen una vez al mes."
+        },
+        {
+          "text": "S3 One Zone-IA",
+          "correct": true,
+          "explanation": "Correcto: acceso en milisegundos, más barata que Standard-IA, y perder la zona no es grave porque las miniaturas se regeneran."
+        },
+        {
+          "text": "S3 Standard-IA",
+          "correct": false,
+          "explanation": "Sirve, pero paga por guardar en varias zonas una copia que se puede regenerar."
+        },
+        {
+          "text": "S3 Glacier Deep Archive",
+          "correct": false,
+          "explanation": "Exige restaurar durante horas antes de leer."
+        }
+      ],
+      "source": {
+        "title": "Understanding and managing Amazon S3 storage classes",
+        "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "s3-m5",
+      "serviceId": "s3",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Una empresa debe tener una copia de sus objetos nuevos en otra Región y necesita un SLA que garantice que el 99,99% se replique en 15 minutos. ¿Qué configura?",
+      "options": [
+        {
+          "text": "Same-Region Replication",
+          "correct": false,
+          "explanation": "Replica dentro de la misma Región."
+        },
+        {
+          "text": "Un plan de AWS Backup con copias diarias",
+          "correct": false,
+          "explanation": "Una copia diaria no cumple los 15 minutos."
+        },
+        {
+          "text": "Cross-Region Replication con S3 Replication Time Control",
+          "correct": true,
+          "explanation": "Correcto: S3 RTC replica el 99,99% de los objetos nuevos en 15 minutos, con SLA."
+        },
+        {
+          "text": "Una regla de ciclo de vida que mueva los objetos a otra Región",
+          "correct": false,
+          "explanation": "El ciclo de vida cambia la clase o expira objetos; no los copia a otra Región."
+        }
+      ],
+      "source": {
+        "title": "Replicating objects within and across Regions",
+        "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/replication.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "s3-h1",
+      "serviceId": "s3",
+      "difficulty": "hard",
+      "type": "single",
+      "prompt": "Una aplicación guarda millones de objetos de 40 KB que se leen rara vez, pero en milisegundos, y la mayoría se borra a los 10 días. Un arquitecto propone guardarlos en S3 Standard-IA para ahorrar. ¿Qué ocurre?",
+      "options": [
+        {
+          "text": "Ahorra, porque Standard-IA cuesta menos por GB que Standard",
+          "correct": false,
+          "explanation": "El precio por GB no cuenta toda la historia con objetos pequeños y de vida corta."
+        },
+        {
+          "text": "Paga más: cada objeto se cobra como si pesara 128 KB y por un mínimo de 30 días",
+          "correct": true,
+          "explanation": "Correcto: con objetos de 40 KB borrados a los 10 días, los mínimos de Standard-IA superan el ahorro."
+        },
+        {
+          "text": "Pierde el acceso en milisegundos",
+          "correct": false,
+          "explanation": "Standard-IA mantiene el acceso en milisegundos."
+        },
+        {
+          "text": "Los objetos quedan en una sola zona de disponibilidad",
+          "correct": false,
+          "explanation": "Esa es One Zone-IA; Standard-IA usa al menos 3 zonas."
+        }
+      ],
+      "source": {
+        "title": "Understanding and managing Amazon S3 storage classes",
+        "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "s3-h2",
+      "serviceId": "s3",
+      "difficulty": "hard",
+      "type": "single",
+      "prompt": "Un regulador exige que los registros financieros guardados en S3 no puedan borrarse ni modificarse durante 7 años por ningún usuario, ni siquiera la cuenta root. ¿Qué configuración lo cumple?",
+      "options": [
+        {
+          "text": "Versionado con MFA Delete",
+          "correct": false,
+          "explanation": "Dificulta los borrados, pero la cuenta root con MFA aún puede borrar versiones."
+        },
+        {
+          "text": "Object Lock en modo Governance con retención de 7 años",
+          "correct": false,
+          "explanation": "Un usuario con s3:BypassGovernanceRetention puede saltarlo."
+        },
+        {
+          "text": "Object Lock en modo Compliance con retención de 7 años",
+          "correct": true,
+          "explanation": "Correcto: en modo Compliance nadie, ni la cuenta root, puede borrar ni acortar la retención."
+        },
+        {
+          "text": "Una bucket policy que niegue s3:DeleteObject a todos",
+          "correct": false,
+          "explanation": "Un administrador o la cuenta root puede cambiar la policy."
+        }
+      ],
+      "source": {
+        "title": "Locking objects with Object Lock",
+        "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "s3-h3",
+      "serviceId": "s3",
+      "difficulty": "hard",
+      "type": "multiple",
+      "prompt": "Una aplicación escribe 20.000 objetos por segundo en un bucket, todos bajo el mismo prefijo, y recibe errores 503 Slow Down. ¿Qué dos acciones ayudan? (Elige 2)",
+      "options": [
+        {
+          "text": "Repartir las keys de los objetos en varios prefijos",
+          "correct": true,
+          "explanation": "Correcto: el rendimiento escala por prefijo (al menos 3.500 escrituras por segundo cada uno)."
+        },
+        {
+          "text": "Reintentar con espera exponencial mientras S3 escala",
+          "correct": true,
+          "explanation": "Correcto: los 503 aparecen mientras S3 se ajusta a la nueva tasa y desaparecen al terminar."
+        },
+        {
+          "text": "Activar S3 Transfer Acceleration",
+          "correct": false,
+          "explanation": "Acelera la distancia de red, no la tasa de solicitudes por prefijo."
+        },
+        {
+          "text": "Cambiar la clase a S3 Standard-IA",
+          "correct": false,
+          "explanation": "La clase no cambia la tasa de solicitudes y encarece las escrituras pequeñas."
+        },
+        {
+          "text": "Activar el versionado",
+          "correct": false,
+          "explanation": "No aumenta el rendimiento."
+        }
+      ],
+      "source": {
+        "title": "Best practices design patterns: optimizing Amazon S3 performance",
+        "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/optimizing-performance.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "s3-h4",
+      "serviceId": "s3",
+      "difficulty": "hard",
+      "type": "multiple",
+      "prompt": "Una empresa activa Cross-Region Replication en un bucket que ya tiene 50 millones de objetos. ¿Qué dos afirmaciones son correctas? (Elige 2)",
+      "options": [
+        {
+          "text": "El versionado debe estar activo en el bucket de origen y en el de destino",
+          "correct": true,
+          "explanation": "Correcto: la replicación requiere versionado en ambos buckets."
+        },
+        {
+          "text": "Los 50 millones de objetos existentes se replican automáticamente",
+          "correct": false,
+          "explanation": "La replicación en vivo solo copia los objetos nuevos o actualizados después de configurarla."
+        },
+        {
+          "text": "Para copiar los objetos existentes se usa S3 Batch Replication",
+          "correct": true,
+          "explanation": "Correcto: Batch Replication replica bajo demanda lo que ya existía."
+        },
+        {
+          "text": "La replicación es síncrona: la escritura espera la copia en la otra Región",
+          "correct": false,
+          "explanation": "Es asíncrona."
+        },
+        {
+          "text": "El bucket de destino debe pertenecer a la misma cuenta",
+          "correct": false,
+          "explanation": "Se puede replicar hacia buckets de otra cuenta."
+        }
+      ],
+      "source": {
+        "title": "Replicating objects within and across Regions",
+        "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/replication.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "s3-h5",
+      "serviceId": "s3",
+      "difficulty": "hard",
+      "type": "single",
+      "prompt": "Unas oficinas en Asia suben videos de 200 GB a un bucket en us-east-1 y las cargas son lentas e inestables. ¿Qué combinación mejora MÁS la velocidad?",
+      "options": [
+        {
+          "text": "Subir cada video con un solo PUT",
+          "correct": false,
+          "explanation": "Un solo PUT admite hasta 5 GB, y una conexión única no aprovecha el ancho de banda."
+        },
+        {
+          "text": "Guardar los videos en S3 Express One Zone en us-east-1",
+          "correct": false,
+          "explanation": "Baja la latencia dentro de la Región, pero no mejora el trayecto desde Asia."
+        },
+        {
+          "text": "Configurar Cross-Region Replication hacia una Región de Asia",
+          "correct": false,
+          "explanation": "Replica después de subir; no acelera la carga a us-east-1."
+        },
+        {
+          "text": "Carga multiparte en paralelo con S3 Transfer Acceleration",
+          "correct": true,
+          "explanation": "Correcto: la multiparte sube partes en paralelo y Transfer Acceleration entra por la ubicación de CloudFront más cercana."
+        }
+      ],
+      "source": {
+        "title": "Configuring fast, secure file transfers using Amazon S3 Transfer Acceleration",
+        "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/transfer-acceleration.html"
+      },
+      "verifiedOn": "2026-10-02"
+    }
+  ]
+}

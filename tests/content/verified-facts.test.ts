@@ -2,7 +2,8 @@ import { describe, expect, it } from 'vitest';
 import servicesFile from '../../src/content/services.json';
 
 /**
- * Datos verificados contra la documentación oficial de AWS el 2026-09-30 (spec 003) que las fichas
+ * Datos verificados contra la documentación oficial de AWS (Sala de Máquinas el 2026-09-30, spec 003;
+ * Bodega el 2026-10-02, spec 005) que las fichas
  * deben reflejar. Si AWS cambia un valor, se actualiza aquí y en services.json tras re-verificarlo.
  */
 const VERIFIED_FACTS: Record<string, string[]> = {
@@ -30,6 +31,14 @@ const VERIFIED_FACTS: Record<string, string[]> = {
   elb: [
     'al crearlo', // security groups de un NLB solo al crearlo
     'cross-zone',
+  ],
+  s3: [
+    '50 TB', // tamaño máximo de objeto (antes 5 TB)
+    '5 GB', // máximo de un solo PUT
+    'enero de 2023', // cifrado SSE-S3 por defecto
+    '3.500', // escrituras por segundo por prefijo
+    'en 15 minutos', // SLA de S3 Replication Time Control
+    'USD 0,023', // S3 Standard, primeros 50 TB en us-east-1
   ],
 };
 

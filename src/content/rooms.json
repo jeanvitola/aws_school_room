@@ -1,6 +1,6 @@
 {
-  "version": "0.2.0",
-  "lastReviewed": "2026-09-30",
+  "version": "0.3.0",
+  "lastReviewed": "2026-10-02",
   "rooms": [
     {
       "id": "compute",
@@ -15,7 +15,7 @@
       "name": "Bodega",
       "slug": "storage",
       "description": "Almacenamiento de objetos, bloques y archivos.",
-      "status": "upcoming",
+      "status": "available",
       "order": 2
     },
     {
