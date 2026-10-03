@@ -45,7 +45,7 @@ test.describe('Rendimiento (T047)', () => {
     await enterComputeRoom(page);
     await expect(page.locator('#game')).toHaveAttribute('data-room-ready', 'true');
 
-    expect(scripts.bytes() - lobbyBytes).toBeGreaterThan(500 * 1024);
+    await expect.poll(() => scripts.bytes() - lobbyBytes).toBeGreaterThan(500 * 1024);
   });
 
   test('las preguntas de una sala se descargan recién al entrar a ella (005)', async ({
@@ -59,6 +59,7 @@ test.describe('Rendimiento (T047)', () => {
 
     await enterComputeRoom(page);
     await expect(page.locator('#game')).toHaveAttribute('data-room-ready', 'true');
-    expect(scripts.includes(COMPUTE_QUESTION_ID)).toBe(true);
+    // El cuerpo de cada respuesta se lee de forma asíncrona: se espera a que llegue.
+    await expect.poll(() => scripts.includes(COMPUTE_QUESTION_ID)).toBe(true);
   });
 });
