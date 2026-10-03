@@ -84,7 +84,7 @@ description: 'Task list for Bodega (sala de almacenamiento)'
 - [ ] T024 [P] Accesibilidad (axe) y movimiento reducido en la Bodega en `tests/e2e/a11y.spec.ts` y `tests/e2e/reduced-motion.spec.ts`
 - [x] T025 [P] README: Bodega disponible, preguntas por sala en "Cómo agregar una sala nueva"
 - [ ] T026 Ejecutar `quickstart.md` completo
-- [ ] T027 Unir a `main` y verificar el sitio publicado
+- [x] T027 Unir a `main` y verificar el sitio publicado
 - [ ] T028 Revisión editorial del contenido (usuario)
 - [ ] T029 Sesión con al menos 5 estudiantes (SC-005) (usuario)
 
