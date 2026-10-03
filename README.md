@@ -5,7 +5,10 @@ Web en pixel art para estudiar la certificación **AWS Certified Solutions Archi
 - **Ficha en dos niveles:** _Normal_ (lenguaje simple, analogías y palabras clave) y _Profundo_ (definición, límites, comparaciones, casos de uso, patrones de arquitectura, trampas del examen y costos).
 - **15 preguntas de práctica** (5 normales, 5 medias y 5 difíciles) con explicación de cada opción y la fuente oficial de AWS en que se basan.
 
-Hoy está disponible la **Sala de Máquinas** (EC2, Lambda, ECS, EKS, Fargate, Auto Scaling y Elastic Load Balancing).
+Hoy están disponibles:
+
+- **Sala de Máquinas:** EC2, Lambda, ECS, EKS, Fargate, Auto Scaling y Elastic Load Balancing.
+- **Bodega:** S3, S3 Glacier, EBS, EFS, FSx, Storage Gateway, AWS Backup, DataSync y Transfer Family.
 
 ## Requisitos
 
@@ -54,10 +57,11 @@ El proyecto se desarrolla con **Spec-Driven Development** ([spec-kit](https://gi
 | [002 · Niveles de profundidad](specs/002-content-depth-levels/spec.md) | Normal / Profundo y patrones de arquitectura                   |
 | [003 · Preguntas de práctica](specs/003-practice-questions/spec.md)    | 15 preguntas por servicio, verificadas contra la documentación |
 | [004 · Pipeline de arte](specs/004-art-pipeline/spec.md)               | Conversión del arte propio, resolución ×2 y animaciones        |
+| [005 · Bodega](specs/005-storage-room/spec.md)                         | Sala de almacenamiento: 9 servicios y 135 preguntas            |
 
 ## Contenido y vigencia
 
-- Las fichas viven en `src/content/services.json` y las preguntas en `src/content/questions.json`. Los esquemas validan su estructura y sus límites (por ejemplo, Normal ≤ 250 palabras, Profundo ≤ 900, 5/5/5 preguntas por servicio).
+- Las fichas viven en `src/content/services.json` y las preguntas en `src/content/questions/<sala>.json`, que se descarga al entrar a esa sala. Los esquemas validan su estructura y sus límites (por ejemplo, Normal ≤ 250 palabras, Profundo ≤ 900, 5/5/5 preguntas por servicio).
 - Cada pregunta cita una **fuente oficial de AWS** y la fecha en que se verificó (`verifiedOn`).
 - `tests/content/verified-facts.test.ts` protege datos verificados que cambian seguido (límites y precios). Si AWS cambia uno, re-verifícalo y actualiza el test y el contenido.
 - Antes de publicar contenido nuevo, revísalo contra la [guía oficial del examen SAA-C03](https://aws.amazon.com/certification/certified-solutions-architect-associate/).
@@ -66,8 +70,8 @@ El proyecto se desarrolla con **Spec-Driven Development** ([spec-kit](https://gi
 
 1. **Sala:** en `src/content/rooms.json`, cambia su `status` a `available`.
 2. **Fichas:** agrega sus servicios en `src/content/services.json` con `roomId` de la sala, siguiendo el [contrato v2](specs/002-content-depth-levels/contracts/service-content-contract-v2.md).
-3. **Preguntas:** agrega 15 por servicio en `src/content/questions.json` según el [contrato de preguntas](specs/003-practice-questions/contracts/questions-contract.md).
-4. **Distribución:** crea `src/scene/layouts/<sala>.ts` con la posición de cada estación (y su decoración) y regístralo en `ROOM_LAYOUTS` de `src/main.ts`.
+3. **Preguntas:** agrega 15 por servicio en `src/content/questions/<sala>.json` según el [contrato de preguntas](specs/003-practice-questions/contracts/questions-contract.md).
+4. **Distribución:** crea `src/scene/layouts/<sala>.ts` con la posición de cada estación (y su decoración) y regístralo en `ROOM_LAYOUTS` de `src/scene/layouts/index.ts`.
 5. **Arte:** declara los sprites nuevos en `src/scene/sprite-sizes.json`, agrega las piezas a `art/manifest.json` y corre `npm run art`.
 6. **Tests:** `npm test` valida el contenido, el layout y los sprites; agrega E2E para lo que sea propio de la sala.
 
