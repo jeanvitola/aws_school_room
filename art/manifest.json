@@ -101,6 +101,69 @@
       "crop": [1188, 315, 1326, 450],
       "anchor": "center",
       "enhance": { "saturation": 1.4, "contrast": 1.2 }
+    },
+    {
+      "sprite": "service-s3",
+      "source": "public/assets/sprites/CAPA 6. íconos de servicios 2.png",
+      "crop": [85, 55, 280, 295],
+      "anchor": "center",
+      "enhance": { "saturation": 1.4, "contrast": 1.2 }
+    },
+    {
+      "sprite": "service-glacier",
+      "source": "public/assets/sprites/CAPA 6. íconos de servicios 2.png",
+      "crop": [380, 25, 610, 305],
+      "anchor": "center",
+      "enhance": { "saturation": 1.4, "contrast": 1.2 }
+    },
+    {
+      "sprite": "service-ebs",
+      "source": "public/assets/sprites/CAPA 6. íconos de servicios 2.png",
+      "crop": [695, 70, 990, 308],
+      "anchor": "center",
+      "enhance": { "saturation": 1.4, "contrast": 1.2 }
+    },
+    {
+      "sprite": "service-efs",
+      "source": "public/assets/sprites/CAPA 6. íconos de servicios 2.png",
+      "crop": [35, 370, 325, 640],
+      "anchor": "center",
+      "enhance": { "saturation": 1.4, "contrast": 1.2 }
+    },
+    {
+      "sprite": "service-fsx",
+      "source": "public/assets/sprites/CAPA 6. íconos de servicios 2.png",
+      "crop": [395, 380, 625, 640],
+      "anchor": "center",
+      "enhance": { "saturation": 1.4, "contrast": 1.2 }
+    },
+    {
+      "sprite": "service-storage-gateway",
+      "source": "public/assets/sprites/CAPA 6. íconos de servicios 2.png",
+      "crop": [695, 370, 990, 635],
+      "anchor": "center",
+      "enhance": { "saturation": 1.4, "contrast": 1.2 }
+    },
+    {
+      "sprite": "service-backup",
+      "source": "public/assets/sprites/CAPA 6. íconos de servicios 2.png",
+      "crop": [35, 705, 320, 965],
+      "anchor": "center",
+      "enhance": { "saturation": 1.4, "contrast": 1.2 }
+    },
+    {
+      "sprite": "service-datasync",
+      "source": "public/assets/sprites/CAPA 6. íconos de servicios 2.png",
+      "crop": [370, 725, 650, 955],
+      "anchor": "center",
+      "enhance": { "saturation": 1.4, "contrast": 1.2 }
+    },
+    {
+      "sprite": "service-transfer-family",
+      "source": "public/assets/sprites/CAPA 6. íconos de servicios 2.png",
+      "crop": [710, 705, 980, 968],
+      "anchor": "center",
+      "enhance": { "saturation": 1.4, "contrast": 1.2 }
     }
   ]
 }

@@ -11,5 +11,14 @@
   "service-eks": { "width": 48, "height": 48 },
   "service-fargate": { "width": 48, "height": 48 },
   "service-autoscaling": { "width": 48, "height": 48 },
-  "service-elb": { "width": 48, "height": 48 }
+  "service-elb": { "width": 48, "height": 48 },
+  "service-s3": { "width": 48, "height": 48 },
+  "service-glacier": { "width": 48, "height": 48 },
+  "service-ebs": { "width": 48, "height": 48 },
+  "service-efs": { "width": 48, "height": 48 },
+  "service-fsx": { "width": 48, "height": 48 },
+  "service-storage-gateway": { "width": 48, "height": 48 },
+  "service-backup": { "width": 48, "height": 48 },
+  "service-datasync": { "width": 48, "height": 48 },
+  "service-transfer-family": { "width": 48, "height": 48 }
 }
