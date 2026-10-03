@@ -48,9 +48,9 @@ description: 'Task list for Bodega (sala de almacenamiento)'
 
 **Checkpoint (usuario)**: revisar la ficha y las 15 preguntas de S3 antes de redactar el resto
 
-- [ ] T013 [US1] Verificar en paralelo los datos de los otros 8 servicios (ver research, Decision 6) y anotarlos en `research.md`
-- [ ] T014 [US1] Redactar las fichas de Glacier, EBS, EFS, FSx, Storage Gateway, Backup, DataSync y Transfer Family, cumpliendo FR-006, FR-007 y FR-008 — hace pasar T007
-- [ ] T015 [P] [US1] Ampliar `tests/content/verified-facts.test.ts` con los datos cambiantes de almacenamiento y las fechas de Snow Family y de las bóvedas de Glacier
+- [x] T013 [US1] Verificar en paralelo los datos de los otros 8 servicios (ver research, Decision 6) y anotarlos en `research.md`
+- [x] T014 [US1] Redactar las fichas de Glacier, EBS, EFS, FSx, Storage Gateway, Backup, DataSync y Transfer Family, cumpliendo FR-006, FR-007 y FR-008 — hace pasar T007
+- [x] T015 [P] [US1] Ampliar `tests/content/verified-facts.test.ts` con los datos cambiantes de almacenamiento y las fechas de Snow Family y de las bóvedas de Glacier
 
 **Checkpoint**: las 9 fichas completas; T007 y T008 en verde
 
@@ -58,16 +58,16 @@ description: 'Task list for Bodega (sala de almacenamiento)'
 
 ## Phase 3: User Story 2 - Decidir entre servicios (Priority: P1)
 
-- [ ] T016 [P] [US2] E2E en `tests/e2e/storage.spec.ts`: desde EFS en Profundo se abre FSx desde su comparación; un servicio de otra sala (p. ej. EC2) aparece como texto sin enlace
-- [ ] T017 [US2] Ajustar comparaciones y patrones si T016 detecta huecos — hace pasar T016
+- [x] T016 [P] [US2] E2E en `tests/e2e/storage.spec.ts`: desde EFS en Profundo se abre FSx desde su comparación; un servicio de otra sala (p. ej. EC2) aparece como texto sin enlace
+- [x] T017 [US2] Ajustar comparaciones y patrones si T016 detecta huecos — hace pasar T016
 
 ---
 
 ## Phase 4: User Story 3 - Preguntas de almacenamiento (Priority: P2)
 
-- [ ] T018 [P] [US3] Tests de contenido: los 9 servicios tienen 15 preguntas válidas; cada conocimiento de FR-005 aparece en al menos una pregunta (lista de palabras clave por tema)
-- [ ] T019 [US3] Redactar las 120 preguntas restantes en `src/content/questions/storage.json`, verificadas contra fuentes oficiales — hace pasar T018
-- [ ] T020 [P] [US3] E2E en `tests/e2e/storage.spec.ts`: Preguntas en una ficha de la Bodega muestra "Pregunta 1 de 15 · Normal" y llega al resumen
+- [x] T018 [P] [US3] Tests de contenido: los 9 servicios tienen 15 preguntas válidas; cada conocimiento de FR-005 aparece en al menos una pregunta (lista de palabras clave por tema)
+- [x] T019 [US3] Redactar las 120 preguntas restantes en `src/content/questions/storage.json`, verificadas contra fuentes oficiales — hace pasar T018
+- [x] T020 [P] [US3] E2E en `tests/e2e/storage.spec.ts`: Preguntas en una ficha de la Bodega muestra "Pregunta 1 de 15 · Normal" y llega al resumen
 
 ---
 

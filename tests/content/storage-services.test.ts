@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { loadCatalog } from '../../src/content/schema';
 import roomsFile from '../../src/content/rooms.json';
 import servicesFile from '../../src/content/services.json';
+import storageQuestions from '../../src/content/questions/storage.json';
 
 /** Las 9 estaciones de la Bodega, en el orden del recorrido (spec 005, FR-002). */
 const STORAGE_SERVICES: [id: string, name: string][] = [
@@ -17,16 +18,7 @@ const STORAGE_SERVICES: [id: string, name: string][] = [
 ];
 
 /** Fichas que aún no se redactan (T014). Debe quedar vacía antes de cerrar la feature. */
-const PENDING = new Set([
-  'glacier',
-  'ebs',
-  'efs',
-  'fsx',
-  'storage-gateway',
-  'backup',
-  'datasync',
-  'transfer-family',
-]);
+const PENDING = new Set<string>();
 
 /** Comparaciones obligatorias en ambos sentidos (data-model.md). */
 const REQUIRED_COMPARISONS: [string, string][] = [
@@ -67,5 +59,35 @@ describe('storage room content (spec 005)', () => {
     const targetsOf = (id: string) => serviceOf(id)?.deep.compareWith.map((c) => c.target);
     if (!PENDING.has(first)) expect(targetsOf(first)).toContain(second);
     if (!PENDING.has(second)) expect(targetsOf(second)).toContain(first);
+  });
+});
+
+/**
+ * FR-005 / SC-002: cada conocimiento de almacenamiento de la guía SAA-C03 aparece en al menos una
+ * ficha y en al menos una pregunta de la Bodega. Se busca por palabras clave (en minúsculas).
+ */
+const EXAM_KNOWLEDGE: [topic: string, keyword: string][] = [
+  ['almacenamiento de objetos', 'objeto'],
+  ['almacenamiento en bloques', 'bloques'],
+  ['almacenamiento de archivos', 'sistema de archivos'],
+  ['clases y ciclo de vida de S3', 'ciclo de vida'],
+  ['Requester Pays', 'requester pays'],
+  ['SSD frente a HDD', 'hdd'],
+  ['almacenamiento híbrido', 'gateway'],
+  ['respaldo y recuperación ante desastres', 'rpo'],
+  ['cifrado', 'cifra'],
+  ['replicación y durabilidad', 'replica'],
+  ['transferencia de datos', 'datasync'],
+];
+
+describe('storage room covers the SAA-C03 storage knowledge (FR-005)', () => {
+  const cardsText = JSON.stringify(
+    servicesFile.services.filter((service) => service.roomId === 'storage'),
+  ).toLowerCase();
+  const questionsText = JSON.stringify(storageQuestions).toLowerCase();
+
+  it.each(EXAM_KNOWLEDGE)('%s appears in the cards and in the questions', (_topic, keyword) => {
+    expect(cardsText).toContain(keyword);
+    expect(questionsText).toContain(keyword);
   });
 });

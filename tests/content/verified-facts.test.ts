@@ -40,6 +40,31 @@ const VERIFIED_FACTS: Record<string, string[]> = {
     'en 15 minutos', // SLA de S3 Replication Time Control
     'USD 0,023', // S3 Standard, primeros 50 TB en us-east-1
   ],
+  glacier: [
+    '15 de diciembre de 2025', // bóvedas de Amazon Glacier sin clientes nuevos
+    '3–5 horas', // restauración Standard de Flexible Retrieval
+    '48 horas', // restauración Bulk de Deep Archive
+    'USD 0,00099',
+  ],
+  ebs: [
+    '80.000 IOPS', // máximo de gp3
+    '256.000 IOPS', // máximo de io2 Block Express
+    '16 instancias', // Multi-Attach
+  ],
+  efs: [
+    'Elastic', // modo de rendimiento recomendado
+    'generación anterior', // Max I/O
+    'no se puede usar con instancias Windows',
+  ],
+  fsx: ['ya no se ofrece a clientes nuevos', 'Scratch'],
+  'storage-gateway': ['ya no se ofrece a clientes nuevos'], // FSx File Gateway
+  backup: ['72 horas', 'logically air-gapped'],
+  datasync: [
+    '7 de noviembre de 2025', // Snow Family sin clientes nuevos
+    'Data Transfer Terminal',
+    'USD 0,0125',
+  ],
+  'transfer-family': ['endpoint de VPC interno', 'USD 0,30'],
 };
 
 function deepText(serviceId: string): string {

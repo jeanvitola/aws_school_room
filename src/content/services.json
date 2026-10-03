@@ -909,6 +909,888 @@
         ],
         "costs": "Pagas por GB-mes según la clase (S3 Standard: USD 0,023 por GB los primeros 50 TB en us-east-1; Glacier Deep Archive: USD 0,00099), por solicitudes, por recuperación en las clases IA y Glacier, y por los datos que salen a internet. Subir datos y enviarlos a CloudFront no cuesta."
       }
+    },
+    {
+      "id": "glacier",
+      "name": "Amazon S3 Glacier",
+      "roomId": "storage",
+      "normal": {
+        "whatIs": "S3 Glacier es la parte de Amazon S3 para archivar datos que casi nunca se leen, a un precio mucho menor. Son tres clases de almacenamiento dentro de S3: una que se lee al instante y dos que primero hay que restaurar, lo que tarda de minutos a horas. A cambio, debes guardar cada objeto un tiempo mínimo.",
+        "analogy": "Es como una bodega fuera de la ciudad: guardar cajas ahí cuesta muy poco, pero si necesitas una, tienes que pedirla y esperar a que te la traigan.",
+        "glossary": [
+          {
+            "term": "Archivar",
+            "definition": "Guardar datos que deben conservarse pero casi nunca se consultan."
+          },
+          {
+            "term": "Restaurar",
+            "definition": "Pedir una copia temporal de un objeto archivado para poder leerlo."
+          },
+          {
+            "term": "Duración mínima",
+            "definition": "Tiempo que pagas por un objeto aunque lo borres antes: 90 o 180 días."
+          }
+        ],
+        "examKeyPoints": [
+          "Archivo barato que se lee una vez por trimestre y al instante → Glacier Instant Retrieval.",
+          "Respaldos que pueden esperar minutos u horas → Glacier Flexible Retrieval.",
+          "Lo más barato de AWS, para retención de años con esperas de hasta 48 horas → Glacier Deep Archive."
+        ],
+        "quickComparison": {
+          "target": "s3",
+          "rule": "Datos que se leen seguido → S3 Standard. Datos que se guardan por años y casi no se leen → una clase S3 Glacier."
+        },
+        "costInOneLine": "Pagas muy poco por GB al mes, más un cargo cada vez que recuperas datos y un mínimo de 90 o 180 días por objeto."
+      },
+      "deep": {
+        "definition": "Las clases S3 Glacier son clases de almacenamiento de Amazon S3 para datos de larga duración. Tienen la misma durabilidad que S3 Standard (11 nueves, al menos 3 zonas) a menor costo por GB, con duración mínima y cargo por recuperación. Se usan con las mismas herramientas de S3: buckets, ciclo de vida, cifrado y Object Lock.",
+        "keyConcepts": [
+          "Glacier Instant Retrieval: acceso en milisegundos, mínimo 90 días y 128 KB por objeto; para datos que se leen una vez por trimestre. Guardar cuesta menos que en Standard-IA, pero leer cuesta más.",
+          "Glacier Flexible Retrieval: archivado; mínimo 90 días. Restauración Expedited en 1–5 minutos, Standard en 3–5 horas y Bulk en 5–12 horas (gratis).",
+          "Glacier Deep Archive: la opción más barata de AWS; mínimo 180 días. Restauración Standard en hasta 12 horas y Bulk en hasta 48 horas.",
+          "Flexible Retrieval y Deep Archive exigen restaurar (RestoreObject): se crea una copia temporal y el objeto sigue archivado.",
+          "Provisioned capacity garantiza capacidad para restauraciones Expedited en momentos de alta demanda.",
+          "Los objetos llegan con reglas de ciclo de vida o subiéndolos directamente con esa clase.",
+          "Para retención inmutable se usa S3 Object Lock sobre los objetos archivados.",
+          "El servicio original Amazon Glacier, con bóvedas (vaults) y su propia API, no acepta clientes nuevos desde el 15 de diciembre de 2025; AWS recomienda las clases S3 Glacier."
+        ],
+        "compareWith": [
+          {
+            "target": "s3",
+            "difference": "S3 Standard, Standard-IA e Intelligent-Tiering para datos activos o de acceso variable; las clases Glacier cuando el dato se guarda por meses o años y casi no se lee."
+          },
+          {
+            "target": "backup",
+            "difference": "AWS Backup centraliza copias de muchos servicios con planes y retención; las clases Glacier son dónde guardar objetos archivados en S3."
+          },
+          {
+            "target": "storage-gateway",
+            "difference": "Tape Gateway reemplaza cintas físicas por cintas virtuales que se archivan en Glacier Flexible Retrieval o Deep Archive, sin cambiar el software de respaldo."
+          }
+        ],
+        "useCases": [
+          {
+            "scenario": "Imágenes médicas",
+            "example": "Radiografías que se consultan pocas veces al año pero deben abrirse al instante durante una cita: Glacier Instant Retrieval."
+          },
+          {
+            "scenario": "Respaldo y recuperación ante desastres",
+            "example": "Copias semanales que solo se restauran si hay un desastre, con horas de margen: Glacier Flexible Retrieval."
+          },
+          {
+            "scenario": "Retención regulatoria",
+            "example": "Registros financieros que se guardan 10 años y casi nunca se leen: Glacier Deep Archive con Object Lock."
+          }
+        ],
+        "patterns": [
+          {
+            "name": "Archivo por antigüedad",
+            "problem": "Conservar años de datos sin pagar precio de almacenamiento activo.",
+            "whenToUse": "Los datos dejan de leerse después de un tiempo predecible y deben conservarse por norma o política.",
+            "whenNotToUse": "Los datos viven menos de 90 días o se leen seguido: los mínimos y los cargos de recuperación encarecen todo.",
+            "steps": [
+              {
+                "target": "s3",
+                "role": "Recibe los datos en S3 Standard"
+              },
+              {
+                "target": "S3 Lifecycle",
+                "role": "Los transiciona según su antigüedad"
+              },
+              {
+                "target": "glacier",
+                "role": "Los guarda en Flexible Retrieval y luego en Deep Archive hasta que expiran"
+              }
+            ]
+          },
+          {
+            "name": "Reemplazar cintas físicas",
+            "problem": "Mantener una biblioteca de cintas es caro y lento.",
+            "whenToUse": "El software de respaldo actual escribe en cintas y no se quiere cambiar.",
+            "whenNotToUse": "Los respaldos ya son de servicios de AWS: AWS Backup es más simple.",
+            "steps": [
+              {
+                "target": "Software de respaldo local",
+                "role": "Escribe en cintas virtuales como siempre"
+              },
+              {
+                "target": "storage-gateway",
+                "role": "Tape Gateway las presenta como una biblioteca de cintas iSCSI"
+              },
+              {
+                "target": "glacier",
+                "role": "Archiva las cintas en Flexible Retrieval o Deep Archive"
+              }
+            ]
+          }
+        ],
+        "examTraps": [
+          "Instant Retrieval no exige restaurar; Flexible Retrieval y Deep Archive sí",
+          "Deep Archive no ofrece recuperación Expedited: lo más rápido es Standard, en hasta 12 horas",
+          "Borrar o mover un objeto antes de 90 o 180 días se cobra igual hasta completar el mínimo",
+          "Si piden datos que se leen al instante una vez por trimestre al menor costo, la respuesta es Instant Retrieval, no Standard-IA",
+          "Las bóvedas de Amazon Glacier y su Vault Lock son del servicio antiguo; en S3 se usa Object Lock"
+        ],
+        "costs": "Glacier Deep Archive cuesta USD 0,00099 por GB al mes en us-east-1, el almacenamiento más barato de AWS. Se paga además por solicitudes y por GB recuperado, más caro cuanto más rápido. Las restauraciones Bulk de Flexible Retrieval son gratis. Cada objeto archivado en Flexible Retrieval o Deep Archive suma 40 KB de metadatos facturados."
+      }
+    },
+    {
+      "id": "ebs",
+      "name": "Amazon EBS",
+      "roomId": "storage",
+      "normal": {
+        "whatIs": "Amazon EBS es el disco duro de una instancia EC2. Guarda el sistema operativo, las bases de datos y cualquier dato que la instancia necesite leer y escribir rápido. El disco vive en una zona de disponibilidad, se conecta a una instancia de esa misma zona y sus datos se mantienen aunque apagues la instancia.",
+        "analogy": "Es como un disco duro externo que conectas a tu computador: puedes desconectarlo y conectarlo a otro, pero tiene que estar en la misma sala.",
+        "glossary": [
+          {
+            "term": "Volumen",
+            "definition": "Un disco EBS de un tamaño y tipo que eliges."
+          },
+          {
+            "term": "IOPS",
+            "definition": "Cantidad de lecturas y escrituras por segundo que soporta el disco."
+          },
+          {
+            "term": "Snapshot",
+            "definition": "Copia de seguridad del disco en un momento dado, guardada en S3."
+          },
+          {
+            "term": "Instance Store",
+            "definition": "Disco temporal pegado al servidor físico; se borra al detener la instancia."
+          }
+        ],
+        "examKeyPoints": [
+          "Disco para el sistema operativo o la base de datos de una instancia → EBS.",
+          "Un volumen está en una sola zona: para llevarlo a otra se usa un snapshot.",
+          "SSD (gp3, io2) para transacciones; HDD (st1, sc1) para lecturas secuenciales grandes y baratas."
+        ],
+        "quickComparison": {
+          "target": "efs",
+          "rule": "Disco de una sola instancia → EBS. Carpeta compartida por muchas instancias de varias zonas → EFS."
+        },
+        "costInOneLine": "Pagas por GB aprovisionado al mes, lo uses o no, más las IOPS y el throughput extra que pidas y los snapshots guardados."
+      },
+      "deep": {
+        "definition": "Amazon EBS (Elastic Block Store) ofrece volúmenes de almacenamiento en bloques que se conectan por red a instancias EC2. Cada volumen se replica dentro de su zona de disponibilidad, persiste aunque la instancia se detenga y se protege con snapshots incrementales guardados en S3.",
+        "keyConcepts": [
+          "gp3 (SSD de propósito general): hasta 64 TiB, 80.000 IOPS y 2.000 MiB/s; IOPS y throughput se ajustan sin cambiar el tamaño.",
+          "io2 Block Express (SSD de IOPS aprovisionadas): hasta 64 TiB, 256.000 IOPS, 4.000 MiB/s, latencia menor a 1 ms y 99,999% de durabilidad. Para bases de datos críticas.",
+          "st1 (HDD optimizado para throughput, hasta 500 MiB/s) y sc1 (HDD frío, hasta 250 MiB/s): para big data y logs; no sirven como disco de arranque.",
+          "Multi-Attach: solo io1 e io2, hasta 16 instancias Nitro de la misma zona; requiere un sistema de archivos de clúster.",
+          "Snapshots incrementales guardados en S3: se restauran en cualquier zona de la Región, se copian a otras Regiones y se comparten con otras cuentas.",
+          "Cifrado con AWS KMS de datos en reposo, en tránsito hacia la instancia y en snapshots. Un volumen sin cifrar no se cifra directo: se hace un snapshot y se crea un volumen cifrado. Se puede activar el cifrado por defecto en cada Región.",
+          "Amazon Data Lifecycle Manager o AWS Backup automatizan los snapshots; AWS no los hace solo.",
+          "Instance Store: discos físicos del servidor, muy rápidos y sin costo extra, pero temporales: los datos se pierden al detener, hibernar o terminar la instancia."
+        ],
+        "compareWith": [
+          {
+            "target": "efs",
+            "difference": "EFS es un sistema de archivos compartido entre muchas instancias y zonas; EBS es un disco de una instancia (o de pocas, con Multi-Attach) en una sola zona, con menor latencia."
+          },
+          {
+            "target": "s3",
+            "difference": "S3 guarda objetos accesibles por API desde cualquier lugar y escala sin aprovisionar; EBS es un disco montado donde el sistema operativo lee y escribe bloques."
+          },
+          {
+            "target": "backup",
+            "difference": "Los snapshots de EBS son la copia del volumen; AWS Backup los programa y retiene junto con los de otros servicios, entre Regiones y cuentas."
+          },
+          {
+            "target": "Instance Store",
+            "difference": "Instance Store da el máximo rendimiento sin costo extra para datos temporales (caché, buffers); EBS para datos que deben sobrevivir a una detención."
+          }
+        ],
+        "useCases": [
+          {
+            "scenario": "Base de datos en EC2",
+            "example": "Un SQL Server en una instancia con un volumen io2 de IOPS garantizadas."
+          },
+          {
+            "scenario": "Disco de arranque",
+            "example": "Volumen gp3 con el sistema operativo de cada servidor web."
+          },
+          {
+            "scenario": "Procesamiento de logs",
+            "example": "Un clúster que lee archivos grandes de forma secuencial desde volúmenes st1."
+          }
+        ],
+        "patterns": [
+          {
+            "name": "Mover un volumen a otra zona o Región",
+            "problem": "Un volumen EBS no se puede conectar a una instancia de otra zona.",
+            "whenToUse": "Hay que recuperar o migrar un servidor a otra zona o Región.",
+            "whenNotToUse": "Varias instancias necesitan los mismos archivos a la vez: usa EFS.",
+            "steps": [
+              {
+                "target": "ebs",
+                "role": "Volumen original en la zona A"
+              },
+              {
+                "target": "Snapshot de EBS",
+                "role": "Copia incremental guardada en S3, disponible en toda la Región"
+              },
+              {
+                "target": "ebs",
+                "role": "Volumen nuevo creado desde el snapshot en la zona B (o en otra Región tras copiar el snapshot)"
+              }
+            ]
+          },
+          {
+            "name": "Cifrar un volumen existente",
+            "problem": "Un volumen se creó sin cifrar y una auditoría exige cifrado.",
+            "whenToUse": "Volúmenes sin cifrar que deben cumplir una norma.",
+            "whenNotToUse": "Volúmenes nuevos: activa el cifrado por defecto de la Región.",
+            "steps": [
+              {
+                "target": "ebs",
+                "role": "Volumen sin cifrar"
+              },
+              {
+                "target": "Snapshot de EBS",
+                "role": "Copia del volumen, copiada con cifrado KMS"
+              },
+              {
+                "target": "ebs",
+                "role": "Volumen nuevo y cifrado que reemplaza al original"
+              }
+            ]
+          }
+        ],
+        "examTraps": [
+          "Un volumen EBS solo se conecta a instancias de su misma zona de disponibilidad",
+          "Multi-Attach existe solo en io1 e io2, no en gp3",
+          "st1 y sc1 no pueden ser disco de arranque",
+          "Instance Store pierde los datos al detener la instancia; un reinicio no los borra",
+          "No se cifra un volumen existente directamente: snapshot, copia cifrada y volumen nuevo"
+        ],
+        "costs": "Pagas por GB aprovisionado al mes según el tipo, aunque el disco esté vacío. En gp3 e io2 pagas además las IOPS (y en gp3 el throughput) por encima de lo incluido. Los snapshots se cobran por GB guardado; como son incrementales, solo pagas los bloques que cambiaron. Instance Store no tiene cargo adicional."
+      }
+    },
+    {
+      "id": "efs",
+      "name": "Amazon EFS",
+      "roomId": "storage",
+      "normal": {
+        "whatIs": "Amazon EFS es una carpeta compartida en la nube que muchos servidores Linux pueden usar al mismo tiempo, como si fuera un disco propio. Crece y se achica sola a medida que agregas o borras archivos, así que no reservas espacio. Los datos se guardan en varias zonas de disponibilidad.",
+        "analogy": "Es como una carpeta compartida de la oficina: todos los computadores la ven, abren los mismos archivos y nadie tiene que preocuparse de cuánto espacio queda.",
+        "glossary": [
+          {
+            "term": "NFS",
+            "definition": "Protocolo para compartir archivos por red; el que usa EFS."
+          },
+          {
+            "term": "Montar",
+            "definition": "Conectar el sistema de archivos para usarlo como una carpeta local."
+          },
+          {
+            "term": "Mount target",
+            "definition": "Punto de conexión de EFS en una subred de cada zona."
+          }
+        ],
+        "examKeyPoints": [
+          "Archivos compartidos por muchas instancias Linux, contenedores o Lambda → EFS.",
+          "EFS no funciona con Windows: para SMB y Active Directory se usa FSx for Windows File Server.",
+          "Archivos que se usan poco → reglas de ciclo de vida hacia Infrequent Access y Archive."
+        ],
+        "quickComparison": {
+          "target": "fsx",
+          "rule": "Carpeta compartida para Linux con NFS → EFS. Carpeta compartida para Windows con SMB, o sistemas de archivos especializados → FSx."
+        },
+        "costInOneLine": "Pagas por GB realmente guardado según la clase y, con rendimiento Elastic, por los datos que lees y escribes."
+      },
+      "deep": {
+        "definition": "Amazon EFS (Elastic File System) es un sistema de archivos NFS (v4.0 y v4.1) serverless y elástico que crece hasta petabytes sin aprovisionar capacidad. Lo montan a la vez instancias EC2, contenedores de ECS y EKS, Fargate y Lambda, y también servidores locales por Direct Connect o VPN. No se puede usar con instancias Windows.",
+        "keyConcepts": [
+          "Tipos: Regional (recomendado, datos en al menos 3 zonas, 99,99% de disponibilidad) y One Zone (una zona, más barato, se pierde si cae la zona).",
+          "Clases: Standard (SSD, latencia de menos de un milisegundo), Infrequent Access y Archive (decenas de milisegundos, mínimo de 128 KiB por archivo; Archive, mínimo 90 días).",
+          "Ciclo de vida: mueve archivos sin uso a IA y Archive y puede devolverlos a Standard al volver a leerlos. Archive requiere rendimiento Elastic.",
+          "Rendimiento Elastic (recomendado y por defecto): escala solo y pagas lo que lees y escribes. Provisioned: fijas el throughput. Bursting: el throughput crece con el tamaño guardado.",
+          "Modo General Purpose (recomendado); Max I/O es de generación anterior, con más latencia, y no funciona con Elastic ni One Zone.",
+          "Consistencia close-to-open de NFS y bloqueo de archivos.",
+          "Cifrado en reposo (se elige al crear el sistema) y en tránsito con TLS al montar; acceso controlado con security groups, IAM y access points.",
+          "Replicación de EFS a otra Región con RPO y RTO de minutos."
+        ],
+        "compareWith": [
+          {
+            "target": "ebs",
+            "difference": "EBS es un disco de una instancia en una zona, con la menor latencia; EFS se comparte entre muchas instancias de varias zonas y crece solo."
+          },
+          {
+            "target": "fsx",
+            "difference": "FSx for Windows File Server para SMB y Active Directory; FSx for Lustre para cómputo de alto rendimiento; EFS para compartir archivos entre servidores Linux con NFS sin administrar capacidad."
+          },
+          {
+            "target": "s3",
+            "difference": "S3 es más barato por GB y se usa por API con objetos completos; EFS se monta como carpeta y permite modificar parte de un archivo."
+          }
+        ],
+        "useCases": [
+          {
+            "scenario": "Contenido web compartido",
+            "example": "Varios servidores WordPress en un Auto Scaling group leen las mismas imágenes subidas por los usuarios."
+          },
+          {
+            "scenario": "Datos para contenedores y Lambda",
+            "example": "Tareas de Fargate y funciones Lambda que comparten modelos o archivos de configuración."
+          },
+          {
+            "scenario": "Carpetas personales",
+            "example": "Directorios home de un equipo de desarrolladores en instancias Linux."
+          }
+        ],
+        "patterns": [
+          {
+            "name": "Almacenamiento compartido para un grupo que escala",
+            "problem": "Las instancias que se crean y destruyen con Auto Scaling necesitan ver los mismos archivos.",
+            "whenToUse": "Aplicaciones Linux que leen y escriben archivos compartidos desde varias zonas.",
+            "whenNotToUse": "Una base de datos de una sola instancia que necesita la menor latencia: usa EBS io2.",
+            "steps": [
+              {
+                "target": "elb",
+                "role": "Reparte el tráfico entre las instancias"
+              },
+              {
+                "target": "autoscaling",
+                "role": "Agrega y quita instancias Linux en varias zonas"
+              },
+              {
+                "target": "efs",
+                "role": "Sistema de archivos que todas montan por su mount target de cada zona"
+              }
+            ]
+          }
+        ],
+        "examTraps": [
+          "EFS no se puede usar desde instancias Windows",
+          "Un sistema One Zone pierde los datos si falla su zona",
+          "Max I/O es de generación anterior: para casi todo, General Purpose con Elastic",
+          "El cifrado en reposo se elige al crear el sistema de archivos"
+        ],
+        "costs": "Pagas por GB-mes guardado en cada clase (Standard es la más cara, Archive la más barata) y por acceder a datos en IA y Archive. Con rendimiento Elastic pagas además por GB leído y escrito; con Provisioned, por el throughput fijado por encima del incluido. One Zone cuesta menos que Regional."
+      }
+    },
+    {
+      "id": "fsx",
+      "name": "Amazon FSx",
+      "roomId": "storage",
+      "normal": {
+        "whatIs": "Amazon FSx te da sistemas de archivos conocidos, ya instalados y administrados por AWS: Windows File Server, Lustre, NetApp ONTAP y OpenZFS. Eliges el que usa tu empresa o tu aplicación y AWS se encarga del hardware, los parches y los respaldos.",
+        "analogy": "Es como arrendar una bodega especializada: hay una refrigerada, una para químicos y una para documentos. No construyes nada, eliges la que sirve para lo que guardas.",
+        "glossary": [
+          {
+            "term": "SMB",
+            "definition": "Protocolo de carpetas compartidas de Windows."
+          },
+          {
+            "term": "Active Directory",
+            "definition": "Directorio de usuarios y permisos de Windows."
+          },
+          {
+            "term": "HPC",
+            "definition": "Cómputo de alto rendimiento: muchas máquinas procesando datos en paralelo."
+          }
+        ],
+        "examKeyPoints": [
+          "Carpetas compartidas de Windows con SMB y Active Directory → FSx for Windows File Server.",
+          "Cómputo de alto rendimiento o machine learning que lee desde S3 → FSx for Lustre.",
+          "Migrar un NetApp local o necesitar NFS, SMB e iSCSI a la vez → FSx for NetApp ONTAP."
+        ],
+        "quickComparison": {
+          "target": "efs",
+          "rule": "Carpeta compartida Linux sin administrar capacidad → EFS. Windows, HPC o un sistema de archivos específico → FSx."
+        },
+        "costInOneLine": "Pagas por la capacidad de almacenamiento y el throughput que configuras, más los respaldos."
+      },
+      "deep": {
+        "definition": "Amazon FSx es una familia de sistemas de archivos administrados de terceros: Windows File Server, Lustre, NetApp ONTAP y OpenZFS. Cada uno conserva los protocolos y las funciones del original, con latencias de menos de un milisegundo, cifrado con KMS y respaldos automáticos diarios, sin servidores que administrar.",
+        "keyConcepts": [
+          "FSx for Windows File Server: SMB 2.0 a 3.1.1, integración con Active Directory, permisos NTFS, Single-AZ o Multi-AZ con servidor en espera en otra zona, SSD o HDD. Accesible también desde Linux.",
+          "FSx for Lustre: para HPC, machine learning y video. Se enlaza a un bucket de S3 y muestra sus objetos como archivos, y puede escribir resultados de vuelta. Scratch (temporal, sin replicación) o Persistent (replicado). Solo clientes Linux.",
+          "FSx for NetApp ONTAP: NFS, SMB, iSCSI y NVMe a la vez desde Linux, Windows y macOS; tiering automático a un nivel más barato, snapshots, clones y SnapMirror; Multi-AZ.",
+          "FSx for OpenZFS: NFS v3 a v4.2, hasta 2 millones de IOPS con latencias de cientos de microsegundos, snapshots y clones; para mover servidores ZFS o Linux.",
+          "Lustre y OpenZFS ofrecen una clase Intelligent-Tiering elástica para la mayoría de las cargas.",
+          "Acceso desde el centro de datos por Direct Connect o VPN; AWS Backup protege los cuatro tipos."
+        ],
+        "compareWith": [
+          {
+            "target": "efs",
+            "difference": "EFS es NFS serverless para Linux que crece solo; FSx cuando se necesita SMB y Active Directory, el rendimiento de Lustre o las funciones de ONTAP u OpenZFS."
+          },
+          {
+            "target": "s3",
+            "difference": "S3 guarda los datos de forma barata y durable; FSx for Lustre se pone delante de un bucket para procesarlos como archivos a gran velocidad."
+          },
+          {
+            "target": "storage-gateway",
+            "difference": "Storage Gateway da acceso local con caché a datos en AWS; FSx es el sistema de archivos en AWS. FSx File Gateway ya no se ofrece a clientes nuevos."
+          }
+        ],
+        "useCases": [
+          {
+            "scenario": "Mover servidores de archivos Windows",
+            "example": "Unidades compartidas de una empresa con permisos de Active Directory: FSx for Windows File Server Multi-AZ."
+          },
+          {
+            "scenario": "Entrenar modelos de machine learning",
+            "example": "Un clúster lee millones de imágenes desde S3 a través de FSx for Lustre."
+          },
+          {
+            "scenario": "Migrar un NetApp local",
+            "example": "Volúmenes NetApp replicados con SnapMirror a FSx for NetApp ONTAP sin cambiar las aplicaciones."
+          }
+        ],
+        "patterns": [
+          {
+            "name": "Procesamiento de alto rendimiento sobre S3",
+            "problem": "Un clúster de cómputo necesita leer datos de S3 a muy alta velocidad, como archivos.",
+            "whenToUse": "Simulaciones, genómica, entrenamiento de modelos o renderizado sobre datos guardados en S3.",
+            "whenNotToUse": "Archivos compartidos de oficina o aplicaciones web: usa EFS o FSx for Windows File Server.",
+            "steps": [
+              {
+                "target": "s3",
+                "role": "Guarda el conjunto de datos de forma durable"
+              },
+              {
+                "target": "fsx",
+                "role": "FSx for Lustre presenta los objetos como archivos y los sirve al clúster"
+              },
+              {
+                "target": "ec2",
+                "role": "Instancias del clúster procesan los datos en paralelo"
+              },
+              {
+                "target": "s3",
+                "role": "Recibe los resultados exportados desde Lustre"
+              }
+            ]
+          }
+        ],
+        "examTraps": [
+          "SMB y Active Directory apuntan a FSx for Windows File Server, no a EFS",
+          "FSx for Lustre Scratch no replica los datos: solo para procesamiento temporal",
+          "Varios protocolos a la vez (NFS, SMB e iSCSI) apuntan a FSx for NetApp ONTAP",
+          "FSx File Gateway ya no se ofrece a clientes nuevos"
+        ],
+        "costs": "Pagas por la capacidad de almacenamiento (GB-mes), el throughput configurado y, según el tipo, las IOPS SSD extra y las solicitudes al nivel más barato, más los respaldos guardados. No hay costos iniciales ni compromisos."
+      }
+    },
+    {
+      "id": "storage-gateway",
+      "name": "AWS Storage Gateway",
+      "roomId": "storage",
+      "normal": {
+        "whatIs": "AWS Storage Gateway conecta los servidores de tu oficina o centro de datos con el almacenamiento de AWS. Se instala como una máquina virtual o un equipo físico en tu red y ofrece carpetas, discos o cintas que tus aplicaciones usan como siempre, mientras los datos se guardan en AWS. Mantiene una caché local para que lo usado seguido se lea rápido.",
+        "analogy": "Es como una ventanilla de la bodega dentro de tu oficina: entregas y retiras cajas ahí mismo, y por detrás todo se guarda en la bodega grande.",
+        "glossary": [
+          {
+            "term": "Híbrido",
+            "definition": "Parte en tu centro de datos y parte en la nube, trabajando juntas."
+          },
+          {
+            "term": "Caché local",
+            "definition": "Copia de los datos usados seguido, guardada cerca para leerlos rápido."
+          },
+          {
+            "term": "iSCSI",
+            "definition": "Protocolo para presentar discos por la red."
+          }
+        ],
+        "examKeyPoints": [
+          "Servidores locales que guardan archivos en S3 por NFS o SMB → S3 File Gateway.",
+          "Reemplazar cintas de respaldo físicas sin cambiar el software → Tape Gateway.",
+          "Discos iSCSI locales respaldados en AWS → Volume Gateway (cached o stored)."
+        ],
+        "quickComparison": {
+          "target": "datasync",
+          "rule": "Mover o sincronizar datos de una vez o por tareas → DataSync. Acceso continuo desde el centro de datos a datos guardados en AWS → Storage Gateway."
+        },
+        "costInOneLine": "Pagas el almacenamiento en AWS que usa cada gateway, las solicitudes y los datos que salen de AWS."
+      },
+      "deep": {
+        "definition": "AWS Storage Gateway es un servicio de almacenamiento híbrido: un dispositivo (máquina virtual en VMware, Hyper-V, KVM o Nutanix, equipo físico o instancia EC2) expone en la red local protocolos de archivo, volumen o cinta y guarda los datos en S3, Glacier y snapshots de EBS, con caché local para baja latencia.",
+        "keyConcepts": [
+          "S3 File Gateway: archivos por NFS (v3 y v4.1) o SMB (v2 y v3) que se guardan como objetos en S3, uno a uno; en S3 se usan ciclo de vida, replicación y versionado.",
+          "FSx File Gateway: acceso local con caché a FSx for Windows File Server. Ya no se ofrece a clientes nuevos.",
+          "Volume Gateway cached: los datos viven en S3 y solo lo usado seguido queda en la caché local.",
+          "Volume Gateway stored: todos los datos quedan en el centro de datos y se respaldan como snapshots en AWS, recuperables como volúmenes EBS.",
+          "Tape Gateway: biblioteca de cintas virtual (iSCSI) para el software de respaldo actual; las cintas se archivan en Glacier Flexible Retrieval o Deep Archive.",
+          "Se integra con IAM, KMS, CloudWatch y CloudTrail; AWS Backup protege los volúmenes de Volume Gateway."
+        ],
+        "compareWith": [
+          {
+            "target": "s3",
+            "difference": "S3 directo si la aplicación usa su API; S3 File Gateway cuando aplicaciones locales solo hablan NFS o SMB y necesitan caché."
+          },
+          {
+            "target": "datasync",
+            "difference": "DataSync mueve y sincroniza datos en tareas (migración, réplica); Storage Gateway da acceso continuo y local a datos guardados en AWS."
+          },
+          {
+            "target": "fsx",
+            "difference": "FSx es el sistema de archivos en AWS; los usuarios locales pueden acceder por Direct Connect o VPN sin gateway."
+          }
+        ],
+        "useCases": [
+          {
+            "scenario": "Reemplazar cintas",
+            "example": "Un banco sigue usando su software de respaldo, pero las cintas físicas pasan a Tape Gateway y se archivan en Deep Archive."
+          },
+          {
+            "scenario": "Liberar almacenamiento local",
+            "example": "Volume Gateway cached guarda en AWS los volúmenes de un servidor y deja solo lo reciente en la oficina."
+          },
+          {
+            "scenario": "Archivos locales hacia un data lake",
+            "example": "Equipos de laboratorio escriben resultados por SMB en S3 File Gateway y se analizan en S3."
+          }
+        ],
+        "patterns": [
+          {
+            "name": "Carpeta local respaldada en S3",
+            "problem": "Las aplicaciones locales escriben archivos por NFS o SMB, pero el almacenamiento local se llena.",
+            "whenToUse": "Las aplicaciones no se pueden cambiar y necesitan baja latencia sobre los datos recientes.",
+            "whenNotToUse": "Se trata de una migración única: DataSync es más simple.",
+            "steps": [
+              {
+                "target": "Servidores locales",
+                "role": "Escriben y leen archivos por NFS o SMB"
+              },
+              {
+                "target": "storage-gateway",
+                "role": "S3 File Gateway mantiene la caché y sube los archivos como objetos"
+              },
+              {
+                "target": "s3",
+                "role": "Guarda los archivos y los mueve a clases más baratas con ciclo de vida"
+              }
+            ]
+          }
+        ],
+        "examTraps": [
+          "Cached guarda los datos en AWS y lo usado seguido en local; stored guarda todo en local y respalda en AWS",
+          "Tape Gateway no cambia el software de respaldo: solo reemplaza las cintas físicas",
+          "Para una migración puntual de archivos, DataSync es mejor que Storage Gateway",
+          "FSx File Gateway ya no se ofrece a clientes nuevos"
+        ],
+        "costs": "Pagas el almacenamiento que usa cada tipo en AWS (S3, Glacier o snapshots de EBS), las solicitudes y la transferencia de datos que sale de AWS. El equipo físico, si lo eliges, se compra aparte; la máquina virtual no tiene cargo de software."
+      }
+    },
+    {
+      "id": "backup",
+      "name": "AWS Backup",
+      "roomId": "storage",
+      "normal": {
+        "whatIs": "AWS Backup centraliza los respaldos de tus servicios de AWS en un solo lugar. En vez de configurar copias en cada servicio por separado, defines un plan (cada cuánto respaldar y cuánto tiempo guardar) y lo aplicas a EC2, EBS, RDS, DynamoDB, EFS, FSx, S3 y otros. También copia respaldos a otras Regiones y cuentas.",
+        "analogy": "Es como contratar una empresa de seguridad que pasa cada noche por todas las oficinas, guarda copias de los documentos en una caja fuerte y lleva un registro de todo.",
+        "glossary": [
+          {
+            "term": "Plan de respaldo",
+            "definition": "Reglas de cuándo respaldar, cuánto guardar y dónde copiar."
+          },
+          {
+            "term": "Bóveda de respaldo",
+            "definition": "Contenedor cifrado donde quedan guardados los respaldos."
+          },
+          {
+            "term": "RPO",
+            "definition": "Cuántos datos puedes perder, medido en tiempo desde el último respaldo."
+          },
+          {
+            "term": "RTO",
+            "definition": "Cuánto tiempo puedes tardar en volver a funcionar."
+          }
+        ],
+        "examKeyPoints": [
+          "Respaldar muchos servicios y cuentas desde un solo lugar → AWS Backup.",
+          "Que nadie, ni la cuenta root, pueda borrar los respaldos → Vault Lock en modo Compliance.",
+          "Copias en otra Región o cuenta para recuperación ante desastres → copias automáticas en el plan."
+        ],
+        "quickComparison": {
+          "target": "ebs",
+          "rule": "Respaldar un volumen suelto → snapshot de EBS. Respaldar muchos recursos con políticas comunes, retención y auditoría → AWS Backup."
+        },
+        "costInOneLine": "Pagas por GB de respaldo guardado al mes, por GB restaurado y por copiar entre Regiones."
+      },
+      "deep": {
+        "definition": "AWS Backup es un servicio administrado que centraliza y automatiza la protección de datos de muchos servicios de AWS y de algunas cargas locales. Con planes de respaldo asignados por etiquetas o recursos, guarda copias en bóvedas cifradas, las mueve a almacenamiento frío, las copia entre Regiones y cuentas, y audita su cumplimiento.",
+        "keyConcepts": [
+          "Planes de respaldo: frecuencia, ventana, retención y transición a almacenamiento frío; se asignan a recursos por etiqueta.",
+          "Servicios soportados: EC2, EBS, S3, RDS, Aurora, DynamoDB, EFS, los cuatro FSx, Volume Gateway, DocumentDB, Neptune, Redshift, EKS, CloudFormation, SAP HANA en EC2 y VMware, entre otros.",
+          "Respaldos incrementales en los recursos que lo permiten; el contenido de cada respaldo es inmutable.",
+          "Copias a otras Regiones y a otras cuentas de AWS Organizations; las políticas de respaldo de Organizations aplican planes a todas las cuentas.",
+          "Vault Lock (WORM): en modo Governance lo quita quien tenga permisos IAM; en modo Compliance, pasado el periodo de gracia (mínimo 72 horas), nadie puede borrar ni cambiar la retención, ni la cuenta root ni AWS.",
+          "Bóveda logically air-gapped: con Vault Lock Compliance y compartible con otras cuentas para restaurar rápido tras un incidente.",
+          "AWS Backup Audit Manager revisa que los respaldos cumplan los controles definidos y genera informes.",
+          "Restore testing comprueba periódicamente que los respaldos se pueden restaurar."
+        ],
+        "compareWith": [
+          {
+            "target": "ebs",
+            "difference": "Los snapshots de EBS (con Data Lifecycle Manager) cubren solo volúmenes; AWS Backup usa una política para muchos servicios, con bóvedas, Vault Lock y copias entre cuentas."
+          },
+          {
+            "target": "s3",
+            "difference": "La replicación de S3 copia objetos casi en tiempo real; AWS Backup guarda puntos de restauración con retención para volver a un momento anterior."
+          },
+          {
+            "target": "glacier",
+            "difference": "Las clases Glacier archivan objetos de S3; AWS Backup gestiona respaldos de muchos servicios y los pasa a almacenamiento frío según el plan."
+          }
+        ],
+        "useCases": [
+          {
+            "scenario": "Cumplimiento normativo",
+            "example": "Respaldos diarios de bases de datos con retención de 7 años en una bóveda con Vault Lock Compliance."
+          },
+          {
+            "scenario": "Protección ante ransomware",
+            "example": "Copias en una bóveda logically air-gapped de otra cuenta que el atacante no puede borrar."
+          },
+          {
+            "scenario": "Recuperación ante desastres",
+            "example": "El plan copia cada respaldo a otra Región para restaurar ahí si la Región principal falla."
+          }
+        ],
+        "patterns": [
+          {
+            "name": "Respaldo centralizado de toda la organización",
+            "problem": "Cada equipo respalda distinto (o no respalda) y nadie puede demostrar que se cumple la política.",
+            "whenToUse": "Varias cuentas y servicios deben cumplir la misma política de respaldo y auditarse.",
+            "whenNotToUse": "Se necesita una copia casi en tiempo real (RPO de segundos): usa la replicación del propio servicio.",
+            "steps": [
+              {
+                "target": "AWS Organizations",
+                "role": "Aplica la política de respaldo a todas las cuentas"
+              },
+              {
+                "target": "backup",
+                "role": "Respalda los recursos etiquetados según el plan"
+              },
+              {
+                "target": "Bóveda en otra cuenta y Región",
+                "role": "Recibe las copias, protegidas con Vault Lock"
+              },
+              {
+                "target": "AWS Backup Audit Manager",
+                "role": "Informa qué recursos cumplen la política"
+              }
+            ]
+          }
+        ],
+        "examTraps": [
+          "Que nadie pueda borrar los respaldos, ni la cuenta root: Vault Lock en modo Compliance, no en Governance",
+          "AWS Backup no gobierna los respaldos hechos fuera de él",
+          "Para aplicar planes a muchas cuentas se usan las políticas de respaldo de AWS Organizations",
+          "Vault Lock de AWS Backup no es lo mismo que el Vault Lock de las bóvedas de Amazon Glacier"
+        ],
+        "costs": "Pagas por GB-mes de respaldo guardado (más barato en almacenamiento frío), por GB restaurado, por las pruebas de restauración, por copiar entre Regiones y por AWS Backup Audit Manager. Vault Lock no tiene costo extra."
+      }
+    },
+    {
+      "id": "datasync",
+      "name": "AWS DataSync",
+      "roomId": "storage",
+      "normal": {
+        "whatIs": "AWS DataSync copia grandes cantidades de archivos por la red, rápido y de forma segura, desde tu centro de datos u otras nubes hacia AWS, o entre servicios de AWS. Revisa que los datos lleguen completos, cifra la transferencia y puede repetirse con un horario para copiar solo lo que cambió.",
+        "analogy": "Es como un servicio de mudanzas con camiones propios: empaca, transporta, revisa que nada se rompa y, si lo programas, vuelve cada semana por lo nuevo.",
+        "glossary": [
+          {
+            "term": "Agente",
+            "definition": "Máquina virtual que instalas cerca de tus datos para leerlos y enviarlos."
+          },
+          {
+            "term": "Tarea",
+            "definition": "Configuración de qué copiar, desde dónde, hacia dónde y cuándo."
+          },
+          {
+            "term": "Migración en línea",
+            "definition": "Mover datos por la red, sin enviar discos físicos."
+          }
+        ],
+        "examKeyPoints": [
+          "Migrar o sincronizar archivos de NFS, SMB, HDFS u otras nubes hacia S3, EFS o FSx → DataSync.",
+          "Copiar entre servicios de AWS de la misma cuenta no necesita agente.",
+          "Snow Family ya no se ofrece a clientes nuevos: para transferencias físicas, AWS recomienda Data Transfer Terminal."
+        ],
+        "quickComparison": {
+          "target": "transfer-family",
+          "rule": "Mover tus propios datos en tareas programadas → DataSync. Clientes o socios que envían archivos por SFTP, FTPS o FTP → Transfer Family."
+        },
+        "costInOneLine": "Pagas un monto fijo por GB transferido, más los cargos normales de los servicios de origen y destino."
+      },
+      "deep": {
+        "definition": "AWS DataSync es un servicio administrado de transferencia en línea que copia archivos y objetos hacia, desde y entre servicios de almacenamiento de AWS. Usa un protocolo propio con transferencia en paralelo, cifra los datos en tránsito, verifica su integridad y permite programar tareas que copian solo los cambios.",
+        "keyConcepts": [
+          "Orígenes y destinos: NFS, SMB, HDFS, almacenamiento de objetos y otras nubes (Google Cloud Storage, Azure Blob y Files, entre otras) con S3, EFS y los cuatro FSx.",
+          "Agente: máquina virtual que se necesita para almacenamiento local o de otras nubes con EFS o FSx. No se necesita entre servicios de AWS de la misma cuenta ni entre S3 y otras nubes de objetos.",
+          "Modo Enhanced: lista, prepara, transfiere y verifica en paralelo, con cantidad prácticamente ilimitada de archivos. Modo Basic: secuencial y con cuotas, pero soporta todas las ubicaciones (FSx for Windows File Server requiere Basic).",
+          "Puede escribir directo en clases como S3 Glacier Flexible Retrieval o Deep Archive para archivar datos fríos.",
+          "Tareas programadas, filtros, límite de ancho de banda e informes de tarea.",
+          "Puede usar endpoints de VPC (PrivateLink) para no pasar por internet, junto con Direct Connect o VPN.",
+          "Snow Family (Snowball Edge) ya no se ofrece a clientes nuevos desde el 7 de noviembre de 2025. Para transferencias físicas, AWS recomienda Data Transfer Terminal o soluciones de socios."
+        ],
+        "compareWith": [
+          {
+            "target": "storage-gateway",
+            "difference": "Storage Gateway da acceso local continuo con caché a datos en AWS; DataSync mueve o replica datos en tareas, ideal para migraciones."
+          },
+          {
+            "target": "transfer-family",
+            "difference": "Transfer Family recibe archivos de terceros por SFTP, FTPS, FTP o AS2; DataSync mueve en bloque datos propios entre sistemas de almacenamiento."
+          },
+          {
+            "target": "s3",
+            "difference": "Subir con la CLI o el SDK de S3 sirve para pocos datos; DataSync automatiza, paraleliza y verifica transferencias de millones de archivos."
+          }
+        ],
+        "useCases": [
+          {
+            "scenario": "Migrar un servidor de archivos",
+            "example": "200 TB de un NAS local pasan a Amazon EFS por Direct Connect, con verificación de integridad."
+          },
+          {
+            "scenario": "Archivar datos fríos",
+            "example": "Proyectos terminados se copian del NAS a S3 Glacier Deep Archive para liberar espacio local."
+          },
+          {
+            "scenario": "Traer datos de otra nube",
+            "example": "Un bucket de Google Cloud Storage se copia a Amazon S3 sin instalar agente."
+          }
+        ],
+        "patterns": [
+          {
+            "name": "Migración de archivos con corte final",
+            "problem": "Mover un servidor de archivos grande a AWS sin detener a los usuarios por días.",
+            "whenToUse": "Hay conectividad suficiente y los archivos siguen cambiando durante la migración.",
+            "whenNotToUse": "Los usuarios locales seguirán usando los archivos a diario desde la oficina: considera Storage Gateway.",
+            "steps": [
+              {
+                "target": "NAS local",
+                "role": "Origen NFS o SMB"
+              },
+              {
+                "target": "datasync",
+                "role": "Agente y tarea: copia completa inicial y luego solo los cambios"
+              },
+              {
+                "target": "efs",
+                "role": "Destino; en la ventana de corte se ejecuta la última sincronización"
+              }
+            ]
+          }
+        ],
+        "examTraps": [
+          "Entre servicios de AWS de la misma cuenta, DataSync no necesita agente",
+          "Snow Family ya no se ofrece a clientes nuevos; la transferencia en línea con DataSync es la recomendada",
+          "DataSync es para mover datos, no para que usuarios locales trabajen con ellos a diario (eso es Storage Gateway)",
+          "Para recibir archivos de socios por SFTP, la respuesta es Transfer Family"
+        ],
+        "costs": "DataSync cobra un monto fijo por GB transferido: USD 0,0125 en modo Basic y USD 0,015 más USD 0,55 por ejecución de tarea en modo Enhanced (us-east-1). Además se pagan las solicitudes y el almacenamiento de los servicios de origen y destino."
+      }
+    },
+    {
+      "id": "transfer-family",
+      "name": "AWS Transfer Family",
+      "roomId": "storage",
+      "normal": {
+        "whatIs": "AWS Transfer Family te da un servidor SFTP, FTPS, FTP o AS2 administrado que guarda los archivos directamente en Amazon S3 o Amazon EFS. Tus clientes y socios siguen usando los mismos programas y credenciales de siempre, y tú no administras ningún servidor.",
+        "analogy": "Es como poner un buzón con la misma dirección de siempre en la puerta de la bodega: quienes te envían cartas no cambian nada y todo cae directo adentro.",
+        "glossary": [
+          {
+            "term": "SFTP",
+            "definition": "Transferencia de archivos cifrada sobre SSH."
+          },
+          {
+            "term": "FTPS",
+            "definition": "FTP con cifrado TLS."
+          },
+          {
+            "term": "AS2",
+            "definition": "Protocolo para intercambiar documentos de negocio entre empresas."
+          }
+        ],
+        "examKeyPoints": [
+          "Socios que envían archivos por SFTP y se quieren guardar en S3 sin administrar servidores → Transfer Family.",
+          "FTP sin cifrado solo funciona dentro de una VPC, no por internet.",
+          "Se mantienen los clientes y las credenciales actuales; se puede usar tu propio proveedor de identidad."
+        ],
+        "quickComparison": {
+          "target": "datasync",
+          "rule": "Terceros que envían archivos con protocolos de transferencia → Transfer Family. Mover tus propios datos en bloque → DataSync."
+        },
+        "costInOneLine": "Pagas por hora cada protocolo activo en el servidor y por GB subido o descargado."
+      },
+      "deep": {
+        "definition": "AWS Transfer Family es un servicio administrado que ofrece servidores SFTP, FTPS, FTP y AS2, además de aplicaciones web para el navegador, con almacenamiento en Amazon S3 o Amazon EFS. Escala automáticamente en hasta 3 zonas de disponibilidad y permite migrar flujos de intercambio de archivos sin cambiar a los clientes.",
+        "keyConcepts": [
+          "Protocolos: SFTP (versión 3), FTPS, FTP, AS2 y transferencias desde el navegador con aplicaciones web.",
+          "Almacenamiento: bucket de S3 (archivos como objetos) o sistema de archivos EFS.",
+          "Endpoints: públicos o alojados en una VPC (internos o con IP elástica para internet). FTP solo admite el endpoint de VPC interno, porque no cifra.",
+          "Identidades: usuarios administrados por el servicio, AWS Directory Service para Microsoft Active Directory, o un proveedor propio conectado con Lambda o API Gateway.",
+          "Workflows administrados: procesan cada archivo al llegar (copiar, etiquetar, escanear, cifrar o descifrar con PGP).",
+          "Conectores SFTP y AS2 para enviar archivos desde AWS a servidores de socios."
+        ],
+        "compareWith": [
+          {
+            "target": "datasync",
+            "difference": "DataSync mueve en bloque datos propios entre sistemas de almacenamiento; Transfer Family recibe y entrega archivos de usuarios y socios por protocolos estándar."
+          },
+          {
+            "target": "s3",
+            "difference": "Si los socios pueden usar la API de S3 o URL prefirmadas no se necesita Transfer Family; se usa cuando exigen SFTP, FTPS, FTP o AS2."
+          },
+          {
+            "target": "efs",
+            "difference": "EFS como destino de Transfer Family cuando las aplicaciones que procesan los archivos los leen como sistema de archivos."
+          }
+        ],
+        "useCases": [
+          {
+            "scenario": "Recibir archivos de proveedores",
+            "example": "Proveedores suben facturas por SFTP a un data lake en S3 sin que la empresa administre servidores."
+          },
+          {
+            "scenario": "Intercambio B2B",
+            "example": "Órdenes de compra por AS2 entre una empresa y su cadena de suministro."
+          },
+          {
+            "scenario": "Migrar un servidor SFTP",
+            "example": "Se mueve el servidor SFTP local a AWS manteniendo el nombre de host y las claves de los clientes."
+          }
+        ],
+        "patterns": [
+          {
+            "name": "Recepción de archivos de socios con procesamiento",
+            "problem": "Recibir archivos de socios por SFTP y procesarlos al llegar, sin servidores.",
+            "whenToUse": "Los socios ya usan SFTP y no pueden cambiar de protocolo.",
+            "whenNotToUse": "Los socios pueden usar la API de S3: con URL prefirmadas basta.",
+            "steps": [
+              {
+                "target": "Socios",
+                "role": "Suben archivos con su cliente SFTP de siempre"
+              },
+              {
+                "target": "transfer-family",
+                "role": "Autentica al socio y escribe el archivo"
+              },
+              {
+                "target": "s3",
+                "role": "Guarda el archivo y dispara el evento de objeto creado"
+              },
+              {
+                "target": "lambda",
+                "role": "Valida y procesa el archivo"
+              }
+            ]
+          }
+        ],
+        "examTraps": [
+          "FTP no cifra: solo se permite con endpoint de VPC interno; por internet se usa SFTP o FTPS",
+          "Transfer Family guarda en S3 o EFS, no en EBS ni en FSx",
+          "Para migrar tus propios datos en bloque, la respuesta es DataSync, no Transfer Family"
+        ],
+        "costs": "Pagas USD 0,30 por hora por cada protocolo habilitado en un servidor y USD 0,04 por GB subido o descargado por SFTP, FTPS o FTP (us-east-1). AS2, conectores, aplicaciones web y workflows tienen cargos propios. Además pagas el almacenamiento en S3 o EFS."
+      }
     }
   ]
 }

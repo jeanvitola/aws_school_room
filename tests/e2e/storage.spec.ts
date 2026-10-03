@@ -29,7 +29,7 @@ test.describe('005 US1 - Bodega', () => {
 
   test('opens the S3 card with its Normal and Deep levels', async ({ page }) => {
     await enterStorageRoom(page);
-    await serviceList(page).getByRole('button', { name: 'Amazon S3' }).click();
+    await serviceList(page).getByRole('button', { name: 'Amazon S3', exact: true }).click();
     const card = serviceCard(page);
     await expect(card.getByRole('heading', { level: 2, name: 'Amazon S3' })).toBeVisible();
     for (const section of NORMAL_SECTIONS) {
@@ -67,8 +67,28 @@ test.describe('005 US1 - Bodega', () => {
 test.describe('005 US3 - Preguntas de la Bodega', () => {
   test('the S3 questions start at question 1 of 15', async ({ page }) => {
     await enterStorageRoom(page);
-    await serviceList(page).getByRole('button', { name: 'Amazon S3' }).click();
+    await serviceList(page).getByRole('button', { name: 'Amazon S3', exact: true }).click();
     await cardTab(page, 'Preguntas').click();
     await expect(serviceCard(page)).toContainText('Pregunta 1 de 15 · Normal');
+  });
+});
+
+test.describe('005 US2 - Decidir entre servicios', () => {
+  test('opens FSx from the EFS comparison and keeps other-room services as text', async ({
+    page,
+  }) => {
+    await enterStorageRoom(page);
+    await serviceList(page).getByRole('button', { name: 'Amazon EFS', exact: true }).click();
+    await cardTab(page, 'Profundo').click();
+    const card = serviceCard(page);
+
+    // Elastic Load Balancing aparece en un patrón de EFS, pero es de la Sala de Máquinas: texto sin enlace.
+    await expect(card.getByText('Elastic Load Balancing', { exact: true })).toBeVisible();
+    await expect(card.getByRole('button', { name: 'Elastic Load Balancing' })).toHaveCount(0);
+
+    await card.getByRole('button', { name: 'Amazon FSx' }).first().click();
+    await expect(
+      serviceCard(page).getByRole('heading', { level: 2, name: 'Amazon FSx' }),
+    ).toBeVisible();
   });
 });

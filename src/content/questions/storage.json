@@ -519,6 +519,4166 @@
         "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/transfer-acceleration.html"
       },
       "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "glacier-n1",
+      "serviceId": "glacier",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "¿Cuáles son las tres clases de almacenamiento S3 Glacier?",
+      "options": [
+        {
+          "text": "S3 Glacier Instant Retrieval, S3 Glacier Flexible Retrieval y S3 Glacier Deep Archive",
+          "correct": true,
+          "explanation": "Correcto: son las tres clases de archivo dentro de Amazon S3."
+        },
+        {
+          "text": "S3 Standard, S3 Standard-IA y S3 One Zone-IA",
+          "correct": false,
+          "explanation": "Son clases de S3, pero no de archivo."
+        },
+        {
+          "text": "S3 Glacier Fast, S3 Glacier Slow y S3 Glacier Vault",
+          "correct": false,
+          "explanation": "Esas clases no existen."
+        },
+        {
+          "text": "S3 Intelligent-Tiering, S3 Express One Zone y S3 Glacier",
+          "correct": false,
+          "explanation": "Mezcla clases distintas; solo una es de archivo."
+        }
+      ],
+      "source": {
+        "title": "Understanding S3 Glacier storage classes",
+        "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/glacier-storage-classes.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "glacier-n2",
+      "serviceId": "glacier",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "¿Qué clase S3 Glacier permite leer los objetos en milisegundos, sin restaurarlos antes?",
+      "options": [
+        {
+          "text": "S3 Glacier Flexible Retrieval",
+          "correct": false,
+          "explanation": "Exige restaurar; tarda de minutos a horas."
+        },
+        {
+          "text": "S3 Glacier Deep Archive",
+          "correct": false,
+          "explanation": "Exige restaurar; tarda hasta 12 o 48 horas."
+        },
+        {
+          "text": "S3 Glacier Instant Retrieval",
+          "correct": true,
+          "explanation": "Correcto: acceso en milisegundos, como S3 Standard-IA."
+        },
+        {
+          "text": "Ninguna: todas las clases Glacier exigen restaurar",
+          "correct": false,
+          "explanation": "Instant Retrieval no exige restaurar."
+        }
+      ],
+      "source": {
+        "title": "Understanding S3 Glacier storage classes",
+        "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/glacier-storage-classes.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "glacier-n3",
+      "serviceId": "glacier",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "¿Cuál es la duración mínima de almacenamiento de S3 Glacier Deep Archive?",
+      "options": [
+        {
+          "text": "30 días",
+          "correct": false,
+          "explanation": "Es el mínimo de Standard-IA y One Zone-IA."
+        },
+        {
+          "text": "90 días",
+          "correct": false,
+          "explanation": "Es el mínimo de Instant Retrieval y Flexible Retrieval."
+        },
+        {
+          "text": "365 días",
+          "correct": false,
+          "explanation": "No es un mínimo de ninguna clase."
+        },
+        {
+          "text": "180 días",
+          "correct": true,
+          "explanation": "Correcto: si borras antes, pagas los días restantes hasta 180."
+        }
+      ],
+      "source": {
+        "title": "Understanding S3 Glacier storage classes",
+        "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/glacier-storage-classes.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "glacier-n4",
+      "serviceId": "glacier",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "¿Cuál es la opción de almacenamiento más barata de AWS?",
+      "options": [
+        {
+          "text": "S3 Standard-IA",
+          "correct": false,
+          "explanation": "Es más cara que las clases Glacier."
+        },
+        {
+          "text": "S3 Glacier Deep Archive",
+          "correct": true,
+          "explanation": "Correcto: es el almacenamiento de menor costo de AWS."
+        },
+        {
+          "text": "Amazon EBS sc1",
+          "correct": false,
+          "explanation": "Es el disco más barato de EBS, pero cuesta mucho más por GB."
+        },
+        {
+          "text": "S3 Glacier Instant Retrieval",
+          "correct": false,
+          "explanation": "Es más cara que Flexible Retrieval y Deep Archive."
+        }
+      ],
+      "source": {
+        "title": "Understanding S3 Glacier storage classes",
+        "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/glacier-storage-classes.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "glacier-n5",
+      "serviceId": "glacier",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "¿Qué pasa hoy con el servicio original Amazon Glacier, el que guarda archivos en bóvedas (vaults)?",
+      "options": [
+        {
+          "text": "Se reemplazó por S3 Standard-IA",
+          "correct": false,
+          "explanation": "Lo que AWS recomienda son las clases S3 Glacier."
+        },
+        {
+          "text": "Se apagó y los datos se borraron",
+          "correct": false,
+          "explanation": "Los datos existentes siguen accesibles indefinidamente."
+        },
+        {
+          "text": "No acepta clientes nuevos desde el 15 de diciembre de 2025; AWS recomienda las clases S3 Glacier",
+          "correct": true,
+          "explanation": "Correcto: los clientes existentes siguen usándolo; los nuevos usan las clases de S3."
+        },
+        {
+          "text": "Es la opción recomendada para archivar datos nuevos",
+          "correct": false,
+          "explanation": "AWS no lo recomienda para datos de larga duración."
+        }
+      ],
+      "source": {
+        "title": "What is Amazon Glacier?",
+        "url": "https://docs.aws.amazon.com/amazonglacier/latest/dev/introduction.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "glacier-m1",
+      "serviceId": "glacier",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Una empresa guarda respaldos que restaura una o dos veces al año y debe tenerlos disponibles en un máximo de 5 horas. ¿Qué clase es la MÁS económica?",
+      "options": [
+        {
+          "text": "S3 Glacier Instant Retrieval",
+          "correct": false,
+          "explanation": "Cumple, pero su almacenamiento cuesta más y no se necesita acceso inmediato."
+        },
+        {
+          "text": "S3 Glacier Flexible Retrieval",
+          "correct": true,
+          "explanation": "Correcto: la restauración Standard tarda 3–5 horas y el almacenamiento es barato."
+        },
+        {
+          "text": "S3 Glacier Deep Archive",
+          "correct": false,
+          "explanation": "Su restauración más rápida tarda hasta 12 horas."
+        },
+        {
+          "text": "S3 Standard-IA",
+          "correct": false,
+          "explanation": "Cuesta más y no se necesita acceso en milisegundos."
+        }
+      ],
+      "source": {
+        "title": "Understanding archive retrieval options",
+        "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/restoring-objects-retrieval-options.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "glacier-m2",
+      "serviceId": "glacier",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Un equipo necesita restaurar con urgencia unos pocos objetos guardados en S3 Glacier Flexible Retrieval. ¿Qué opción de recuperación usa?",
+      "options": [
+        {
+          "text": "Bulk",
+          "correct": false,
+          "explanation": "Es la más barata, pero tarda 5–12 horas."
+        },
+        {
+          "text": "Standard",
+          "correct": false,
+          "explanation": "Tarda 3–5 horas."
+        },
+        {
+          "text": "Ninguna: hay que copiar el objeto a S3 Standard antes",
+          "correct": false,
+          "explanation": "Se restaura con RestoreObject eligiendo el nivel de recuperación."
+        },
+        {
+          "text": "Expedited",
+          "correct": true,
+          "explanation": "Correcto: normalmente entrega el objeto en 1–5 minutos."
+        }
+      ],
+      "source": {
+        "title": "Understanding archive retrieval options",
+        "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/restoring-objects-retrieval-options.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "glacier-m3",
+      "serviceId": "glacier",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Un hospital guarda imágenes médicas que se consultan unas pocas veces al año, pero deben abrirse al instante durante una cita. ¿Qué clase es la MÁS económica?",
+      "options": [
+        {
+          "text": "S3 Glacier Instant Retrieval",
+          "correct": true,
+          "explanation": "Correcto: acceso en milisegundos y almacenamiento más barato que Standard-IA para datos que se leen una vez por trimestre."
+        },
+        {
+          "text": "S3 Glacier Flexible Retrieval",
+          "correct": false,
+          "explanation": "Exige restaurar antes de leer."
+        },
+        {
+          "text": "S3 Standard",
+          "correct": false,
+          "explanation": "Paga de más por datos que casi no se leen."
+        },
+        {
+          "text": "S3 Glacier Deep Archive",
+          "correct": false,
+          "explanation": "Exige restaurar durante horas."
+        }
+      ],
+      "source": {
+        "title": "Understanding S3 Glacier storage classes",
+        "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/glacier-storage-classes.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "glacier-m4",
+      "serviceId": "glacier",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Una empresa usa recuperaciones Expedited desde S3 Glacier Flexible Retrieval y en momentos de alta demanda algunas solicitudes no se aceptan. ¿Qué debe comprar?",
+      "options": [
+        {
+          "text": "S3 Transfer Acceleration",
+          "correct": false,
+          "explanation": "Acelera transferencias por red, no restauraciones."
+        },
+        {
+          "text": "Un Savings Plan de S3",
+          "correct": false,
+          "explanation": "No existe para este caso."
+        },
+        {
+          "text": "Capacidad aprovisionada (provisioned capacity) para recuperaciones Expedited",
+          "correct": true,
+          "explanation": "Correcto: garantiza que las recuperaciones Expedited estén disponibles cuando se necesitan."
+        },
+        {
+          "text": "Más ancho de banda de Direct Connect",
+          "correct": false,
+          "explanation": "El límite está en la capacidad de recuperación, no en la red."
+        }
+      ],
+      "source": {
+        "title": "Understanding archive retrieval options",
+        "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/restoring-objects-retrieval-options.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "glacier-m5",
+      "serviceId": "glacier",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Un objeto se guarda en S3 Glacier Deep Archive y se borra a los 60 días. ¿Cómo se cobra?",
+      "options": [
+        {
+          "text": "Solo los 60 días que estuvo guardado",
+          "correct": false,
+          "explanation": "Deep Archive tiene un mínimo de 180 días."
+        },
+        {
+          "text": "60 días más un cargo prorrateado por los 120 días restantes del mínimo de 180",
+          "correct": true,
+          "explanation": "Correcto: se cobra hasta completar la duración mínima."
+        },
+        {
+          "text": "No se puede borrar antes de 180 días",
+          "correct": false,
+          "explanation": "Se puede borrar; solo se cobra el mínimo."
+        },
+        {
+          "text": "90 días, el mínimo de Flexible Retrieval",
+          "correct": false,
+          "explanation": "El mínimo de Deep Archive es 180 días."
+        }
+      ],
+      "source": {
+        "title": "Understanding S3 Glacier storage classes",
+        "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/glacier-storage-classes.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "glacier-h1",
+      "serviceId": "glacier",
+      "difficulty": "hard",
+      "type": "single",
+      "prompt": "Una empresa debe conservar registros por 10 años. Se leen menos de una vez al año y, cuando se piden, pueden tardar hasta 48 horas. ¿Qué combinación tiene el MENOR costo?",
+      "options": [
+        {
+          "text": "S3 Glacier Instant Retrieval",
+          "correct": false,
+          "explanation": "Cuesta mucho más por GB y el acceso inmediato no se necesita."
+        },
+        {
+          "text": "S3 Glacier Flexible Retrieval con recuperación Expedited",
+          "correct": false,
+          "explanation": "Expedited es la recuperación más cara."
+        },
+        {
+          "text": "S3 One Zone-IA",
+          "correct": false,
+          "explanation": "Cuesta más y arriesga los datos si falla la zona."
+        },
+        {
+          "text": "S3 Glacier Deep Archive con recuperación Bulk",
+          "correct": true,
+          "explanation": "Correcto: es el almacenamiento más barato y Bulk entrega dentro de 48 horas al menor costo."
+        }
+      ],
+      "source": {
+        "title": "Understanding archive retrieval options",
+        "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/restoring-objects-retrieval-options.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "glacier-h2",
+      "serviceId": "glacier",
+      "difficulty": "hard",
+      "type": "multiple",
+      "prompt": "¿Qué dos afirmaciones sobre las clases S3 Glacier son correctas? (Elige 2)",
+      "options": [
+        {
+          "text": "Los objetos en Flexible Retrieval y Deep Archive deben restaurarse antes de leerlos",
+          "correct": true,
+          "explanation": "Correcto: RestoreObject crea una copia temporal legible."
+        },
+        {
+          "text": "Deep Archive no ofrece recuperación Expedited",
+          "correct": true,
+          "explanation": "Correcto: en Deep Archive solo hay Standard y Bulk."
+        },
+        {
+          "text": "Instant Retrieval exige restaurar los objetos",
+          "correct": false,
+          "explanation": "Instant Retrieval da acceso en milisegundos sin restaurar."
+        },
+        {
+          "text": "Deep Archive tiene una duración mínima de 90 días",
+          "correct": false,
+          "explanation": "Su mínimo es 180 días."
+        },
+        {
+          "text": "La recuperación Bulk de Flexible Retrieval es la más cara",
+          "correct": false,
+          "explanation": "Es gratis."
+        }
+      ],
+      "source": {
+        "title": "Understanding S3 Glacier storage classes",
+        "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/glacier-storage-classes.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "glacier-h3",
+      "serviceId": "glacier",
+      "difficulty": "hard",
+      "type": "multiple",
+      "prompt": "Una empresa debe archivar documentos por 7 años al menor costo y garantizar que nadie, ni la cuenta root, pueda borrarlos en ese tiempo. Es cliente nuevo de AWS. ¿Qué dos acciones cumplen? (Elige 2)",
+      "options": [
+        {
+          "text": "S3 Object Lock en modo Compliance con retención de 7 años",
+          "correct": true,
+          "explanation": "Correcto: nadie puede borrar ni acortar la retención."
+        },
+        {
+          "text": "Una regla de ciclo de vida que lleve los objetos a S3 Glacier Deep Archive",
+          "correct": true,
+          "explanation": "Correcto: es la clase más barata para retención de años."
+        },
+        {
+          "text": "Crear una bóveda de Amazon Glacier con Vault Lock",
+          "correct": false,
+          "explanation": "El servicio de bóvedas no acepta clientes nuevos desde el 15 de diciembre de 2025."
+        },
+        {
+          "text": "Guardar los objetos en S3 Glacier Instant Retrieval",
+          "correct": false,
+          "explanation": "Cuesta más y no aporta inmutabilidad."
+        },
+        {
+          "text": "Object Lock en modo Governance",
+          "correct": false,
+          "explanation": "Un usuario con el permiso especial puede saltarlo."
+        }
+      ],
+      "source": {
+        "title": "Locking objects with Object Lock",
+        "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "glacier-h4",
+      "serviceId": "glacier",
+      "difficulty": "hard",
+      "type": "single",
+      "prompt": "Una aplicación quiere archivar 500 millones de objetos de 8 KB en S3 Glacier Flexible Retrieval. ¿Qué debe considerar el arquitecto?",
+      "options": [
+        {
+          "text": "Los objetos menores de 128 KB se guardan gratis",
+          "correct": false,
+          "explanation": "No hay almacenamiento gratis por tamaño."
+        },
+        {
+          "text": "Flexible Retrieval rechaza objetos menores de 40 KB",
+          "correct": false,
+          "explanation": "No hay ese límite."
+        },
+        {
+          "text": "Cada objeto archivado suma 40 KB de metadatos facturados (8 KB a precio de S3 Standard), así que puede costar más que no archivarlos",
+          "correct": true,
+          "explanation": "Correcto: con objetos tan pequeños, los metadatos pesan más que los datos."
+        },
+        {
+          "text": "El costo depende solo del total de GB, sin importar la cantidad de objetos",
+          "correct": false,
+          "explanation": "Cada objeto suma metadatos y solicitudes."
+        }
+      ],
+      "source": {
+        "title": "Understanding S3 Glacier storage classes",
+        "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/glacier-storage-classes.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "glacier-h5",
+      "serviceId": "glacier",
+      "difficulty": "hard",
+      "type": "single",
+      "prompt": "Una empresa debe restaurar 50 millones de objetos desde S3 Glacier Flexible Retrieval y sus scripts reciben errores ThrottlingException. ¿Qué debe hacer?",
+      "options": [
+        {
+          "text": "Cambiar todas las solicitudes a Expedited",
+          "correct": false,
+          "explanation": "Expedited es para pocos objetos urgentes y no evita el límite de solicitudes."
+        },
+        {
+          "text": "Usar S3 Batch Operations para restaurar los objetos con una sola solicitud",
+          "correct": true,
+          "explanation": "Correcto: aprovecha toda la tasa de restauración de la cuenta, de hasta 1–2 PB por día."
+        },
+        {
+          "text": "Copiar los objetos a S3 Standard con CopyObject",
+          "correct": false,
+          "explanation": "Un objeto archivado no se puede copiar sin restaurarlo antes."
+        },
+        {
+          "text": "Activar S3 Transfer Acceleration",
+          "correct": false,
+          "explanation": "No afecta la restauración."
+        }
+      ],
+      "source": {
+        "title": "Understanding archive retrieval options",
+        "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/restoring-objects-retrieval-options.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "ebs-n1",
+      "serviceId": "ebs",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "¿Qué es Amazon EBS?",
+      "options": [
+        {
+          "text": "Almacenamiento de objetos accesible desde internet",
+          "correct": false,
+          "explanation": "Ese es Amazon S3."
+        },
+        {
+          "text": "Volúmenes de almacenamiento en bloques que se conectan a instancias EC2",
+          "correct": true,
+          "explanation": "Correcto: es el disco de las instancias."
+        },
+        {
+          "text": "Un sistema de archivos compartido por NFS",
+          "correct": false,
+          "explanation": "Ese es Amazon EFS."
+        },
+        {
+          "text": "Un servicio de respaldo centralizado",
+          "correct": false,
+          "explanation": "Ese es AWS Backup."
+        }
+      ],
+      "source": {
+        "title": "Amazon EBS volume types",
+        "url": "https://docs.aws.amazon.com/ebs/latest/userguide/ebs-volume-types.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "ebs-n2",
+      "serviceId": "ebs",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "Un volumen EBS está en us-east-1a y la instancia que lo necesita está en us-east-1b. ¿Qué se debe hacer?",
+      "options": [
+        {
+          "text": "Conectarlo directamente; EBS funciona en toda la Región",
+          "correct": false,
+          "explanation": "Un volumen solo se conecta a instancias de su misma zona."
+        },
+        {
+          "text": "Activar Multi-Attach",
+          "correct": false,
+          "explanation": "Multi-Attach también exige la misma zona."
+        },
+        {
+          "text": "Cambiar la zona del volumen desde la consola",
+          "correct": false,
+          "explanation": "No se puede mover un volumen de zona."
+        },
+        {
+          "text": "Crear un snapshot y, a partir de él, un volumen nuevo en us-east-1b",
+          "correct": true,
+          "explanation": "Correcto: los snapshots están disponibles en todas las zonas de la Región."
+        }
+      ],
+      "source": {
+        "title": "Amazon EBS snapshots",
+        "url": "https://docs.aws.amazon.com/ebs/latest/userguide/ebs-snapshots.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "ebs-n3",
+      "serviceId": "ebs",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "¿Cuándo se pierden los datos de un volumen Instance Store?",
+      "options": [
+        {
+          "text": "Al detener, hibernar o terminar la instancia",
+          "correct": true,
+          "explanation": "Correcto: es almacenamiento temporal del servidor físico."
+        },
+        {
+          "text": "Al reiniciar la instancia",
+          "correct": false,
+          "explanation": "Un reinicio no borra los datos de Instance Store."
+        },
+        {
+          "text": "Nunca; se replica en S3",
+          "correct": false,
+          "explanation": "No se replica; es temporal."
+        },
+        {
+          "text": "Cada 24 horas",
+          "correct": false,
+          "explanation": "No hay borrado periódico."
+        }
+      ],
+      "source": {
+        "title": "Instance store temporary block storage for EC2 instances",
+        "url": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/InstanceStorage.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "ebs-n4",
+      "serviceId": "ebs",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "¿Qué tipo de volumen EBS NO puede usarse como disco de arranque?",
+      "options": [
+        {
+          "text": "gp3",
+          "correct": false,
+          "explanation": "gp3 puede ser disco de arranque."
+        },
+        {
+          "text": "io2 Block Express",
+          "correct": false,
+          "explanation": "io2 puede ser disco de arranque."
+        },
+        {
+          "text": "st1",
+          "correct": true,
+          "explanation": "Correcto: los HDD st1 y sc1 no pueden ser volumen de arranque."
+        },
+        {
+          "text": "gp2",
+          "correct": false,
+          "explanation": "gp2 puede ser disco de arranque."
+        }
+      ],
+      "source": {
+        "title": "Amazon EBS volume types",
+        "url": "https://docs.aws.amazon.com/ebs/latest/userguide/ebs-volume-types.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "ebs-n5",
+      "serviceId": "ebs",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "¿Qué describe mejor a los snapshots de EBS?",
+      "options": [
+        {
+          "text": "Copias completas que se guardan en el mismo volumen",
+          "correct": false,
+          "explanation": "Se guardan fuera del volumen, en S3."
+        },
+        {
+          "text": "Copias incrementales guardadas en S3 y disponibles en todas las zonas de la Región",
+          "correct": true,
+          "explanation": "Correcto: solo guardan los bloques que cambiaron."
+        },
+        {
+          "text": "Copias que AWS crea automáticamente cada día",
+          "correct": false,
+          "explanation": "AWS no los crea solo; se automatizan con Data Lifecycle Manager o AWS Backup."
+        },
+        {
+          "text": "Objetos que se pueden abrir desde la consola de S3",
+          "correct": false,
+          "explanation": "Están en S3 pero no se acceden por la API ni la consola de S3."
+        }
+      ],
+      "source": {
+        "title": "Amazon EBS snapshots",
+        "url": "https://docs.aws.amazon.com/ebs/latest/userguide/ebs-snapshots.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "ebs-m1",
+      "serviceId": "ebs",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Una base de datos crítica en EC2 necesita 150.000 IOPS sostenidas con latencia menor a un milisegundo. ¿Qué volumen usa?",
+      "options": [
+        {
+          "text": "gp3",
+          "correct": false,
+          "explanation": "Su máximo es 80.000 IOPS."
+        },
+        {
+          "text": "st1",
+          "correct": false,
+          "explanation": "Es HDD para lecturas secuenciales, con máximo de 500 IOPS."
+        },
+        {
+          "text": "io2 Block Express",
+          "correct": true,
+          "explanation": "Correcto: llega a 256.000 IOPS con latencia promedio menor a 500 microsegundos."
+        },
+        {
+          "text": "sc1",
+          "correct": false,
+          "explanation": "Es HDD frío, el más lento."
+        }
+      ],
+      "source": {
+        "title": "Amazon EBS volume types",
+        "url": "https://docs.aws.amazon.com/ebs/latest/userguide/ebs-volume-types.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "ebs-m2",
+      "serviceId": "ebs",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Un clúster de big data lee archivos grandes de forma secuencial y busca el MENOR costo con buen throughput. ¿Qué volumen usa?",
+      "options": [
+        {
+          "text": "st1 (Throughput Optimized HDD)",
+          "correct": true,
+          "explanation": "Correcto: hasta 500 MiB/s, pensado para big data, data warehouses y logs."
+        },
+        {
+          "text": "io2 Block Express",
+          "correct": false,
+          "explanation": "Paga por IOPS que esta carga no necesita."
+        },
+        {
+          "text": "gp3",
+          "correct": false,
+          "explanation": "Sirve, pero el HDD st1 es más barato para lecturas secuenciales grandes."
+        },
+        {
+          "text": "Instance Store",
+          "correct": false,
+          "explanation": "Los datos se pierden al detener la instancia."
+        }
+      ],
+      "source": {
+        "title": "Amazon EBS volume types",
+        "url": "https://docs.aws.amazon.com/ebs/latest/userguide/ebs-volume-types.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "ebs-m3",
+      "serviceId": "ebs",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Una auditoría exige cifrar un volumen EBS que se creó sin cifrar. ¿Cómo se hace?",
+      "options": [
+        {
+          "text": "Activar el cifrado en el volumen desde la consola",
+          "correct": false,
+          "explanation": "Un volumen existente sin cifrar no se puede cifrar directamente."
+        },
+        {
+          "text": "Activar Multi-Attach y luego el cifrado",
+          "correct": false,
+          "explanation": "Multi-Attach no tiene relación con el cifrado."
+        },
+        {
+          "text": "Usar S3 SSE-KMS en el volumen",
+          "correct": false,
+          "explanation": "SSE-KMS es para objetos de S3."
+        },
+        {
+          "text": "Crear un snapshot, copiarlo con cifrado KMS y crear un volumen nuevo desde la copia",
+          "correct": true,
+          "explanation": "Correcto: así se obtiene un volumen cifrado con los mismos datos."
+        }
+      ],
+      "source": {
+        "title": "Amazon EBS encryption",
+        "url": "https://docs.aws.amazon.com/ebs/latest/userguide/ebs-encryption.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "ebs-m4",
+      "serviceId": "ebs",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Una aplicación de clúster necesita que 4 instancias de la misma zona escriban en el mismo volumen de bloques. ¿Qué usa?",
+      "options": [
+        {
+          "text": "Un volumen gp3 conectado a las 4 instancias",
+          "correct": false,
+          "explanation": "gp3 no soporta Multi-Attach."
+        },
+        {
+          "text": "Un volumen io2 con Multi-Attach y un sistema de archivos de clúster",
+          "correct": true,
+          "explanation": "Correcto: Multi-Attach admite hasta 16 instancias Nitro de la misma zona."
+        },
+        {
+          "text": "Un snapshot compartido",
+          "correct": false,
+          "explanation": "Un snapshot no se monta como disco."
+        },
+        {
+          "text": "Instance Store compartido",
+          "correct": false,
+          "explanation": "Instance Store pertenece a una sola instancia."
+        }
+      ],
+      "source": {
+        "title": "Attach an EBS volume to multiple EC2 instances using Multi-Attach",
+        "url": "https://docs.aws.amazon.com/ebs/latest/userguide/ebs-volumes-multi.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "ebs-m5",
+      "serviceId": "ebs",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Una empresa quiere crear snapshots de sus volúmenes EBS cada noche y borrarlos a los 30 días, sin scripts. ¿Qué usa?",
+      "options": [
+        {
+          "text": "Amazon Data Lifecycle Manager",
+          "correct": true,
+          "explanation": "Correcto: automatiza la creación y la retención de snapshots (también sirve AWS Backup)."
+        },
+        {
+          "text": "S3 Lifecycle",
+          "correct": false,
+          "explanation": "Aplica a objetos de S3, no a snapshots de EBS."
+        },
+        {
+          "text": "Nada: EBS crea snapshots diarios por defecto",
+          "correct": false,
+          "explanation": "AWS no respalda los volúmenes automáticamente."
+        },
+        {
+          "text": "EBS Multi-Attach",
+          "correct": false,
+          "explanation": "No crea respaldos."
+        }
+      ],
+      "source": {
+        "title": "Automate backups with Amazon Data Lifecycle Manager",
+        "url": "https://docs.aws.amazon.com/ebs/latest/userguide/snapshot-lifecycle.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "ebs-h1",
+      "serviceId": "ebs",
+      "difficulty": "hard",
+      "type": "single",
+      "prompt": "Una aplicación necesita un caché temporal con el mayor rendimiento posible y al menor costo; si los datos se pierden, se regeneran. ¿Qué almacenamiento usa?",
+      "options": [
+        {
+          "text": "io2 Block Express",
+          "correct": false,
+          "explanation": "Rinde mucho, pero se paga por GB e IOPS."
+        },
+        {
+          "text": "Amazon EFS",
+          "correct": false,
+          "explanation": "Es compartido por red y con más latencia."
+        },
+        {
+          "text": "gp3 con IOPS extra",
+          "correct": false,
+          "explanation": "Tiene costo adicional por GB e IOPS."
+        },
+        {
+          "text": "Instance Store",
+          "correct": true,
+          "explanation": "Correcto: discos del servidor físico, muy rápidos y sin cargo adicional; los datos son temporales."
+        }
+      ],
+      "source": {
+        "title": "Instance store temporary block storage for EC2 instances",
+        "url": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/InstanceStorage.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "ebs-h2",
+      "serviceId": "ebs",
+      "difficulty": "hard",
+      "type": "multiple",
+      "prompt": "¿Qué dos afirmaciones sobre EBS Multi-Attach son correctas? (Elige 2)",
+      "options": [
+        {
+          "text": "Solo está disponible en volúmenes io1 e io2",
+          "correct": true,
+          "explanation": "Correcto: es exclusivo de los volúmenes de IOPS aprovisionadas."
+        },
+        {
+          "text": "Admite hasta 16 instancias Nitro de la misma zona",
+          "correct": true,
+          "explanation": "Correcto."
+        },
+        {
+          "text": "Está disponible en volúmenes gp3",
+          "correct": false,
+          "explanation": "gp3 no lo soporta."
+        },
+        {
+          "text": "Permite conectar instancias de distintas zonas",
+          "correct": false,
+          "explanation": "Todas deben estar en la misma zona."
+        },
+        {
+          "text": "Funciona con sistemas de archivos estándar como XFS o EXT4 sin riesgo",
+          "correct": false,
+          "explanation": "Se necesita un sistema de archivos de clúster."
+        }
+      ],
+      "source": {
+        "title": "Attach an EBS volume to multiple EC2 instances using Multi-Attach",
+        "url": "https://docs.aws.amazon.com/ebs/latest/userguide/ebs-volumes-multi.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "ebs-h3",
+      "serviceId": "ebs",
+      "difficulty": "hard",
+      "type": "multiple",
+      "prompt": "Una empresa quiere que todo volumen EBS nuevo de una Región quede cifrado y tener copias para recuperarse en otra Región. ¿Qué dos acciones cumplen? (Elige 2)",
+      "options": [
+        {
+          "text": "Activar el cifrado por defecto de EBS en la Región",
+          "correct": true,
+          "explanation": "Correcto: todo volumen nuevo queda cifrado automáticamente."
+        },
+        {
+          "text": "Copiar los snapshots a la otra Región de forma programada (con AWS Backup o Data Lifecycle Manager)",
+          "correct": true,
+          "explanation": "Correcto: con el snapshot copiado se crean volúmenes en la otra Región."
+        },
+        {
+          "text": "Activar Multi-Attach entre Regiones",
+          "correct": false,
+          "explanation": "Multi-Attach solo funciona dentro de una zona."
+        },
+        {
+          "text": "Mover el volumen a la otra Región desde la consola",
+          "correct": false,
+          "explanation": "Los volúmenes no se mueven entre Regiones; se copian sus snapshots."
+        },
+        {
+          "text": "Usar Instance Store en la Región de recuperación",
+          "correct": false,
+          "explanation": "Es temporal y no recibe copias."
+        }
+      ],
+      "source": {
+        "title": "Amazon EBS encryption",
+        "url": "https://docs.aws.amazon.com/ebs/latest/userguide/ebs-encryption.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "ebs-h4",
+      "serviceId": "ebs",
+      "difficulty": "hard",
+      "type": "single",
+      "prompt": "Un volumen gp2 de 1 TiB no da las IOPS que necesita la aplicación, y el equipo propone agrandarlo a 4 TiB solo para tener más IOPS. ¿Qué es más económico?",
+      "options": [
+        {
+          "text": "Agrandar el volumen gp2 a 4 TiB",
+          "correct": false,
+          "explanation": "Paga 3 TiB que no necesita."
+        },
+        {
+          "text": "Cambiar a gp3 y aprovisionar las IOPS necesarias sin cambiar el tamaño",
+          "correct": true,
+          "explanation": "Correcto: en gp3 las IOPS y el throughput se configuran independientes del tamaño."
+        },
+        {
+          "text": "Cambiar a sc1",
+          "correct": false,
+          "explanation": "Es HDD frío, con muy pocas IOPS."
+        },
+        {
+          "text": "Pasar a io2 Block Express de 4 TiB",
+          "correct": false,
+          "explanation": "Es más caro y el tamaño extra no se necesita."
+        }
+      ],
+      "source": {
+        "title": "Amazon EBS volume types",
+        "url": "https://docs.aws.amazon.com/ebs/latest/userguide/ebs-volume-types.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "ebs-h5",
+      "serviceId": "ebs",
+      "difficulty": "hard",
+      "type": "single",
+      "prompt": "Los volúmenes creados desde un snapshot rinden lento al principio y una aplicación necesita su rendimiento completo apenas se crean. ¿Qué activa?",
+      "options": [
+        {
+          "text": "EBS fast snapshot restore en el snapshot",
+          "correct": true,
+          "explanation": "Correcto: los volúmenes creados desde ese snapshot entregan todo su rendimiento desde el inicio."
+        },
+        {
+          "text": "Multi-Attach",
+          "correct": false,
+          "explanation": "No cambia la inicialización del volumen."
+        },
+        {
+          "text": "Cifrado por defecto",
+          "correct": false,
+          "explanation": "No afecta el rendimiento inicial."
+        },
+        {
+          "text": "Copiar el snapshot a otra Región",
+          "correct": false,
+          "explanation": "No acelera la inicialización."
+        }
+      ],
+      "source": {
+        "title": "Amazon EBS fast snapshot restore",
+        "url": "https://docs.aws.amazon.com/ebs/latest/userguide/ebs-fast-snapshot-restore.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "efs-n1",
+      "serviceId": "efs",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "¿Qué protocolo usa Amazon EFS para que las instancias monten el sistema de archivos?",
+      "options": [
+        {
+          "text": "SMB",
+          "correct": false,
+          "explanation": "SMB es de Windows; lo ofrece FSx for Windows File Server."
+        },
+        {
+          "text": "iSCSI",
+          "correct": false,
+          "explanation": "iSCSI presenta discos de bloques."
+        },
+        {
+          "text": "NFS (v4.0 y v4.1)",
+          "correct": true,
+          "explanation": "Correcto."
+        },
+        {
+          "text": "HTTP con la API de S3",
+          "correct": false,
+          "explanation": "Esa es la forma de usar Amazon S3."
+        }
+      ],
+      "source": {
+        "title": "What is Amazon Elastic File System?",
+        "url": "https://docs.aws.amazon.com/efs/latest/ug/whatisefs.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "efs-n2",
+      "serviceId": "efs",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "Un equipo quiere montar Amazon EFS en instancias Windows. ¿Qué ocurre?",
+      "options": [
+        {
+          "text": "No se puede: EFS no soporta instancias Windows; para Windows se usa FSx for Windows File Server",
+          "correct": true,
+          "explanation": "Correcto."
+        },
+        {
+          "text": "Funciona igual que en Linux",
+          "correct": false,
+          "explanation": "EFS no soporta instancias Windows."
+        },
+        {
+          "text": "Funciona si se activa SMB en EFS",
+          "correct": false,
+          "explanation": "EFS no ofrece SMB."
+        },
+        {
+          "text": "Funciona solo en One Zone",
+          "correct": false,
+          "explanation": "El tipo de sistema no cambia el soporte de Windows."
+        }
+      ],
+      "source": {
+        "title": "What is Amazon Elastic File System?",
+        "url": "https://docs.aws.amazon.com/efs/latest/ug/whatisefs.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "efs-n3",
+      "serviceId": "efs",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "¿Qué característica describe mejor a Amazon EFS?",
+      "options": [
+        {
+          "text": "Hay que reservar la capacidad al crearlo",
+          "correct": false,
+          "explanation": "EFS no requiere aprovisionar capacidad."
+        },
+        {
+          "text": "Se conecta a una sola instancia",
+          "correct": false,
+          "explanation": "Lo montan muchas instancias a la vez."
+        },
+        {
+          "text": "Solo funciona en una zona",
+          "correct": false,
+          "explanation": "El tipo Regional guarda los datos en varias zonas."
+        },
+        {
+          "text": "Crece y se achica solo según los archivos que guardas",
+          "correct": true,
+          "explanation": "Correcto: es elástico y serverless."
+        }
+      ],
+      "source": {
+        "title": "What is Amazon Elastic File System?",
+        "url": "https://docs.aws.amazon.com/efs/latest/ug/whatisefs.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "efs-n4",
+      "serviceId": "efs",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "¿Qué tipos de sistema de archivos ofrece Amazon EFS?",
+      "options": [
+        {
+          "text": "Standard y Premium",
+          "correct": false,
+          "explanation": "No existen esos tipos."
+        },
+        {
+          "text": "Regional y One Zone",
+          "correct": true,
+          "explanation": "Correcto: Regional (varias zonas, recomendado) y One Zone (una zona, más barato)."
+        },
+        {
+          "text": "Scratch y Persistent",
+          "correct": false,
+          "explanation": "Esos son tipos de FSx for Lustre."
+        },
+        {
+          "text": "Cached y Stored",
+          "correct": false,
+          "explanation": "Esos son modos de Volume Gateway."
+        }
+      ],
+      "source": {
+        "title": "Features of Amazon EFS",
+        "url": "https://docs.aws.amazon.com/efs/latest/ug/features.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "efs-n5",
+      "serviceId": "efs",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "¿Desde qué servicios de cómputo se puede montar un sistema de archivos EFS?",
+      "options": [
+        {
+          "text": "Solo desde instancias EC2",
+          "correct": false,
+          "explanation": "También desde contenedores y funciones."
+        },
+        {
+          "text": "Solo desde Lambda",
+          "correct": false,
+          "explanation": "También desde EC2, ECS, EKS y Fargate."
+        },
+        {
+          "text": "Desde EC2, ECS, EKS, Fargate y Lambda",
+          "correct": true,
+          "explanation": "Correcto."
+        },
+        {
+          "text": "Desde ninguno: solo se accede por la API",
+          "correct": false,
+          "explanation": "EFS se monta como sistema de archivos."
+        }
+      ],
+      "source": {
+        "title": "What is Amazon Elastic File System?",
+        "url": "https://docs.aws.amazon.com/efs/latest/ug/whatisefs.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "efs-m1",
+      "serviceId": "efs",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Un sitio WordPress corre en un Auto Scaling group repartido en 3 zonas, y todas las instancias deben ver las mismas imágenes subidas por los usuarios. ¿Qué almacenamiento usa?",
+      "options": [
+        {
+          "text": "Un volumen EBS gp3 por instancia",
+          "correct": false,
+          "explanation": "Cada instancia vería solo su disco."
+        },
+        {
+          "text": "Amazon EFS Regional montado en todas las instancias",
+          "correct": true,
+          "explanation": "Correcto: un sistema de archivos compartido entre zonas."
+        },
+        {
+          "text": "Instance Store",
+          "correct": false,
+          "explanation": "Es temporal y propio de cada instancia."
+        },
+        {
+          "text": "Un volumen io2 con Multi-Attach",
+          "correct": false,
+          "explanation": "Multi-Attach funciona solo dentro de una zona."
+        }
+      ],
+      "source": {
+        "title": "What is Amazon Elastic File System?",
+        "url": "https://docs.aws.amazon.com/efs/latest/ug/whatisefs.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "efs-m2",
+      "serviceId": "efs",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "En un sistema EFS, muchos archivos dejan de usarse después de un mes. ¿Cómo se baja el costo sin cambiar la aplicación?",
+      "options": [
+        {
+          "text": "Moverlos a mano a un bucket de S3",
+          "correct": false,
+          "explanation": "Obliga a cambiar la aplicación."
+        },
+        {
+          "text": "Cambiar a Max I/O",
+          "correct": false,
+          "explanation": "Es un modo de rendimiento, no de costo."
+        },
+        {
+          "text": "Cambiar el sistema a One Zone",
+          "correct": false,
+          "explanation": "Baja el costo, pero cambia la resiliencia y no depende del uso."
+        },
+        {
+          "text": "Una política de ciclo de vida que mueva los archivos sin uso a Infrequent Access y Archive",
+          "correct": true,
+          "explanation": "Correcto: la transición es automática y transparente."
+        }
+      ],
+      "source": {
+        "title": "Features of Amazon EFS",
+        "url": "https://docs.aws.amazon.com/efs/latest/ug/features.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "efs-m3",
+      "serviceId": "efs",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Una aplicación usa EFS con picos de throughput impredecibles. ¿Qué modo de rendimiento conviene?",
+      "options": [
+        {
+          "text": "Elastic",
+          "correct": true,
+          "explanation": "Correcto: escala solo y es el recomendado para cargas impredecibles."
+        },
+        {
+          "text": "Provisioned",
+          "correct": false,
+          "explanation": "Sirve cuando conoces el throughput que necesitas."
+        },
+        {
+          "text": "Bursting",
+          "correct": false,
+          "explanation": "Su throughput depende del tamaño guardado y de créditos."
+        },
+        {
+          "text": "Max I/O",
+          "correct": false,
+          "explanation": "Es un modo de desempeño de generación anterior, no de throughput."
+        }
+      ],
+      "source": {
+        "title": "Amazon EFS performance specifications",
+        "url": "https://docs.aws.amazon.com/efs/latest/ug/performance.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "efs-m4",
+      "serviceId": "efs",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Un equipo guarda en EFS datos de desarrollo que puede volver a generar y busca el menor costo. ¿Qué tipo de sistema usa?",
+      "options": [
+        {
+          "text": "Regional",
+          "correct": false,
+          "explanation": "Paga por guardar en varias zonas datos que se pueden regenerar."
+        },
+        {
+          "text": "Regional con Provisioned throughput",
+          "correct": false,
+          "explanation": "Suma costo de throughput."
+        },
+        {
+          "text": "One Zone",
+          "correct": true,
+          "explanation": "Correcto: más barato; si la zona falla, los datos se regeneran."
+        },
+        {
+          "text": "Max I/O",
+          "correct": false,
+          "explanation": "No es un tipo de sistema de archivos."
+        }
+      ],
+      "source": {
+        "title": "Features of Amazon EFS",
+        "url": "https://docs.aws.amazon.com/efs/latest/ug/features.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "efs-m5",
+      "serviceId": "efs",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Una empresa necesita una copia de su sistema EFS en otra Región con RPO y RTO de minutos. ¿Qué usa?",
+      "options": [
+        {
+          "text": "Snapshots de EBS",
+          "correct": false,
+          "explanation": "Son para volúmenes EBS."
+        },
+        {
+          "text": "Replicación de EFS",
+          "correct": true,
+          "explanation": "Correcto: mantiene sincronizado un sistema de destino en otra Región, con RPO y RTO de minutos."
+        },
+        {
+          "text": "S3 Cross-Region Replication",
+          "correct": false,
+          "explanation": "Es para buckets de S3."
+        },
+        {
+          "text": "Un ciclo de vida a Archive",
+          "correct": false,
+          "explanation": "Cambia la clase, no copia a otra Región."
+        }
+      ],
+      "source": {
+        "title": "Features of Amazon EFS",
+        "url": "https://docs.aws.amazon.com/efs/latest/ug/features.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "efs-h1",
+      "serviceId": "efs",
+      "difficulty": "hard",
+      "type": "single",
+      "prompt": "Un equipo creó un sistema EFS con modo de desempeño Max I/O pensando en muchos clientes, y ahora la latencia es alta. ¿Qué recomienda AWS?",
+      "options": [
+        {
+          "text": "Mantener Max I/O y aumentar el throughput aprovisionado",
+          "correct": false,
+          "explanation": "Max I/O tiene más latencia por operación."
+        },
+        {
+          "text": "Pasar a One Zone",
+          "correct": false,
+          "explanation": "Max I/O ni siquiera se admite en One Zone; el problema es el modo."
+        },
+        {
+          "text": "Usar Bursting",
+          "correct": false,
+          "explanation": "No resuelve la latencia del modo Max I/O."
+        },
+        {
+          "text": "Usar General Purpose con rendimiento Elastic",
+          "correct": true,
+          "explanation": "Correcto: Max I/O es de generación anterior y AWS recomienda General Purpose para todos los sistemas."
+        }
+      ],
+      "source": {
+        "title": "Amazon EFS performance specifications",
+        "url": "https://docs.aws.amazon.com/efs/latest/ug/performance.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "efs-h2",
+      "serviceId": "efs",
+      "difficulty": "hard",
+      "type": "multiple",
+      "prompt": "Una empresa quiere mover a EFS Archive los archivos que casi nunca se leen. ¿Qué dos afirmaciones son correctas? (Elige 2)",
+      "options": [
+        {
+          "text": "El sistema de archivos debe usar rendimiento Elastic",
+          "correct": true,
+          "explanation": "Correcto: Archive requiere Elastic throughput."
+        },
+        {
+          "text": "Archive tiene una duración mínima de 90 días",
+          "correct": true,
+          "explanation": "Correcto."
+        },
+        {
+          "text": "Archive funciona con rendimiento Bursting",
+          "correct": false,
+          "explanation": "Con una política hacia Archive no se puede usar Bursting ni Provisioned."
+        },
+        {
+          "text": "Archive tiene latencia de menos de un milisegundo",
+          "correct": false,
+          "explanation": "Su latencia es de decenas de milisegundos."
+        },
+        {
+          "text": "Archive solo existe en sistemas One Zone",
+          "correct": false,
+          "explanation": "Archive está en sistemas Regional."
+        }
+      ],
+      "source": {
+        "title": "Features of Amazon EFS",
+        "url": "https://docs.aws.amazon.com/efs/latest/ug/features.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "efs-h3",
+      "serviceId": "efs",
+      "difficulty": "hard",
+      "type": "multiple",
+      "prompt": "¿Qué dos medidas protegen el acceso y los datos de un sistema EFS? (Elige 2)",
+      "options": [
+        {
+          "text": "Cifrado en tránsito con TLS al montar el sistema",
+          "correct": true,
+          "explanation": "Correcto."
+        },
+        {
+          "text": "Security groups en los mount targets",
+          "correct": true,
+          "explanation": "Correcto: controlan qué clientes llegan por la red."
+        },
+        {
+          "text": "Activar el cifrado en reposo en cualquier momento después de crearlo",
+          "correct": false,
+          "explanation": "El cifrado en reposo se elige al crear el sistema de archivos."
+        },
+        {
+          "text": "ACL de S3 en el sistema de archivos",
+          "correct": false,
+          "explanation": "Las ACL de S3 no aplican a EFS."
+        },
+        {
+          "text": "Unirlo obligatoriamente a Active Directory",
+          "correct": false,
+          "explanation": "EFS usa permisos POSIX, IAM y access points."
+        }
+      ],
+      "source": {
+        "title": "What is Amazon Elastic File System?",
+        "url": "https://docs.aws.amazon.com/efs/latest/ug/whatisefs.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "efs-h4",
+      "serviceId": "efs",
+      "difficulty": "hard",
+      "type": "single",
+      "prompt": "Servidores Linux del centro de datos deben trabajar con los mismos archivos que las instancias EC2 en AWS. ¿Qué hacen?",
+      "options": [
+        {
+          "text": "Montar Amazon EFS desde el centro de datos por Direct Connect o VPN",
+          "correct": true,
+          "explanation": "Correcto: EFS se puede montar desde servidores locales conectados a la VPC."
+        },
+        {
+          "text": "Conectar un volumen EBS por internet",
+          "correct": false,
+          "explanation": "EBS solo se conecta a instancias EC2."
+        },
+        {
+          "text": "Copiar los archivos cada noche a S3",
+          "correct": false,
+          "explanation": "No sería el mismo sistema de archivos ni en tiempo real."
+        },
+        {
+          "text": "Usar Instance Store compartido",
+          "correct": false,
+          "explanation": "Instance Store es local de una instancia."
+        }
+      ],
+      "source": {
+        "title": "What is Amazon Elastic File System?",
+        "url": "https://docs.aws.amazon.com/efs/latest/ug/whatisefs.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "efs-h5",
+      "serviceId": "efs",
+      "difficulty": "hard",
+      "type": "single",
+      "prompt": "Varias tareas de Fargate necesitan un almacenamiento persistente y compartido que sobreviva al final de cada tarea. ¿Qué usan?",
+      "options": [
+        {
+          "text": "El almacenamiento efímero de Fargate",
+          "correct": false,
+          "explanation": "Se borra al terminar la tarea y no se comparte."
+        },
+        {
+          "text": "Volúmenes EBS con Multi-Attach",
+          "correct": false,
+          "explanation": "Multi-Attach es para instancias EC2 Nitro de una zona."
+        },
+        {
+          "text": "Amazon EFS",
+          "correct": true,
+          "explanation": "Correcto: las tareas de Fargate pueden montar EFS y compartirlo."
+        },
+        {
+          "text": "Instance Store",
+          "correct": false,
+          "explanation": "Fargate no expone Instance Store."
+        }
+      ],
+      "source": {
+        "title": "What is Amazon Elastic File System?",
+        "url": "https://docs.aws.amazon.com/efs/latest/ug/whatisefs.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "fsx-n1",
+      "serviceId": "fsx",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "Una empresa necesita carpetas compartidas de Windows con SMB y permisos de Active Directory, administradas por AWS. ¿Qué servicio usa?",
+      "options": [
+        {
+          "text": "Amazon EFS",
+          "correct": false,
+          "explanation": "EFS usa NFS y no soporta Windows."
+        },
+        {
+          "text": "Amazon FSx for Windows File Server",
+          "correct": true,
+          "explanation": "Correcto: SMB nativo e integración con Active Directory."
+        },
+        {
+          "text": "Amazon S3",
+          "correct": false,
+          "explanation": "S3 no es un sistema de archivos SMB."
+        },
+        {
+          "text": "Amazon FSx for Lustre",
+          "correct": false,
+          "explanation": "Lustre es para HPC con clientes Linux."
+        }
+      ],
+      "source": {
+        "title": "What is FSx for Windows File Server?",
+        "url": "https://docs.aws.amazon.com/fsx/latest/WindowsGuide/what-is.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "fsx-n2",
+      "serviceId": "fsx",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "¿Qué opción de FSx está pensada para cómputo de alto rendimiento y machine learning, y se enlaza a un bucket de S3?",
+      "options": [
+        {
+          "text": "FSx for Windows File Server",
+          "correct": false,
+          "explanation": "Es para cargas Windows con SMB."
+        },
+        {
+          "text": "FSx for OpenZFS",
+          "correct": false,
+          "explanation": "Es para mover servidores ZFS y Linux con NFS."
+        },
+        {
+          "text": "FSx for NetApp ONTAP",
+          "correct": false,
+          "explanation": "Es multiprotocolo y empresarial."
+        },
+        {
+          "text": "FSx for Lustre",
+          "correct": true,
+          "explanation": "Correcto: presenta los objetos de S3 como archivos para procesarlos a gran velocidad."
+        }
+      ],
+      "source": {
+        "title": "What is Amazon FSx for Lustre?",
+        "url": "https://docs.aws.amazon.com/fsx/latest/LustreGuide/what-is.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "fsx-n3",
+      "serviceId": "fsx",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "¿Qué opción de FSx permite acceder a los mismos datos por NFS, SMB e iSCSI?",
+      "options": [
+        {
+          "text": "FSx for NetApp ONTAP",
+          "correct": true,
+          "explanation": "Correcto: es multiprotocolo."
+        },
+        {
+          "text": "FSx for Lustre",
+          "correct": false,
+          "explanation": "Usa el cliente Lustre en Linux."
+        },
+        {
+          "text": "FSx for Windows File Server",
+          "correct": false,
+          "explanation": "Usa SMB."
+        },
+        {
+          "text": "Amazon EFS",
+          "correct": false,
+          "explanation": "Usa solo NFS."
+        }
+      ],
+      "source": {
+        "title": "What is Amazon FSx for NetApp ONTAP?",
+        "url": "https://docs.aws.amazon.com/fsx/latest/ONTAPGuide/what-is-fsx-ontap.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "fsx-n4",
+      "serviceId": "fsx",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "Una empresa quiere mover a AWS sus servidores de archivos basados en ZFS sin cambiar las aplicaciones. ¿Qué usa?",
+      "options": [
+        {
+          "text": "Amazon EBS",
+          "correct": false,
+          "explanation": "Es un disco de bloques, no un sistema de archivos administrado."
+        },
+        {
+          "text": "FSx for Lustre",
+          "correct": false,
+          "explanation": "Es para HPC."
+        },
+        {
+          "text": "FSx for OpenZFS",
+          "correct": true,
+          "explanation": "Correcto: ofrece las funciones de OpenZFS como snapshots y clones."
+        },
+        {
+          "text": "AWS Storage Gateway",
+          "correct": false,
+          "explanation": "Conecta el centro de datos con AWS; no es un servidor ZFS administrado."
+        }
+      ],
+      "source": {
+        "title": "What is Amazon FSx for OpenZFS?",
+        "url": "https://docs.aws.amazon.com/fsx/latest/OpenZFSGuide/what-is-fsx.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "fsx-n5",
+      "serviceId": "fsx",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "¿Qué afirmación sobre Amazon FSx File Gateway es correcta?",
+      "options": [
+        {
+          "text": "Es la forma recomendada para clientes nuevos de acceder a FSx desde la oficina",
+          "correct": false,
+          "explanation": "Ya no se ofrece a clientes nuevos."
+        },
+        {
+          "text": "Ya no se ofrece a clientes nuevos",
+          "correct": true,
+          "explanation": "Correcto: los clientes existentes pueden seguir usándolo."
+        },
+        {
+          "text": "Reemplaza a FSx for Windows File Server",
+          "correct": false,
+          "explanation": "Era un acceso con caché a FSx for Windows File Server."
+        },
+        {
+          "text": "Funciona con FSx for Lustre",
+          "correct": false,
+          "explanation": "Estaba pensado para FSx for Windows File Server."
+        }
+      ],
+      "source": {
+        "title": "What is Amazon FSx File Gateway",
+        "url": "https://docs.aws.amazon.com/filegateway/latest/filefsxw/what-is-file-fsxw.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "fsx-m1",
+      "serviceId": "fsx",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Un servidor de archivos Windows en FSx debe seguir disponible si falla una zona de disponibilidad. ¿Qué configura?",
+      "options": [
+        {
+          "text": "Single-AZ con respaldos diarios",
+          "correct": false,
+          "explanation": "Los respaldos no evitan la caída durante la falla."
+        },
+        {
+          "text": "Dos sistemas Single-AZ con DataSync",
+          "correct": false,
+          "explanation": "Es más complejo y no hace failover automático."
+        },
+        {
+          "text": "Un despliegue Multi-AZ",
+          "correct": true,
+          "explanation": "Correcto: mantiene un servidor en espera en otra zona con failover."
+        },
+        {
+          "text": "Almacenamiento HDD",
+          "correct": false,
+          "explanation": "El tipo de disco no cambia la disponibilidad."
+        }
+      ],
+      "source": {
+        "title": "What is FSx for Windows File Server?",
+        "url": "https://docs.aws.amazon.com/fsx/latest/WindowsGuide/what-is.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "fsx-m2",
+      "serviceId": "fsx",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Un trabajo de procesamiento dura dos días, lee datos desde S3 y los resultados se devuelven a S3. ¿Qué despliegue de FSx for Lustre es el MÁS económico?",
+      "options": [
+        {
+          "text": "Scratch",
+          "correct": true,
+          "explanation": "Correcto: para procesamiento temporal; no replica datos y los originales siguen en S3."
+        },
+        {
+          "text": "Persistent",
+          "correct": false,
+          "explanation": "Replica los datos, algo innecesario aquí."
+        },
+        {
+          "text": "Multi-AZ de FSx for Windows",
+          "correct": false,
+          "explanation": "No es Lustre ni se ajusta a HPC."
+        },
+        {
+          "text": "FSx for ONTAP",
+          "correct": false,
+          "explanation": "No es la opción para HPC temporal."
+        }
+      ],
+      "source": {
+        "title": "What is Amazon FSx for Lustre?",
+        "url": "https://docs.aws.amazon.com/fsx/latest/LustreGuide/what-is.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "fsx-m3",
+      "serviceId": "fsx",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Una empresa usa NetApp en su centro de datos, con clientes Linux y Windows sobre los mismos datos, y quiere replicarlos a AWS con SnapMirror. ¿Qué servicio usa?",
+      "options": [
+        {
+          "text": "Amazon EFS",
+          "correct": false,
+          "explanation": "No soporta SMB ni SnapMirror."
+        },
+        {
+          "text": "FSx for Windows File Server",
+          "correct": false,
+          "explanation": "No ofrece NFS ni SnapMirror."
+        },
+        {
+          "text": "FSx for OpenZFS",
+          "correct": false,
+          "explanation": "No es compatible con SnapMirror."
+        },
+        {
+          "text": "FSx for NetApp ONTAP",
+          "correct": true,
+          "explanation": "Correcto: multiprotocolo y con SnapMirror."
+        }
+      ],
+      "source": {
+        "title": "What is Amazon FSx for NetApp ONTAP?",
+        "url": "https://docs.aws.amazon.com/fsx/latest/ONTAPGuide/what-is-fsx-ontap.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "fsx-m4",
+      "serviceId": "fsx",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Una carga de alto rendimiento usará FSx for Lustre durante meses y no debe perder datos si falla un servidor. ¿Qué despliegue elige?",
+      "options": [
+        {
+          "text": "Scratch",
+          "correct": false,
+          "explanation": "No replica los datos ni reemplaza servidores con los datos."
+        },
+        {
+          "text": "Persistent",
+          "correct": true,
+          "explanation": "Correcto: replica los datos y reemplaza servidores que fallan."
+        },
+        {
+          "text": "One Zone de EFS",
+          "correct": false,
+          "explanation": "No es Lustre."
+        },
+        {
+          "text": "Volume Gateway stored",
+          "correct": false,
+          "explanation": "No es un sistema de archivos HPC."
+        }
+      ],
+      "source": {
+        "title": "What is Amazon FSx for Lustre?",
+        "url": "https://docs.aws.amazon.com/fsx/latest/LustreGuide/what-is.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "fsx-m5",
+      "serviceId": "fsx",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Usuarios de la oficina deben usar las carpetas de FSx for Windows File Server. ¿Cómo se conectan?",
+      "options": [
+        {
+          "text": "Directamente por internet sin VPN",
+          "correct": false,
+          "explanation": "FSx vive en la VPC; se accede por conexión privada."
+        },
+        {
+          "text": "Con una URL prefirmada",
+          "correct": false,
+          "explanation": "Es un concepto de S3."
+        },
+        {
+          "text": "Por AWS Direct Connect o Site-to-Site VPN",
+          "correct": true,
+          "explanation": "Correcto."
+        },
+        {
+          "text": "Con S3 Transfer Acceleration",
+          "correct": false,
+          "explanation": "Es para cargas a S3."
+        }
+      ],
+      "source": {
+        "title": "What is FSx for Windows File Server?",
+        "url": "https://docs.aws.amazon.com/fsx/latest/WindowsGuide/what-is.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "fsx-h1",
+      "serviceId": "fsx",
+      "difficulty": "hard",
+      "type": "single",
+      "prompt": "Un entrenamiento de machine learning lee millones de imágenes desde S3 y las GPU pasan tiempo esperando los datos. ¿Qué mejora más el rendimiento?",
+      "options": [
+        {
+          "text": "Cambiar las imágenes a S3 Standard-IA",
+          "correct": false,
+          "explanation": "No acelera la lectura."
+        },
+        {
+          "text": "Copiar las imágenes a un volumen EBS por instancia",
+          "correct": false,
+          "explanation": "Duplica datos y no escala a muchas instancias."
+        },
+        {
+          "text": "Usar Amazon EFS One Zone",
+          "correct": false,
+          "explanation": "No está pensado para el throughput de HPC."
+        },
+        {
+          "text": "FSx for Lustre enlazado al bucket de S3",
+          "correct": true,
+          "explanation": "Correcto: presenta los objetos como archivos con latencia menor a un milisegundo y muy alto throughput."
+        }
+      ],
+      "source": {
+        "title": "What is Amazon FSx for Lustre?",
+        "url": "https://docs.aws.amazon.com/fsx/latest/LustreGuide/what-is.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "fsx-h2",
+      "serviceId": "fsx",
+      "difficulty": "hard",
+      "type": "multiple",
+      "prompt": "¿Qué dos afirmaciones sobre FSx for Windows File Server son correctas? (Elige 2)",
+      "options": [
+        {
+          "text": "Usa SMB y se integra con Microsoft Active Directory",
+          "correct": true,
+          "explanation": "Correcto."
+        },
+        {
+          "text": "También se puede acceder desde clientes Linux actuales",
+          "correct": true,
+          "explanation": "Correcto: la documentación indica acceso desde versiones actuales de Linux."
+        },
+        {
+          "text": "Usa solo NFS v4.1",
+          "correct": false,
+          "explanation": "Usa SMB."
+        },
+        {
+          "text": "No hace respaldos automáticos",
+          "correct": false,
+          "explanation": "Hace respaldos diarios automáticos por defecto."
+        },
+        {
+          "text": "Solo existe en despliegue Single-AZ",
+          "correct": false,
+          "explanation": "También existe Multi-AZ."
+        }
+      ],
+      "source": {
+        "title": "What is FSx for Windows File Server?",
+        "url": "https://docs.aws.amazon.com/fsx/latest/WindowsGuide/what-is.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "fsx-h3",
+      "serviceId": "fsx",
+      "difficulty": "hard",
+      "type": "multiple",
+      "prompt": "¿Qué dos funciones ofrece FSx for NetApp ONTAP? (Elige 2)",
+      "options": [
+        {
+          "text": "Tiering automático de datos poco usados a un nivel más barato",
+          "correct": true,
+          "explanation": "Correcto."
+        },
+        {
+          "text": "Replicación con SnapMirror",
+          "correct": true,
+          "explanation": "Correcto."
+        },
+        {
+          "text": "Acceso solo por SMB",
+          "correct": false,
+          "explanation": "Es multiprotocolo: NFS, SMB, iSCSI y NVMe."
+        },
+        {
+          "text": "Acceso solo desde Linux",
+          "correct": false,
+          "explanation": "También desde Windows y macOS."
+        },
+        {
+          "text": "Requiere el cliente Lustre",
+          "correct": false,
+          "explanation": "Ese es FSx for Lustre."
+        }
+      ],
+      "source": {
+        "title": "What is Amazon FSx for NetApp ONTAP?",
+        "url": "https://docs.aws.amazon.com/fsx/latest/ONTAPGuide/what-is-fsx-ontap.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "fsx-h4",
+      "serviceId": "fsx",
+      "difficulty": "hard",
+      "type": "single",
+      "prompt": "Una aplicación Linux necesita NFS con latencias de cientos de microsegundos, snapshots instantáneos y clones de datos. ¿Qué servicio es el más adecuado?",
+      "options": [
+        {
+          "text": "FSx for OpenZFS",
+          "correct": true,
+          "explanation": "Correcto: ofrece latencias de cientos de microsegundos, snapshots y clones."
+        },
+        {
+          "text": "Amazon S3",
+          "correct": false,
+          "explanation": "No es un sistema de archivos NFS."
+        },
+        {
+          "text": "FSx for Windows File Server",
+          "correct": false,
+          "explanation": "Usa SMB."
+        },
+        {
+          "text": "AWS Storage Gateway",
+          "correct": false,
+          "explanation": "Es para entornos híbridos."
+        }
+      ],
+      "source": {
+        "title": "What is Amazon FSx for OpenZFS?",
+        "url": "https://docs.aws.amazon.com/fsx/latest/OpenZFSGuide/what-is-fsx.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "fsx-h5",
+      "serviceId": "fsx",
+      "difficulty": "hard",
+      "type": "single",
+      "prompt": "Una aplicación web Linux necesita archivos compartidos entre instancias, con crecimiento impredecible y sin administrar capacidad, al menor esfuerzo. ¿Qué elige?",
+      "options": [
+        {
+          "text": "FSx for NetApp ONTAP",
+          "correct": false,
+          "explanation": "Es potente, pero se configura capacidad y throughput."
+        },
+        {
+          "text": "FSx for Lustre Persistent",
+          "correct": false,
+          "explanation": "Es para HPC."
+        },
+        {
+          "text": "Amazon EFS",
+          "correct": true,
+          "explanation": "Correcto: NFS serverless que crece solo; FSx conviene cuando se necesita su protocolo o funciones específicas."
+        },
+        {
+          "text": "FSx for Windows File Server",
+          "correct": false,
+          "explanation": "Es para cargas Windows con SMB."
+        }
+      ],
+      "source": {
+        "title": "What is Amazon Elastic File System?",
+        "url": "https://docs.aws.amazon.com/efs/latest/ug/whatisefs.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "storage-gateway-n1",
+      "serviceId": "storage-gateway",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "¿Qué hace AWS Storage Gateway?",
+      "options": [
+        {
+          "text": "Conecta el almacenamiento del centro de datos con el almacenamiento de AWS mediante un dispositivo local",
+          "correct": true,
+          "explanation": "Correcto: es un servicio de almacenamiento híbrido."
+        },
+        {
+          "text": "Acelera las cargas a S3 desde otros continentes",
+          "correct": false,
+          "explanation": "Eso es S3 Transfer Acceleration."
+        },
+        {
+          "text": "Respalda recursos de AWS de forma centralizada",
+          "correct": false,
+          "explanation": "Eso es AWS Backup."
+        },
+        {
+          "text": "Ofrece servidores SFTP administrados",
+          "correct": false,
+          "explanation": "Eso es AWS Transfer Family."
+        }
+      ],
+      "source": {
+        "title": "What is Volume Gateway?",
+        "url": "https://docs.aws.amazon.com/storagegateway/latest/vgw/WhatIsStorageGateway.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "storage-gateway-n2",
+      "serviceId": "storage-gateway",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "Servidores locales guardan archivos por NFS o SMB y la empresa quiere que queden como objetos en Amazon S3. ¿Qué tipo de gateway usa?",
+      "options": [
+        {
+          "text": "Tape Gateway",
+          "correct": false,
+          "explanation": "Presenta cintas virtuales."
+        },
+        {
+          "text": "Volume Gateway",
+          "correct": false,
+          "explanation": "Presenta discos iSCSI."
+        },
+        {
+          "text": "Amazon S3 File Gateway",
+          "correct": true,
+          "explanation": "Correcto: cada archivo se guarda como un objeto en S3."
+        },
+        {
+          "text": "Amazon FSx File Gateway",
+          "correct": false,
+          "explanation": "Daba acceso a FSx for Windows File Server y ya no se ofrece a clientes nuevos."
+        }
+      ],
+      "source": {
+        "title": "What is Amazon S3 File Gateway",
+        "url": "https://docs.aws.amazon.com/filegateway/latest/files3/what-is-file-s3.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "storage-gateway-n3",
+      "serviceId": "storage-gateway",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "Una empresa quiere dejar de usar cintas físicas sin cambiar su software de respaldo. ¿Qué usa?",
+      "options": [
+        {
+          "text": "S3 File Gateway",
+          "correct": false,
+          "explanation": "Ofrece archivos, no una biblioteca de cintas."
+        },
+        {
+          "text": "Volume Gateway stored",
+          "correct": false,
+          "explanation": "Ofrece discos iSCSI."
+        },
+        {
+          "text": "AWS DataSync",
+          "correct": false,
+          "explanation": "Mueve datos, no reemplaza una biblioteca de cintas."
+        },
+        {
+          "text": "Tape Gateway",
+          "correct": true,
+          "explanation": "Correcto: una biblioteca de cintas virtual que el software de respaldo usa como siempre."
+        }
+      ],
+      "source": {
+        "title": "What is Tape Gateway?",
+        "url": "https://docs.aws.amazon.com/storagegateway/latest/tgw/WhatIsStorageGateway.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "storage-gateway-n4",
+      "serviceId": "storage-gateway",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "¿Qué tipo de Storage Gateway presenta discos iSCSI a los servidores locales?",
+      "options": [
+        {
+          "text": "S3 File Gateway",
+          "correct": false,
+          "explanation": "Presenta recursos NFS o SMB."
+        },
+        {
+          "text": "Volume Gateway",
+          "correct": true,
+          "explanation": "Correcto: volúmenes cached o stored montados como dispositivos iSCSI."
+        },
+        {
+          "text": "Tape Gateway",
+          "correct": false,
+          "explanation": "Presenta una biblioteca de cintas virtual."
+        },
+        {
+          "text": "FSx File Gateway",
+          "correct": false,
+          "explanation": "Presentaba recursos SMB."
+        }
+      ],
+      "source": {
+        "title": "What is Volume Gateway?",
+        "url": "https://docs.aws.amazon.com/storagegateway/latest/vgw/WhatIsStorageGateway.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "storage-gateway-n5",
+      "serviceId": "storage-gateway",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "¿Dónde se puede desplegar un Storage Gateway?",
+      "options": [
+        {
+          "text": "Solo como equipo físico comprado a AWS",
+          "correct": false,
+          "explanation": "También como máquina virtual o instancia EC2."
+        },
+        {
+          "text": "Solo dentro de una VPC",
+          "correct": false,
+          "explanation": "Se despliega sobre todo en el centro de datos."
+        },
+        {
+          "text": "Como máquina virtual local, como equipo físico o como instancia EC2",
+          "correct": true,
+          "explanation": "Correcto."
+        },
+        {
+          "text": "Solo en AWS Outposts",
+          "correct": false,
+          "explanation": "No es un requisito."
+        }
+      ],
+      "source": {
+        "title": "What is Volume Gateway?",
+        "url": "https://docs.aws.amazon.com/storagegateway/latest/vgw/WhatIsStorageGateway.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "storage-gateway-m1",
+      "serviceId": "storage-gateway",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Una aplicación local necesita baja latencia sobre TODOS sus datos y respaldos fuera del sitio en AWS. ¿Qué configuración de Volume Gateway usa?",
+      "options": [
+        {
+          "text": "Cached volumes",
+          "correct": false,
+          "explanation": "Guarda los datos en S3 y solo lo usado seguido en local."
+        },
+        {
+          "text": "Stored volumes",
+          "correct": true,
+          "explanation": "Correcto: todos los datos quedan en local y se respaldan como snapshots en AWS."
+        },
+        {
+          "text": "Tape Gateway",
+          "correct": false,
+          "explanation": "Es para respaldo en cintas virtuales."
+        },
+        {
+          "text": "S3 File Gateway",
+          "correct": false,
+          "explanation": "Ofrece archivos, no volúmenes iSCSI."
+        }
+      ],
+      "source": {
+        "title": "What is Volume Gateway?",
+        "url": "https://docs.aws.amazon.com/storagegateway/latest/vgw/WhatIsStorageGateway.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "storage-gateway-m2",
+      "serviceId": "storage-gateway",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Una empresa quiere liberar almacenamiento local de sus servidores iSCSI, manteniendo rápido el acceso a los datos usados seguido. ¿Qué usa?",
+      "options": [
+        {
+          "text": "Volume Gateway con cached volumes",
+          "correct": true,
+          "explanation": "Correcto: los datos viven en S3 y lo usado seguido queda en la caché local."
+        },
+        {
+          "text": "Volume Gateway con stored volumes",
+          "correct": false,
+          "explanation": "Mantiene todos los datos en local."
+        },
+        {
+          "text": "Tape Gateway",
+          "correct": false,
+          "explanation": "Es para respaldos en cinta."
+        },
+        {
+          "text": "AWS DataSync",
+          "correct": false,
+          "explanation": "Mueve datos, pero no ofrece un disco iSCSI con caché."
+        }
+      ],
+      "source": {
+        "title": "What is Volume Gateway?",
+        "url": "https://docs.aws.amazon.com/storagegateway/latest/vgw/WhatIsStorageGateway.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "storage-gateway-m3",
+      "serviceId": "storage-gateway",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "¿Dónde archiva Tape Gateway las cintas virtuales para retención a largo plazo?",
+      "options": [
+        {
+          "text": "En volúmenes EBS",
+          "correct": false,
+          "explanation": "Las cintas archivadas no van a EBS."
+        },
+        {
+          "text": "En Amazon EFS",
+          "correct": false,
+          "explanation": "No es el destino de archivo de las cintas."
+        },
+        {
+          "text": "En FSx for Windows File Server",
+          "correct": false,
+          "explanation": "No es el destino de archivo de las cintas."
+        },
+        {
+          "text": "En S3 Glacier Flexible Retrieval o S3 Glacier Deep Archive",
+          "correct": true,
+          "explanation": "Correcto."
+        }
+      ],
+      "source": {
+        "title": "What is Tape Gateway?",
+        "url": "https://docs.aws.amazon.com/storagegateway/latest/tgw/WhatIsStorageGateway.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "storage-gateway-m4",
+      "serviceId": "storage-gateway",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Una empresa debe migrar una sola vez un recurso compartido de 50 TB a Amazon S3 y después apagar el servidor local. ¿Qué es lo MÁS adecuado?",
+      "options": [
+        {
+          "text": "S3 File Gateway",
+          "correct": false,
+          "explanation": "Da acceso continuo con caché; para una migración puntual sobra."
+        },
+        {
+          "text": "Tape Gateway",
+          "correct": false,
+          "explanation": "Es para respaldos en cinta."
+        },
+        {
+          "text": "AWS DataSync",
+          "correct": true,
+          "explanation": "Correcto: mueve y verifica los datos en una tarea, sin dejar infraestructura permanente."
+        },
+        {
+          "text": "Volume Gateway cached",
+          "correct": false,
+          "explanation": "Presenta discos iSCSI; no es una herramienta de migración de archivos."
+        }
+      ],
+      "source": {
+        "title": "What is AWS DataSync?",
+        "url": "https://docs.aws.amazon.com/datasync/latest/userguide/what-is-datasync.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "storage-gateway-m5",
+      "serviceId": "storage-gateway",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Los archivos que guarda S3 File Gateway en un bucket, ¿se pueden administrar con funciones de S3?",
+      "options": [
+        {
+          "text": "No: solo se acceden a través del gateway",
+          "correct": false,
+          "explanation": "Se pueden usar directamente desde S3."
+        },
+        {
+          "text": "Sí: se pueden usar ciclo de vida, replicación entre Regiones y versionado",
+          "correct": true,
+          "explanation": "Correcto: son objetos normales de S3."
+        },
+        {
+          "text": "Solo si se guardan en S3 Glacier",
+          "correct": false,
+          "explanation": "No hay esa condición."
+        },
+        {
+          "text": "Solo con Tape Gateway",
+          "correct": false,
+          "explanation": "No tiene relación."
+        }
+      ],
+      "source": {
+        "title": "What is Amazon S3 File Gateway",
+        "url": "https://docs.aws.amazon.com/filegateway/latest/files3/what-is-file-s3.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "storage-gateway-h1",
+      "serviceId": "storage-gateway",
+      "difficulty": "hard",
+      "type": "single",
+      "prompt": "Un cliente nuevo de AWS quiere que sus oficinas usen por SMB los recursos de FSx for Windows File Server con una caché local, como hacía FSx File Gateway. ¿Qué debe saber?",
+      "options": [
+        {
+          "text": "Debe desplegar FSx File Gateway en la oficina",
+          "correct": false,
+          "explanation": "FSx File Gateway ya no se ofrece a clientes nuevos."
+        },
+        {
+          "text": "Debe usar Tape Gateway",
+          "correct": false,
+          "explanation": "No ofrece recursos SMB."
+        },
+        {
+          "text": "Debe migrar a Amazon EFS",
+          "correct": false,
+          "explanation": "EFS no ofrece SMB."
+        },
+        {
+          "text": "FSx File Gateway ya no se ofrece a clientes nuevos; los usuarios acceden a FSx for Windows File Server por Direct Connect o VPN",
+          "correct": true,
+          "explanation": "Correcto: AWS indica alternativas para el acceso directo a FSx."
+        }
+      ],
+      "source": {
+        "title": "What is Amazon FSx File Gateway",
+        "url": "https://docs.aws.amazon.com/filegateway/latest/filefsxw/what-is-file-fsxw.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "storage-gateway-h2",
+      "serviceId": "storage-gateway",
+      "difficulty": "hard",
+      "type": "multiple",
+      "prompt": "¿Qué dos afirmaciones sobre Volume Gateway con stored volumes son correctas? (Elige 2)",
+      "options": [
+        {
+          "text": "Todos los datos quedan en el centro de datos",
+          "correct": true,
+          "explanation": "Correcto."
+        },
+        {
+          "text": "Los respaldos en AWS se pueden recuperar como volúmenes EBS para instancias EC2",
+          "correct": true,
+          "explanation": "Correcto: útil para recuperación ante desastres."
+        },
+        {
+          "text": "Solo guarda en local los datos usados seguido",
+          "correct": false,
+          "explanation": "Eso es cached volumes."
+        },
+        {
+          "text": "Presenta los datos por NFS",
+          "correct": false,
+          "explanation": "Usa iSCSI."
+        },
+        {
+          "text": "Archiva automáticamente en Deep Archive",
+          "correct": false,
+          "explanation": "Eso lo hace Tape Gateway con las cintas."
+        }
+      ],
+      "source": {
+        "title": "What is Volume Gateway?",
+        "url": "https://docs.aws.amazon.com/storagegateway/latest/vgw/WhatIsStorageGateway.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "storage-gateway-h3",
+      "serviceId": "storage-gateway",
+      "difficulty": "hard",
+      "type": "multiple",
+      "prompt": "Equipos de laboratorio escriben resultados por SMB, que luego se analizan en Amazon S3 y deben pasar a clases más baratas con el tiempo. ¿Qué dos piezas usa? (Elige 2)",
+      "options": [
+        {
+          "text": "S3 File Gateway con un recurso SMB",
+          "correct": true,
+          "explanation": "Correcto: los equipos escriben por SMB y los archivos quedan como objetos."
+        },
+        {
+          "text": "Una regla de ciclo de vida en el bucket",
+          "correct": true,
+          "explanation": "Correcto: mueve los objetos a clases más baratas."
+        },
+        {
+          "text": "Tape Gateway",
+          "correct": false,
+          "explanation": "Es para cintas virtuales."
+        },
+        {
+          "text": "Volume Gateway cached",
+          "correct": false,
+          "explanation": "Ofrece discos iSCSI, no archivos en S3."
+        },
+        {
+          "text": "Amazon EFS",
+          "correct": false,
+          "explanation": "No ofrece SMB."
+        }
+      ],
+      "source": {
+        "title": "What is Amazon S3 File Gateway",
+        "url": "https://docs.aws.amazon.com/filegateway/latest/files3/what-is-file-s3.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "storage-gateway-h4",
+      "serviceId": "storage-gateway",
+      "difficulty": "hard",
+      "type": "single",
+      "prompt": "El software de respaldo de una empresa solo escribe en una biblioteca de cintas (VTL) por iSCSI y los respaldos deben conservarse 10 años al menor costo. ¿Qué solución cumple?",
+      "options": [
+        {
+          "text": "Tape Gateway archivando las cintas en S3 Glacier Deep Archive",
+          "correct": true,
+          "explanation": "Correcto: no cambia el software y archiva en la clase más barata."
+        },
+        {
+          "text": "S3 File Gateway con S3 Standard",
+          "correct": false,
+          "explanation": "El software necesita una biblioteca de cintas y Standard es caro para 10 años."
+        },
+        {
+          "text": "Volume Gateway stored",
+          "correct": false,
+          "explanation": "Presenta discos, no una biblioteca de cintas."
+        },
+        {
+          "text": "AWS DataSync hacia EFS",
+          "correct": false,
+          "explanation": "No ofrece una biblioteca de cintas."
+        }
+      ],
+      "source": {
+        "title": "What is Tape Gateway?",
+        "url": "https://docs.aws.amazon.com/storagegateway/latest/tgw/WhatIsStorageGateway.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "storage-gateway-h5",
+      "serviceId": "storage-gateway",
+      "difficulty": "hard",
+      "type": "single",
+      "prompt": "Una empresa quiere poder recuperar en AWS, ante un desastre, los volúmenes iSCSI de sus servidores locales. ¿Qué solución lo permite?",
+      "options": [
+        {
+          "text": "S3 File Gateway",
+          "correct": false,
+          "explanation": "Trabaja con archivos, no con volúmenes iSCSI."
+        },
+        {
+          "text": "Tape Gateway",
+          "correct": false,
+          "explanation": "Respalda en cintas virtuales; la recuperación es más lenta."
+        },
+        {
+          "text": "Volume Gateway, recuperando sus snapshots como volúmenes EBS en instancias EC2",
+          "correct": true,
+          "explanation": "Correcto."
+        },
+        {
+          "text": "AWS Transfer Family",
+          "correct": false,
+          "explanation": "Es para transferir archivos por SFTP o FTP."
+        }
+      ],
+      "source": {
+        "title": "What is Volume Gateway?",
+        "url": "https://docs.aws.amazon.com/storagegateway/latest/vgw/WhatIsStorageGateway.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "backup-n1",
+      "serviceId": "backup",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "¿Qué es AWS Backup?",
+      "options": [
+        {
+          "text": "Un tipo de volumen EBS para respaldos",
+          "correct": false,
+          "explanation": "No es un tipo de volumen."
+        },
+        {
+          "text": "Un servicio que centraliza y automatiza los respaldos de muchos servicios de AWS",
+          "correct": true,
+          "explanation": "Correcto."
+        },
+        {
+          "text": "Una clase de almacenamiento de S3",
+          "correct": false,
+          "explanation": "No es una clase de S3."
+        },
+        {
+          "text": "Un dispositivo físico para enviar datos a AWS",
+          "correct": false,
+          "explanation": "No es un dispositivo."
+        }
+      ],
+      "source": {
+        "title": "What is AWS Backup?",
+        "url": "https://docs.aws.amazon.com/aws-backup/latest/devguide/whatisbackup.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "backup-n2",
+      "serviceId": "backup",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "¿Qué define un plan de respaldo de AWS Backup?",
+      "options": [
+        {
+          "text": "Las instancias EC2 que se deben crear",
+          "correct": false,
+          "explanation": "No crea instancias."
+        },
+        {
+          "text": "Las reglas de red de la VPC",
+          "correct": false,
+          "explanation": "No define reglas de red."
+        },
+        {
+          "text": "Los usuarios de IAM de la cuenta",
+          "correct": false,
+          "explanation": "No administra usuarios."
+        },
+        {
+          "text": "Cada cuánto respaldar, cuánto tiempo guardar y si se copia a otra Región o cuenta",
+          "correct": true,
+          "explanation": "Correcto."
+        }
+      ],
+      "source": {
+        "title": "What is AWS Backup?",
+        "url": "https://docs.aws.amazon.com/aws-backup/latest/devguide/whatisbackup.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "backup-n3",
+      "serviceId": "backup",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "¿Cuál de estos recursos puede respaldar AWS Backup?",
+      "options": [
+        {
+          "text": "Sistemas de archivos Amazon EFS",
+          "correct": true,
+          "explanation": "Correcto: está en la lista de servicios soportados."
+        },
+        {
+          "text": "Colas de Amazon SQS",
+          "correct": false,
+          "explanation": "No están en la lista de servicios soportados."
+        },
+        {
+          "text": "Usuarios de IAM",
+          "correct": false,
+          "explanation": "No son recursos de datos respaldables."
+        },
+        {
+          "text": "Distribuciones de Amazon CloudFront",
+          "correct": false,
+          "explanation": "No están en la lista de servicios soportados."
+        }
+      ],
+      "source": {
+        "title": "What is AWS Backup?",
+        "url": "https://docs.aws.amazon.com/aws-backup/latest/devguide/whatisbackup.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "backup-n4",
+      "serviceId": "backup",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "¿Qué es una bóveda de respaldo (backup vault) en AWS Backup?",
+      "options": [
+        {
+          "text": "Un bucket de S3 público",
+          "correct": false,
+          "explanation": "No es un bucket público."
+        },
+        {
+          "text": "Una instancia EC2 dedicada",
+          "correct": false,
+          "explanation": "No es una instancia."
+        },
+        {
+          "text": "Un contenedor cifrado donde se guardan los respaldos, con su propia política de acceso",
+          "correct": true,
+          "explanation": "Correcto."
+        },
+        {
+          "text": "Una bóveda del servicio antiguo de Amazon Glacier",
+          "correct": false,
+          "explanation": "Son cosas distintas."
+        }
+      ],
+      "source": {
+        "title": "What is AWS Backup?",
+        "url": "https://docs.aws.amazon.com/aws-backup/latest/devguide/whatisbackup.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "backup-n5",
+      "serviceId": "backup",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "¿Qué mide el RPO (recovery point objective)?",
+      "options": [
+        {
+          "text": "Cuánto tiempo puedes tardar en volver a funcionar",
+          "correct": false,
+          "explanation": "Ese es el RTO."
+        },
+        {
+          "text": "Cuántos datos puedes perder, medido en tiempo desde el último punto de recuperación",
+          "correct": true,
+          "explanation": "Correcto."
+        },
+        {
+          "text": "Cuánto cuesta cada respaldo",
+          "correct": false,
+          "explanation": "No es una medida de costo."
+        },
+        {
+          "text": "Cuántas copias de un respaldo guardas",
+          "correct": false,
+          "explanation": "No es eso."
+        }
+      ],
+      "source": {
+        "title": "What is AWS Backup?",
+        "url": "https://docs.aws.amazon.com/aws-backup/latest/devguide/whatisbackup.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "backup-m1",
+      "serviceId": "backup",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Una empresa con 40 cuentas en AWS Organizations quiere que todas apliquen el mismo plan de respaldo. ¿Qué usa?",
+      "options": [
+        {
+          "text": "Crear el plan a mano en cada cuenta",
+          "correct": false,
+          "explanation": "Funciona, pero no escala ni asegura cumplimiento."
+        },
+        {
+          "text": "Snapshots de EBS en cada cuenta",
+          "correct": false,
+          "explanation": "No cubre los demás servicios."
+        },
+        {
+          "text": "Políticas de respaldo de AWS Organizations con AWS Backup",
+          "correct": true,
+          "explanation": "Correcto: aplican los planes de respaldo en todas las cuentas."
+        },
+        {
+          "text": "S3 Cross-Region Replication",
+          "correct": false,
+          "explanation": "Replica objetos, no administra respaldos."
+        }
+      ],
+      "source": {
+        "title": "What is AWS Backup?",
+        "url": "https://docs.aws.amazon.com/aws-backup/latest/devguide/whatisbackup.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "backup-m2",
+      "serviceId": "backup",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Para recuperación ante desastres, cada respaldo debe tener también una copia en otra Región. ¿Cómo se hace con AWS Backup?",
+      "options": [
+        {
+          "text": "Agregando una copia a otra Región en la regla del plan de respaldo",
+          "correct": true,
+          "explanation": "Correcto: la copia se hace automáticamente con cada respaldo."
+        },
+        {
+          "text": "Activando S3 Transfer Acceleration",
+          "correct": false,
+          "explanation": "No copia respaldos."
+        },
+        {
+          "text": "Usando Multi-Attach",
+          "correct": false,
+          "explanation": "Es una función de EBS dentro de una zona."
+        },
+        {
+          "text": "No se puede; AWS Backup trabaja en una sola Región",
+          "correct": false,
+          "explanation": "Soporta copias entre Regiones y entre cuentas."
+        }
+      ],
+      "source": {
+        "title": "What is AWS Backup?",
+        "url": "https://docs.aws.amazon.com/aws-backup/latest/devguide/whatisbackup.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "backup-m3",
+      "serviceId": "backup",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "¿Cómo asigna AWS Backup los recursos a un plan de forma automática a medida que se crean recursos nuevos?",
+      "options": [
+        {
+          "text": "Por el nombre de la VPC",
+          "correct": false,
+          "explanation": "No se asignan por VPC."
+        },
+        {
+          "text": "Por el tipo de instancia",
+          "correct": false,
+          "explanation": "No se asignan por tipo de instancia."
+        },
+        {
+          "text": "Solo de forma manual, recurso por recurso",
+          "correct": false,
+          "explanation": "Se pueden asignar por etiquetas."
+        },
+        {
+          "text": "Por etiquetas: todo recurso con la etiqueta queda en el plan",
+          "correct": true,
+          "explanation": "Correcto."
+        }
+      ],
+      "source": {
+        "title": "What is AWS Backup?",
+        "url": "https://docs.aws.amazon.com/aws-backup/latest/devguide/whatisbackup.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "backup-m4",
+      "serviceId": "backup",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Los respaldos deben guardarse 7 años, pero casi nunca se restauran. ¿Cómo se baja el costo en AWS Backup?",
+      "options": [
+        {
+          "text": "Borrando los respaldos más viejos",
+          "correct": false,
+          "explanation": "Incumple la retención exigida."
+        },
+        {
+          "text": "Con una regla de ciclo de vida que pase los respaldos a almacenamiento frío",
+          "correct": true,
+          "explanation": "Correcto: el almacenamiento frío es más barato."
+        },
+        {
+          "text": "Cambiando los volúmenes a sc1",
+          "correct": false,
+          "explanation": "Cambia el disco, no el costo de los respaldos."
+        },
+        {
+          "text": "Usando Instance Store",
+          "correct": false,
+          "explanation": "No guarda respaldos."
+        }
+      ],
+      "source": {
+        "title": "What is AWS Backup?",
+        "url": "https://docs.aws.amazon.com/aws-backup/latest/devguide/whatisbackup.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "backup-m5",
+      "serviceId": "backup",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Un auditor pide pruebas de que todos los recursos críticos se respaldan según la política. ¿Qué función de AWS Backup ayuda?",
+      "options": [
+        {
+          "text": "AWS Backup Vault Lock",
+          "correct": false,
+          "explanation": "Protege los respaldos, pero no genera informes de cumplimiento."
+        },
+        {
+          "text": "Restore testing",
+          "correct": false,
+          "explanation": "Prueba restauraciones, no audita la política."
+        },
+        {
+          "text": "AWS Backup Audit Manager",
+          "correct": true,
+          "explanation": "Correcto: evalúa controles y genera informes diarios."
+        },
+        {
+          "text": "S3 Inventory",
+          "correct": false,
+          "explanation": "Lista objetos de S3."
+        }
+      ],
+      "source": {
+        "title": "What is AWS Backup?",
+        "url": "https://docs.aws.amazon.com/aws-backup/latest/devguide/whatisbackup.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "backup-h1",
+      "serviceId": "backup",
+      "difficulty": "hard",
+      "type": "single",
+      "prompt": "Una norma exige que los respaldos se conserven 7 años y que nadie, ni la cuenta root, pueda borrarlos ni acortar su retención. ¿Qué configura?",
+      "options": [
+        {
+          "text": "Vault Lock en modo Governance",
+          "correct": false,
+          "explanation": "Usuarios con permisos IAM suficientes pueden quitar el bloqueo."
+        },
+        {
+          "text": "Una política de bóveda que niegue el borrado",
+          "correct": false,
+          "explanation": "Un administrador puede cambiar la política."
+        },
+        {
+          "text": "MFA en la cuenta root",
+          "correct": false,
+          "explanation": "No impide que la root borre."
+        },
+        {
+          "text": "Vault Lock en modo Compliance",
+          "correct": true,
+          "explanation": "Correcto: tras el periodo de gracia, nadie (ni la root ni AWS) puede cambiarlo."
+        }
+      ],
+      "source": {
+        "title": "AWS Backup Vault Lock",
+        "url": "https://docs.aws.amazon.com/aws-backup/latest/devguide/vault-lock.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "backup-h2",
+      "serviceId": "backup",
+      "difficulty": "hard",
+      "type": "multiple",
+      "prompt": "¿Qué dos afirmaciones sobre AWS Backup Vault Lock en modo Compliance son correctas? (Elige 2)",
+      "options": [
+        {
+          "text": "Durante el periodo de gracia todavía se puede quitar o cambiar el bloqueo",
+          "correct": true,
+          "explanation": "Correcto."
+        },
+        {
+          "text": "Pasado el periodo de gracia, ni la cuenta root ni AWS pueden cambiarlo",
+          "correct": true,
+          "explanation": "Correcto: la bóveda y su bloqueo quedan inmutables."
+        },
+        {
+          "text": "El periodo de gracia mínimo es de 24 horas",
+          "correct": false,
+          "explanation": "El mínimo es de 3 días (72 horas)."
+        },
+        {
+          "text": "Es igual de flexible que el modo Governance",
+          "correct": false,
+          "explanation": "Governance lo pueden quitar usuarios con permisos."
+        },
+        {
+          "text": "Es la misma función que el Vault Lock de Amazon Glacier",
+          "correct": false,
+          "explanation": "Son funciones distintas."
+        }
+      ],
+      "source": {
+        "title": "AWS Backup Vault Lock",
+        "url": "https://docs.aws.amazon.com/aws-backup/latest/devguide/vault-lock.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "backup-h3",
+      "serviceId": "backup",
+      "difficulty": "hard",
+      "type": "multiple",
+      "prompt": "Para protegerse de ransomware, una empresa quiere respaldos que el atacante no pueda borrar y poder restaurar rápido desde otra cuenta. ¿Qué dos acciones cumplen? (Elige 2)",
+      "options": [
+        {
+          "text": "Guardar los respaldos en una bóveda logically air-gapped",
+          "correct": true,
+          "explanation": "Correcto: incluye Vault Lock en modo Compliance."
+        },
+        {
+          "text": "Compartir esa bóveda con la cuenta de recuperación",
+          "correct": true,
+          "explanation": "Correcto: permite restaurar desde otra cuenta."
+        },
+        {
+          "text": "Guardar los respaldos en la misma cuenta sin bloqueo",
+          "correct": false,
+          "explanation": "Un atacante con acceso podría borrarlos."
+        },
+        {
+          "text": "Usar Vault Lock en modo Governance con permisos amplios",
+          "correct": false,
+          "explanation": "Se puede quitar con permisos IAM."
+        },
+        {
+          "text": "Desactivar el cifrado para restaurar más rápido",
+          "correct": false,
+          "explanation": "Reduce la seguridad y no ayuda."
+        }
+      ],
+      "source": {
+        "title": "Logically air-gapped vault",
+        "url": "https://docs.aws.amazon.com/aws-backup/latest/devguide/logicallyairgappedvault.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "backup-h4",
+      "serviceId": "backup",
+      "difficulty": "hard",
+      "type": "single",
+      "prompt": "Una empresa respalda tablas de DynamoDB, volúmenes EBS y bases de datos RDS, cada uno con su herramienta nativa y distintas retenciones. Quiere una sola política y un solo lugar de monitoreo. ¿Qué usa?",
+      "options": [
+        {
+          "text": "AWS Backup",
+          "correct": true,
+          "explanation": "Correcto: centraliza planes, retención y monitoreo para muchos servicios."
+        },
+        {
+          "text": "Amazon Data Lifecycle Manager",
+          "correct": false,
+          "explanation": "Solo administra snapshots de EBS y AMI."
+        },
+        {
+          "text": "S3 Lifecycle",
+          "correct": false,
+          "explanation": "Solo aplica a objetos de S3."
+        },
+        {
+          "text": "AWS DataSync",
+          "correct": false,
+          "explanation": "Transfiere datos; no administra respaldos."
+        }
+      ],
+      "source": {
+        "title": "What is AWS Backup?",
+        "url": "https://docs.aws.amazon.com/aws-backup/latest/devguide/whatisbackup.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "backup-h5",
+      "serviceId": "backup",
+      "difficulty": "hard",
+      "type": "single",
+      "prompt": "Los objetos nuevos de un bucket de S3 deben tener una copia en otra Región en cuestión de minutos. ¿Qué es lo MÁS adecuado?",
+      "options": [
+        {
+          "text": "Un plan de AWS Backup con copias diarias a otra Región",
+          "correct": false,
+          "explanation": "Una copia diaria no cumple los minutos."
+        },
+        {
+          "text": "S3 Cross-Region Replication (con S3 Replication Time Control si se necesita SLA)",
+          "correct": true,
+          "explanation": "Correcto: replica los objetos nuevos de forma asíncrona y continua."
+        },
+        {
+          "text": "Vault Lock en modo Compliance",
+          "correct": false,
+          "explanation": "Protege respaldos; no los copia."
+        },
+        {
+          "text": "Snapshots de EBS",
+          "correct": false,
+          "explanation": "No aplican a S3."
+        }
+      ],
+      "source": {
+        "title": "Replicating objects within and across Regions",
+        "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/replication.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "datasync-n1",
+      "serviceId": "datasync",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "¿Qué hace AWS DataSync?",
+      "options": [
+        {
+          "text": "Ofrece un servidor SFTP administrado",
+          "correct": false,
+          "explanation": "Eso es AWS Transfer Family."
+        },
+        {
+          "text": "Da acceso local con caché a datos de S3",
+          "correct": false,
+          "explanation": "Eso es Storage Gateway."
+        },
+        {
+          "text": "Transfiere en línea archivos y objetos hacia, desde y entre servicios de almacenamiento de AWS",
+          "correct": true,
+          "explanation": "Correcto."
+        },
+        {
+          "text": "Crea respaldos centralizados con retención",
+          "correct": false,
+          "explanation": "Eso es AWS Backup."
+        }
+      ],
+      "source": {
+        "title": "What is AWS DataSync?",
+        "url": "https://docs.aws.amazon.com/datasync/latest/userguide/what-is-datasync.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "datasync-n2",
+      "serviceId": "datasync",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "Para copiar datos desde un NAS local por NFS hacia Amazon S3 con DataSync, ¿qué se necesita?",
+      "options": [
+        {
+          "text": "Un agente de DataSync (máquina virtual) desplegado cerca del NAS",
+          "correct": true,
+          "explanation": "Correcto: las transferencias desde almacenamiento local requieren agente."
+        },
+        {
+          "text": "Nada: DataSync se conecta solo al NAS por internet",
+          "correct": false,
+          "explanation": "Se necesita un agente."
+        },
+        {
+          "text": "Un dispositivo Snowball Edge",
+          "correct": false,
+          "explanation": "Es transferencia física y ya no se ofrece a clientes nuevos."
+        },
+        {
+          "text": "Un servidor SFTP",
+          "correct": false,
+          "explanation": "DataSync no usa SFTP."
+        }
+      ],
+      "source": {
+        "title": "Do I need an AWS DataSync agent?",
+        "url": "https://docs.aws.amazon.com/datasync/latest/userguide/do-i-need-datasync-agent.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "datasync-n3",
+      "serviceId": "datasync",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "¿Hacia qué servicios de AWS puede copiar datos DataSync?",
+      "options": [
+        {
+          "text": "Solo hacia Amazon S3",
+          "correct": false,
+          "explanation": "También hacia EFS y FSx."
+        },
+        {
+          "text": "Hacia volúmenes EBS",
+          "correct": false,
+          "explanation": "EBS no es un destino de DataSync."
+        },
+        {
+          "text": "Hacia bases de datos RDS",
+          "correct": false,
+          "explanation": "Para bases de datos se usa AWS DMS."
+        },
+        {
+          "text": "Hacia Amazon S3, Amazon EFS y los cuatro tipos de Amazon FSx",
+          "correct": true,
+          "explanation": "Correcto."
+        }
+      ],
+      "source": {
+        "title": "What is AWS DataSync?",
+        "url": "https://docs.aws.amazon.com/datasync/latest/userguide/what-is-datasync.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "datasync-n4",
+      "serviceId": "datasync",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "¿Cómo ayuda DataSync a asegurar que los datos lleguen bien?",
+      "options": [
+        {
+          "text": "No verifica; hay que comparar a mano",
+          "correct": false,
+          "explanation": "DataSync verifica la integridad."
+        },
+        {
+          "text": "Cifra los datos en tránsito y verifica su integridad",
+          "correct": true,
+          "explanation": "Correcto."
+        },
+        {
+          "text": "Envía los datos en discos físicos",
+          "correct": false,
+          "explanation": "Es transferencia en línea."
+        },
+        {
+          "text": "Los copia solo por FTP",
+          "correct": false,
+          "explanation": "Usa un protocolo propio."
+        }
+      ],
+      "source": {
+        "title": "What is AWS DataSync?",
+        "url": "https://docs.aws.amazon.com/datasync/latest/userguide/what-is-datasync.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "datasync-n5",
+      "serviceId": "datasync",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "¿Qué ocurre hoy con AWS Snow Family (Snowball Edge) para un cliente nuevo?",
+      "options": [
+        {
+          "text": "Es la opción recomendada para toda migración",
+          "correct": false,
+          "explanation": "Ya no está disponible para clientes nuevos."
+        },
+        {
+          "text": "Solo se puede pedir con Direct Connect",
+          "correct": false,
+          "explanation": "No es esa la condición."
+        },
+        {
+          "text": "Desde el 7 de noviembre de 2025 no se ofrece a clientes nuevos; AWS recomienda DataSync o Data Transfer Terminal",
+          "correct": true,
+          "explanation": "Correcto."
+        },
+        {
+          "text": "Se reemplazó por Storage Gateway",
+          "correct": false,
+          "explanation": "AWS recomienda DataSync en línea y Data Transfer Terminal para transferencias físicas."
+        }
+      ],
+      "source": {
+        "title": "What is Snowball Edge?",
+        "url": "https://docs.aws.amazon.com/snowball/latest/developer-guide/whatisedge.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "datasync-m1",
+      "serviceId": "datasync",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Una empresa migra 100 TB de un NAS a Amazon EFS por Direct Connect. Los usuarios siguen trabajando hasta el día del corte. ¿Qué enfoque usa?",
+      "options": [
+        {
+          "text": "Copiar todo con un solo comando la noche del corte",
+          "correct": false,
+          "explanation": "Tardaría demasiado y alargaría la interrupción."
+        },
+        {
+          "text": "Tareas de DataSync: una copia completa inicial y luego copias de solo los cambios hasta el corte",
+          "correct": true,
+          "explanation": "Correcto: la última sincronización es corta."
+        },
+        {
+          "text": "Tape Gateway",
+          "correct": false,
+          "explanation": "Es para respaldos en cinta."
+        },
+        {
+          "text": "Transfer Family con FTP",
+          "correct": false,
+          "explanation": "No está pensado para migraciones masivas."
+        }
+      ],
+      "source": {
+        "title": "What is AWS DataSync?",
+        "url": "https://docs.aws.amazon.com/datasync/latest/userguide/what-is-datasync.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "datasync-m2",
+      "serviceId": "datasync",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Una empresa quiere copiar datos de un bucket de S3 a un sistema EFS de la misma cuenta. ¿Necesita un agente de DataSync?",
+      "options": [
+        {
+          "text": "Sí, siempre",
+          "correct": false,
+          "explanation": "Entre servicios de AWS de la misma cuenta no se necesita."
+        },
+        {
+          "text": "Sí, en una instancia EC2",
+          "correct": false,
+          "explanation": "No se necesita agente."
+        },
+        {
+          "text": "Solo si son de distinta Región",
+          "correct": false,
+          "explanation": "Tampoco entre Regiones dentro de la misma cuenta."
+        },
+        {
+          "text": "No: entre servicios de AWS de la misma cuenta no se necesita agente",
+          "correct": true,
+          "explanation": "Correcto."
+        }
+      ],
+      "source": {
+        "title": "Do I need an AWS DataSync agent?",
+        "url": "https://docs.aws.amazon.com/datasync/latest/userguide/do-i-need-datasync-agent.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "datasync-m3",
+      "serviceId": "datasync",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Proyectos terminados ocupan espacio en un NAS local y deben archivarse por años al menor costo. ¿Qué hace la empresa?",
+      "options": [
+        {
+          "text": "Copiarlos con DataSync directamente a S3 Glacier Deep Archive",
+          "correct": true,
+          "explanation": "Correcto: DataSync puede escribir en clases de archivo como Deep Archive."
+        },
+        {
+          "text": "Montar el NAS en EFS",
+          "correct": false,
+          "explanation": "EFS no archiva por años al menor costo."
+        },
+        {
+          "text": "Usar Volume Gateway cached",
+          "correct": false,
+          "explanation": "Mantiene los datos como volúmenes activos."
+        },
+        {
+          "text": "Pedir un Snowball Edge",
+          "correct": false,
+          "explanation": "Ya no se ofrece a clientes nuevos."
+        }
+      ],
+      "source": {
+        "title": "What is AWS DataSync?",
+        "url": "https://docs.aws.amazon.com/datasync/latest/userguide/what-is-datasync.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "datasync-m4",
+      "serviceId": "datasync",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Una transferencia con DataSync no debe saturar el enlace de la oficina en horario laboral. ¿Qué configura?",
+      "options": [
+        {
+          "text": "S3 Transfer Acceleration",
+          "correct": false,
+          "explanation": "No limita el uso del enlace."
+        },
+        {
+          "text": "Multi-Attach",
+          "correct": false,
+          "explanation": "Es una función de EBS."
+        },
+        {
+          "text": "Un límite de ancho de banda en la tarea de DataSync",
+          "correct": true,
+          "explanation": "Correcto."
+        },
+        {
+          "text": "Un Savings Plan",
+          "correct": false,
+          "explanation": "No controla el ancho de banda."
+        }
+      ],
+      "source": {
+        "title": "What is AWS DataSync?",
+        "url": "https://docs.aws.amazon.com/datasync/latest/userguide/what-is-datasync.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "datasync-m5",
+      "serviceId": "datasync",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Una empresa quiere traer datos de Google Cloud Storage a Amazon S3. ¿Qué usa?",
+      "options": [
+        {
+          "text": "Snowball Edge",
+          "correct": false,
+          "explanation": "Ya no se ofrece a clientes nuevos."
+        },
+        {
+          "text": "AWS DataSync, sin agente entre almacenamiento de objetos de otras nubes y S3",
+          "correct": true,
+          "explanation": "Correcto."
+        },
+        {
+          "text": "Transfer Family con AS2",
+          "correct": false,
+          "explanation": "AS2 es para intercambio entre empresas."
+        },
+        {
+          "text": "Storage Gateway",
+          "correct": false,
+          "explanation": "Es para centros de datos locales."
+        }
+      ],
+      "source": {
+        "title": "Do I need an AWS DataSync agent?",
+        "url": "https://docs.aws.amazon.com/datasync/latest/userguide/do-i-need-datasync-agent.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "datasync-h1",
+      "serviceId": "datasync",
+      "difficulty": "hard",
+      "type": "single",
+      "prompt": "Una migración debe copiar decenas de millones de archivos pequeños hacia S3 lo más rápido posible y sin topar con cuotas de cantidad de archivos. ¿Qué modo de tarea usa?",
+      "options": [
+        {
+          "text": "Basic, porque verifica todos los datos",
+          "correct": false,
+          "explanation": "Basic prepara, transfiere y verifica en secuencia y tiene cuotas de cantidad."
+        },
+        {
+          "text": "Cualquiera: rinden igual",
+          "correct": false,
+          "explanation": "Enhanced rinde más en la mayoría de las cargas."
+        },
+        {
+          "text": "Basic con varios agentes en alta disponibilidad",
+          "correct": false,
+          "explanation": "Varios agentes no dan alta disponibilidad ni quitan las cuotas."
+        },
+        {
+          "text": "Enhanced",
+          "correct": true,
+          "explanation": "Correcto: lista, prepara, transfiere y verifica en paralelo, con cantidad prácticamente ilimitada de archivos."
+        }
+      ],
+      "source": {
+        "title": "Choosing a task mode for your data transfer",
+        "url": "https://docs.aws.amazon.com/datasync/latest/userguide/choosing-task-mode.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "datasync-h2",
+      "serviceId": "datasync",
+      "difficulty": "hard",
+      "type": "multiple",
+      "prompt": "Una transferencia con DataSync desde el centro de datos no debe pasar por internet público. ¿Qué dos elementos usa? (Elige 2)",
+      "options": [
+        {
+          "text": "AWS Direct Connect",
+          "correct": true,
+          "explanation": "Correcto: conexión privada hacia AWS."
+        },
+        {
+          "text": "Un endpoint de VPC (PrivateLink) para DataSync",
+          "correct": true,
+          "explanation": "Correcto: el agente se comunica con DataSync dentro de la VPC."
+        },
+        {
+          "text": "S3 Transfer Acceleration",
+          "correct": false,
+          "explanation": "Usa la red pública de ubicaciones de CloudFront."
+        },
+        {
+          "text": "Amazon CloudFront",
+          "correct": false,
+          "explanation": "Entrega contenido; no transfiere datos de migración."
+        },
+        {
+          "text": "Un servidor FTP público",
+          "correct": false,
+          "explanation": "No aplica a DataSync."
+        }
+      ],
+      "source": {
+        "title": "What is AWS DataSync?",
+        "url": "https://docs.aws.amazon.com/datasync/latest/userguide/what-is-datasync.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "datasync-h3",
+      "serviceId": "datasync",
+      "difficulty": "hard",
+      "type": "multiple",
+      "prompt": "Un cliente nuevo de AWS debe mover 2 PB desde su centro de datos y su enlace es limitado. ¿Qué dos opciones recomienda AWS hoy? (Elige 2)",
+      "options": [
+        {
+          "text": "AWS Data Transfer Terminal para transferencia física",
+          "correct": true,
+          "explanation": "Correcto: es la alternativa física que AWS recomienda."
+        },
+        {
+          "text": "AWS DataSync en línea, por ejemplo sobre Direct Connect",
+          "correct": true,
+          "explanation": "Correcto: es la transferencia en línea recomendada."
+        },
+        {
+          "text": "Pedir dispositivos Snowball Edge",
+          "correct": false,
+          "explanation": "Desde el 7 de noviembre de 2025 no se ofrecen a clientes nuevos."
+        },
+        {
+          "text": "Un servidor FTP en Transfer Family",
+          "correct": false,
+          "explanation": "No es para migraciones masivas."
+        },
+        {
+          "text": "Tape Gateway",
+          "correct": false,
+          "explanation": "Es para respaldos en cinta."
+        }
+      ],
+      "source": {
+        "title": "What is Snowball Edge?",
+        "url": "https://docs.aws.amazon.com/snowball/latest/developer-guide/whatisedge.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "datasync-h4",
+      "serviceId": "datasync",
+      "difficulty": "hard",
+      "type": "single",
+      "prompt": "Después de migrar a AWS, los usuarios de la oficina deben seguir abriendo los archivos a diario con baja latencia. ¿Qué es lo MÁS adecuado?",
+      "options": [
+        {
+          "text": "AWS Storage Gateway (por ejemplo, S3 File Gateway con caché local)",
+          "correct": true,
+          "explanation": "Correcto: da acceso local continuo a datos guardados en AWS."
+        },
+        {
+          "text": "Una tarea de DataSync cada hora",
+          "correct": false,
+          "explanation": "DataSync mueve datos; no ofrece acceso local continuo."
+        },
+        {
+          "text": "Snowball Edge",
+          "correct": false,
+          "explanation": "Ya no se ofrece a clientes nuevos."
+        },
+        {
+          "text": "AWS Transfer Family",
+          "correct": false,
+          "explanation": "Es para transferencias de archivos por protocolos como SFTP."
+        }
+      ],
+      "source": {
+        "title": "What is Amazon S3 File Gateway",
+        "url": "https://docs.aws.amazon.com/filegateway/latest/files3/what-is-file-s3.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "datasync-h5",
+      "serviceId": "datasync",
+      "difficulty": "hard",
+      "type": "single",
+      "prompt": "Una tarea de DataSync debe copiar datos hacia FSx for Windows File Server. ¿Qué modo de tarea debe usar?",
+      "options": [
+        {
+          "text": "Enhanced",
+          "correct": false,
+          "explanation": "Enhanced no soporta FSx for Windows File Server."
+        },
+        {
+          "text": "Cualquiera de los dos",
+          "correct": false,
+          "explanation": "Solo uno lo soporta."
+        },
+        {
+          "text": "Basic",
+          "correct": true,
+          "explanation": "Correcto: las transferencias con FSx for Windows File Server requieren Basic."
+        },
+        {
+          "text": "Ninguno: DataSync no soporta FSx",
+          "correct": false,
+          "explanation": "DataSync soporta los cuatro tipos de FSx."
+        }
+      ],
+      "source": {
+        "title": "Choosing a task mode for your data transfer",
+        "url": "https://docs.aws.amazon.com/datasync/latest/userguide/choosing-task-mode.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "transfer-family-n1",
+      "serviceId": "transfer-family",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "¿Qué es AWS Transfer Family?",
+      "options": [
+        {
+          "text": "Un servicio para migrar bases de datos",
+          "correct": false,
+          "explanation": "Eso es AWS DMS."
+        },
+        {
+          "text": "Un dispositivo físico para enviar datos",
+          "correct": false,
+          "explanation": "No es un dispositivo."
+        },
+        {
+          "text": "Un servicio de respaldo",
+          "correct": false,
+          "explanation": "Eso es AWS Backup."
+        },
+        {
+          "text": "Servidores SFTP, FTPS, FTP y AS2 administrados que guardan los archivos en Amazon S3 o Amazon EFS",
+          "correct": true,
+          "explanation": "Correcto."
+        }
+      ],
+      "source": {
+        "title": "What is AWS Transfer Family?",
+        "url": "https://docs.aws.amazon.com/transfer/latest/userguide/what-is-aws-transfer-family.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "transfer-family-n2",
+      "serviceId": "transfer-family",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "¿En qué servicios de almacenamiento puede guardar los archivos Transfer Family?",
+      "options": [
+        {
+          "text": "Amazon S3 y Amazon EFS",
+          "correct": true,
+          "explanation": "Correcto."
+        },
+        {
+          "text": "Amazon EBS y Amazon S3",
+          "correct": false,
+          "explanation": "EBS no es un destino de Transfer Family."
+        },
+        {
+          "text": "FSx for Windows File Server",
+          "correct": false,
+          "explanation": "No es un destino de Transfer Family."
+        },
+        {
+          "text": "Bóvedas de Amazon Glacier",
+          "correct": false,
+          "explanation": "No es un destino de Transfer Family."
+        }
+      ],
+      "source": {
+        "title": "What is AWS Transfer Family?",
+        "url": "https://docs.aws.amazon.com/transfer/latest/userguide/what-is-aws-transfer-family.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "transfer-family-n3",
+      "serviceId": "transfer-family",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "¿Se puede ofrecer FTP (sin cifrado) por internet con Transfer Family?",
+      "options": [
+        {
+          "text": "Sí, con un endpoint público",
+          "correct": false,
+          "explanation": "Los endpoints públicos no admiten FTP."
+        },
+        {
+          "text": "Sí, si se activa FIPS",
+          "correct": false,
+          "explanation": "FIPS no está disponible para FTP."
+        },
+        {
+          "text": "No: FTP solo admite un endpoint de VPC interno; por internet se usa SFTP o FTPS",
+          "correct": true,
+          "explanation": "Correcto: FTP envía todo en texto claro."
+        },
+        {
+          "text": "Sí, con CloudFront delante",
+          "correct": false,
+          "explanation": "No es una opción soportada."
+        }
+      ],
+      "source": {
+        "title": "Create an FTP-enabled server",
+        "url": "https://docs.aws.amazon.com/transfer/latest/userguide/create-server-ftp.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "transfer-family-n4",
+      "serviceId": "transfer-family",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "¿Para qué se usa AS2 en Transfer Family?",
+      "options": [
+        {
+          "text": "Para montar sistemas de archivos",
+          "correct": false,
+          "explanation": "AS2 no monta sistemas de archivos."
+        },
+        {
+          "text": "Para intercambiar documentos de negocio entre empresas (B2B), como órdenes de compra",
+          "correct": true,
+          "explanation": "Correcto."
+        },
+        {
+          "text": "Para replicar buckets entre Regiones",
+          "correct": false,
+          "explanation": "Eso es la replicación de S3."
+        },
+        {
+          "text": "Para respaldar volúmenes EBS",
+          "correct": false,
+          "explanation": "No es un protocolo de respaldo."
+        }
+      ],
+      "source": {
+        "title": "What is AWS Transfer Family?",
+        "url": "https://docs.aws.amazon.com/transfer/latest/userguide/what-is-aws-transfer-family.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "transfer-family-n5",
+      "serviceId": "transfer-family",
+      "difficulty": "normal",
+      "type": "single",
+      "prompt": "Una empresa mueve su servidor SFTP a Transfer Family. ¿Qué tienen que cambiar sus socios?",
+      "options": [
+        {
+          "text": "Nada importante: siguen usando su cliente y su configuración de siempre",
+          "correct": true,
+          "explanation": "Correcto: Transfer Family mantiene la configuración del lado del cliente."
+        },
+        {
+          "text": "Deben aprender la API de S3",
+          "correct": false,
+          "explanation": "Siguen usando SFTP."
+        },
+        {
+          "text": "Deben instalar un agente de DataSync",
+          "correct": false,
+          "explanation": "No es necesario."
+        },
+        {
+          "text": "Deben cambiar a FTP",
+          "correct": false,
+          "explanation": "Siguen con SFTP."
+        }
+      ],
+      "source": {
+        "title": "What is AWS Transfer Family?",
+        "url": "https://docs.aws.amazon.com/transfer/latest/userguide/what-is-aws-transfer-family.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "transfer-family-m1",
+      "serviceId": "transfer-family",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Proveedores envían facturas por SFTP y la empresa quiere guardarlas en un data lake en S3 sin administrar servidores. ¿Qué usa?",
+      "options": [
+        {
+          "text": "Una instancia EC2 con un servidor SFTP",
+          "correct": false,
+          "explanation": "Funciona, pero hay que administrar el servidor."
+        },
+        {
+          "text": "AWS Transfer Family con SFTP y destino en S3",
+          "correct": true,
+          "explanation": "Correcto."
+        },
+        {
+          "text": "AWS DataSync",
+          "correct": false,
+          "explanation": "No recibe archivos de terceros por SFTP."
+        },
+        {
+          "text": "S3 File Gateway",
+          "correct": false,
+          "explanation": "Es para servidores locales de la empresa."
+        }
+      ],
+      "source": {
+        "title": "What is AWS Transfer Family?",
+        "url": "https://docs.aws.amazon.com/transfer/latest/userguide/what-is-aws-transfer-family.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "transfer-family-m2",
+      "serviceId": "transfer-family",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Los usuarios de un servidor de Transfer Family deben autenticarse con las cuentas del Active Directory de la empresa. ¿Qué proveedor de identidad usa?",
+      "options": [
+        {
+          "text": "Usuarios administrados por el servicio",
+          "correct": false,
+          "explanation": "Habría que crear usuarios aparte."
+        },
+        {
+          "text": "Usuarios de IAM",
+          "correct": false,
+          "explanation": "No es el modelo de Transfer Family para usuarios finales."
+        },
+        {
+          "text": "Claves de acceso de S3",
+          "correct": false,
+          "explanation": "No es un proveedor de identidad."
+        },
+        {
+          "text": "AWS Directory Service for Microsoft Active Directory",
+          "correct": true,
+          "explanation": "Correcto."
+        }
+      ],
+      "source": {
+        "title": "Create an FTP-enabled server",
+        "url": "https://docs.aws.amazon.com/transfer/latest/userguide/create-server-ftp.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "transfer-family-m3",
+      "serviceId": "transfer-family",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Una empresa quiere usar su proveedor de identidad propio, como Okta, con Transfer Family. ¿Cómo se integra?",
+      "options": [
+        {
+          "text": "No se puede",
+          "correct": false,
+          "explanation": "Se puede con un proveedor personalizado."
+        },
+        {
+          "text": "Solo con usuarios administrados por el servicio",
+          "correct": false,
+          "explanation": "Existe la opción de proveedor personalizado."
+        },
+        {
+          "text": "Con un proveedor de identidad personalizado conectado mediante AWS Lambda o Amazon API Gateway",
+          "correct": true,
+          "explanation": "Correcto."
+        },
+        {
+          "text": "Con un endpoint FTP público",
+          "correct": false,
+          "explanation": "No tiene relación con la identidad."
+        }
+      ],
+      "source": {
+        "title": "Create an FTP-enabled server",
+        "url": "https://docs.aws.amazon.com/transfer/latest/userguide/create-server-ftp.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "transfer-family-m4",
+      "serviceId": "transfer-family",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Cada archivo que llega por SFTP viene cifrado con PGP y debe descifrarse y copiarse a otra carpeta al llegar. ¿Qué usa?",
+      "options": [
+        {
+          "text": "Workflows administrados de Transfer Family",
+          "correct": true,
+          "explanation": "Correcto: procesan cada archivo al llegar, incluso el descifrado PGP."
+        },
+        {
+          "text": "S3 Lifecycle",
+          "correct": false,
+          "explanation": "Mueve objetos por antigüedad; no los descifra."
+        },
+        {
+          "text": "AWS Backup",
+          "correct": false,
+          "explanation": "No procesa archivos."
+        },
+        {
+          "text": "S3 Transfer Acceleration",
+          "correct": false,
+          "explanation": "No procesa archivos."
+        }
+      ],
+      "source": {
+        "title": "What is AWS Transfer Family?",
+        "url": "https://docs.aws.amazon.com/transfer/latest/userguide/what-is-aws-transfer-family.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "transfer-family-m5",
+      "serviceId": "transfer-family",
+      "difficulty": "medium",
+      "type": "single",
+      "prompt": "Una empresa debe enviar archivos desde S3 al servidor SFTP de un socio, sin administrar servidores. ¿Qué usa?",
+      "options": [
+        {
+          "text": "Una URL prefirmada",
+          "correct": false,
+          "explanation": "El socio exige recibir por SFTP en su servidor."
+        },
+        {
+          "text": "Un conector SFTP de Transfer Family",
+          "correct": true,
+          "explanation": "Correcto: envía archivos desde AWS a servidores SFTP externos."
+        },
+        {
+          "text": "AWS DataSync",
+          "correct": false,
+          "explanation": "No envía a servidores SFTP de terceros."
+        },
+        {
+          "text": "Tape Gateway",
+          "correct": false,
+          "explanation": "Es para cintas virtuales."
+        }
+      ],
+      "source": {
+        "title": "What is AWS Transfer Family?",
+        "url": "https://docs.aws.amazon.com/transfer/latest/userguide/what-is-aws-transfer-family.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "transfer-family-h1",
+      "serviceId": "transfer-family",
+      "difficulty": "hard",
+      "type": "single",
+      "prompt": "Una aplicación antigua dentro de la red de la empresa solo sabe usar FTP, y además socios externos envían archivos por internet. ¿Qué configuración es correcta?",
+      "options": [
+        {
+          "text": "Un solo servidor con FTP en un endpoint público para todos",
+          "correct": false,
+          "explanation": "Los endpoints públicos no admiten FTP."
+        },
+        {
+          "text": "FTP con FIPS para los socios",
+          "correct": false,
+          "explanation": "FIPS no está disponible para FTP."
+        },
+        {
+          "text": "Pedir a los socios que se conecten por VPN para usar FTP",
+          "correct": false,
+          "explanation": "Sigue enviando datos sin cifrar y complica a los socios."
+        },
+        {
+          "text": "FTP solo en un endpoint de VPC interno para la aplicación, y SFTP o FTPS para los socios por internet",
+          "correct": true,
+          "explanation": "Correcto: FTP no cifra, así que se limita a la red interna."
+        }
+      ],
+      "source": {
+        "title": "Create an FTP-enabled server",
+        "url": "https://docs.aws.amazon.com/transfer/latest/userguide/create-server-ftp.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "transfer-family-h2",
+      "serviceId": "transfer-family",
+      "difficulty": "hard",
+      "type": "multiple",
+      "prompt": "Una empresa migra su servidor SFTP local a Transfer Family y no quiere que sus clientes cambien nada. ¿Qué dos acciones ayudan? (Elige 2)",
+      "options": [
+        {
+          "text": "Asociar su nombre de host actual al endpoint del servidor de Transfer Family",
+          "correct": true,
+          "explanation": "Correcto: los clientes siguen apuntando al mismo nombre."
+        },
+        {
+          "text": "Mantener la autenticación existente de los usuarios (por ejemplo, sus claves SSH)",
+          "correct": true,
+          "explanation": "Correcto: Transfer Family conserva la configuración del lado del cliente."
+        },
+        {
+          "text": "Cambiar el protocolo a FTP",
+          "correct": false,
+          "explanation": "Obliga a cambiar a los clientes y quita el cifrado."
+        },
+        {
+          "text": "Pedir a los clientes que usen la API de S3",
+          "correct": false,
+          "explanation": "Obliga a cambiar a los clientes."
+        },
+        {
+          "text": "Guardar los archivos en volúmenes EBS",
+          "correct": false,
+          "explanation": "EBS no es un destino de Transfer Family."
+        }
+      ],
+      "source": {
+        "title": "What is AWS Transfer Family?",
+        "url": "https://docs.aws.amazon.com/transfer/latest/userguide/what-is-aws-transfer-family.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "transfer-family-h3",
+      "serviceId": "transfer-family",
+      "difficulty": "hard",
+      "type": "multiple",
+      "prompt": "¿Qué dos servicios pueden ser el destino de los archivos de un servidor de Transfer Family? (Elige 2)",
+      "options": [
+        {
+          "text": "Amazon S3",
+          "correct": true,
+          "explanation": "Correcto."
+        },
+        {
+          "text": "Amazon EFS",
+          "correct": true,
+          "explanation": "Correcto."
+        },
+        {
+          "text": "Amazon EBS",
+          "correct": false,
+          "explanation": "No es un destino soportado."
+        },
+        {
+          "text": "FSx for Windows File Server",
+          "correct": false,
+          "explanation": "No es un destino soportado."
+        },
+        {
+          "text": "Bóvedas de Amazon Glacier",
+          "correct": false,
+          "explanation": "No es un destino soportado."
+        }
+      ],
+      "source": {
+        "title": "What is AWS Transfer Family?",
+        "url": "https://docs.aws.amazon.com/transfer/latest/userguide/what-is-aws-transfer-family.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "transfer-family-h4",
+      "serviceId": "transfer-family",
+      "difficulty": "hard",
+      "type": "single",
+      "prompt": "Socios que ya tienen cuentas de AWS deben subir unos pocos archivos al mes a un bucket. ¿Qué es lo MÁS económico?",
+      "options": [
+        {
+          "text": "URL prefirmadas o la API de S3, sin Transfer Family",
+          "correct": true,
+          "explanation": "Correcto: Transfer Family cobra por hora cada protocolo activo; si los socios pueden usar S3 directo, no se necesita."
+        },
+        {
+          "text": "Un servidor de Transfer Family con SFTP activo todo el mes",
+          "correct": false,
+          "explanation": "Paga por hora aunque se use poco."
+        },
+        {
+          "text": "Un servidor de Transfer Family con SFTP, FTPS y FTP",
+          "correct": false,
+          "explanation": "Paga por cada protocolo activo."
+        },
+        {
+          "text": "AWS DataSync con agente",
+          "correct": false,
+          "explanation": "No es para que terceros suban archivos."
+        }
+      ],
+      "source": {
+        "title": "Download and upload objects with presigned URLs",
+        "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/using-presigned-url.html"
+      },
+      "verifiedOn": "2026-10-02"
+    },
+    {
+      "id": "transfer-family-h5",
+      "serviceId": "transfer-family",
+      "difficulty": "hard",
+      "type": "single",
+      "prompt": "Una empresa debe trasladar a S3 300 TB de su propio NAS. ¿Qué servicio es el adecuado?",
+      "options": [
+        {
+          "text": "AWS Transfer Family con SFTP",
+          "correct": false,
+          "explanation": "Es para intercambio de archivos con usuarios y socios, no para migraciones masivas."
+        },
+        {
+          "text": "AWS Transfer Family con AS2",
+          "correct": false,
+          "explanation": "AS2 es para documentos entre empresas."
+        },
+        {
+          "text": "AWS DataSync",
+          "correct": true,
+          "explanation": "Correcto: mueve en bloque datos propios, con verificación."
+        },
+        {
+          "text": "Un conector SFTP",
+          "correct": false,
+          "explanation": "Envía archivos a servidores de socios."
+        }
+      ],
+      "source": {
+        "title": "What is AWS DataSync?",
+        "url": "https://docs.aws.amazon.com/datasync/latest/userguide/what-is-datasync.html"
+      },
+      "verifiedOn": "2026-10-02"
     }
   ]
 }
