@@ -51,6 +51,19 @@ describe('room layouts', () => {
       expect(rows.size).toBe(layout.rows);
     });
 
+    it('aligns the columns when every row has the same number of stations', () => {
+      const columnsByRow = new Map<number, number[]>();
+      for (const { row, col } of placements) {
+        columnsByRow.set(
+          row,
+          [...(columnsByRow.get(row) ?? []), col].sort((a, b) => a - b),
+        );
+      }
+      const rows = [...columnsByRow.values()];
+      if (rows.some((columns) => columns.length !== rows[0]?.length)) return;
+      for (const columns of rows) expect(columns).toEqual(rows[0]);
+    });
+
     it('leaves room between stations so they never overlap', () => {
       for (const [index, a] of placements.entries()) {
         for (const b of placements.slice(index + 1)) {

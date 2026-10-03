@@ -16,7 +16,7 @@
 
 - **Decision**: Un registro `ROOM_LAYOUTS` en `src/scene/layouts/index.ts` con `{ stations, decor, rows }` por sala; `main.ts` deja de preguntar `roomId === 'compute'`. El test de layout de la Sala de Máquinas se generaliza para recorrer todas las salas del registro.
 - **Rationale**: Hoy el decorado está atado a `compute` en `main.ts`; con dos salas la condición se vuelve un error esperando a ocurrir. Un registro de datos mantiene la escena genérica (Principio IV).
-- **Distribución propuesta (grilla 12×10, distancia mínima 3)**: fila 2: S3 y Glacier; fila 5: EBS, EFS y FSx; fila 8: Storage Gateway, Backup, DataSync y Transfer Family.
+- **Distribución propuesta (grilla 12×10, distancia mínima 3)**: cuadrícula alineada de 3×3 (columnas 3, 6 y 9; filas 2, 5 y 8) en el orden del recorrido: S3, Glacier, EBS / EFS, FSx, Storage Gateway / Backup, DataSync, Transfer Family. Jean pidió alinearlas (2026-10-03).
 
 ## Decision 4: Preguntas por sala, cargadas al entrar
 
