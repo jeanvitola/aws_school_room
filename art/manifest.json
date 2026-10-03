@@ -164,6 +164,18 @@
       "crop": [710, 705, 980, 968],
       "anchor": "center",
       "enhance": { "saturation": 1.4, "contrast": 1.2 }
+    },
+    {
+      "sprite": "door",
+      "source": "public/assets/sprites/CAPA 5 PUERTA.png",
+      "frames": [
+        [10, 95, 344, 661],
+        [350, 95, 684, 661],
+        [692, 95, 1026, 661],
+        [1031, 95, 1365, 661]
+      ],
+      "anchor": "bottom",
+      "weight": 2
     }
   ]
 }

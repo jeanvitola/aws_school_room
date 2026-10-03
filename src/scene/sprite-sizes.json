@@ -20,5 +20,6 @@
   "service-storage-gateway": { "width": 48, "height": 48 },
   "service-backup": { "width": 48, "height": 48 },
   "service-datasync": { "width": 48, "height": 48 },
-  "service-transfer-family": { "width": 48, "height": 48 }
+  "service-transfer-family": { "width": 48, "height": 48 },
+  "door": { "width": 64, "height": 108, "frames": 4 }
 }
