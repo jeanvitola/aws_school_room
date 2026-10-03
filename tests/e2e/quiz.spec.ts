@@ -126,6 +126,9 @@ test.describe('003 US1 - Responder preguntas', () => {
 });
 
 test.describe('003 US2 - Preguntas "Elige 2"', () => {
+  // Responde hasta 15 preguntas antes de verificar: en CI eso supera el límite general de 30 s.
+  test.describe.configure({ timeout: 90_000 });
+
   const firstMultiple = ordered.findIndex((q) => q.type === 'multiple');
 
   test.beforeEach(async ({ page }) => {
@@ -160,6 +163,9 @@ test.describe('003 US2 - Preguntas "Elige 2"', () => {
 });
 
 test.describe('003 US3 - Resultado final', () => {
+  // Responde hasta 15 preguntas antes de verificar: en CI eso supera el límite general de 30 s.
+  test.describe.configure({ timeout: 90_000 });
+
   test.beforeEach(async ({ page }) => {
     await openLambdaQuiz(page);
     // Acierta las normales y las medias, falla las difíciles.
