@@ -63,40 +63,13 @@
 }
 
 .door__frame {
-  position: relative;
+  /* Tira de 4 cuadros de 64×108: cerrada, entreabierta, abierta y clausurada. */
   display: block;
   width: 64px;
-  height: 88px;
-  background: #2a1a10;
-  border: var(--pixel) solid #2a1a10;
-  box-shadow: 0 0 0 var(--pixel) #8d5d3f;
-  overflow: hidden;
-}
-
-.door__light {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(var(--color-accent-soft), var(--color-accent));
-}
-
-.door__leaf {
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(#a9714b 0 0) 8px 8px / 40px 28px no-repeat,
-    linear-gradient(#a9714b 0 0) 8px 44px / 40px 28px no-repeat,
-    #8d5d3f;
-  transform-origin: left center;
-  transition: transform 200ms steps(4);
-}
-
-.door__knob {
-  position: absolute;
-  right: 6px;
-  top: 40px;
-  width: var(--pixel);
-  height: var(--pixel);
-  background: var(--color-accent-soft);
+  height: 108px;
+  background-repeat: no-repeat;
+  background-position: 0 0;
+  image-rendering: pixelated;
 }
 
 .door__name {
@@ -125,9 +98,11 @@
   transform: translateY(calc(var(--pixel) * -1));
 }
 
-.door[data-status='available']:hover .door__leaf,
-.door[data-status='available']:focus-visible .door__leaf {
-  transform: scaleX(0.35);
+.door[data-status='available']:hover .door__frame,
+.door[data-status='available']:focus-visible .door__frame {
+  /* Termina abierta; con movimiento reducido llega directo a este cuadro. */
+  background-position: -128px 0;
+  animation: door-open 240ms steps(1) both;
 }
 
 .door[data-status='available'] .door__name {
@@ -140,16 +115,7 @@
 }
 
 .door[data-status='upcoming'] .door__frame {
-  filter: grayscale(0.7) brightness(0.7);
-}
-
-.door[data-status='upcoming'] .door__frame::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(#6a432c 0 0) 0 26px / 100% 8px no-repeat,
-    linear-gradient(#6a432c 0 0) 0 54px / 100% 8px no-repeat;
+  background-position: -192px 0;
 }
 
 .door[data-status='upcoming']:hover .door__frame,
@@ -178,6 +144,16 @@
 @keyframes title-float {
   to {
     transform: translateY(calc(var(--pixel) * -1));
+  }
+}
+
+@keyframes door-open {
+  0% {
+    background-position: -64px 0;
+  }
+  50%,
+  100% {
+    background-position: -128px 0;
   }
 }
 

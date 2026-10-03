@@ -2,6 +2,8 @@ import { listRooms } from '../domain/catalog';
 import type { Navigation } from '../domain/navigation';
 import type { ContentCatalog, Room } from '../domain/types';
 
+const DOOR_SPRITE_URL = 'assets/sprites/door.png';
+
 function createDoor(room: Room, onSelect: (room: Room) => void): HTMLLIElement {
   const item = document.createElement('li');
   const button = document.createElement('button');
@@ -11,10 +13,12 @@ function createDoor(room: Room, onSelect: (room: Room) => void): HTMLLIElement {
   button.dataset.status = room.status;
   if (room.status === 'upcoming') button.setAttribute('aria-disabled', 'true');
 
+  // Sprite de la puerta (arte de Jean, 4 cuadros): cerrada, entreabierta, abierta y clausurada.
+  // La ruta es relativa al documento para que funcione también bajo el subdirectorio de GitHub Pages.
   const frame = document.createElement('span');
   frame.className = 'door__frame';
   frame.setAttribute('aria-hidden', 'true');
-  frame.innerHTML = '<span class="door__light"></span><span class="door__leaf"><span class="door__knob"></span></span>';
+  frame.style.backgroundImage = `url(${DOOR_SPRITE_URL})`;
 
   const name = document.createElement('span');
   name.className = 'door__name';
